@@ -1,0 +1,71 @@
+menuconfig AMLOGIC_MEMORY_EXTEND
+	bool "AMLOGIC memory extend support"
+	depends on AMLOGIC_DRIVER
+	depends on AMLOGIC_MODIFY
+	default y
+	help
+		Amlogic memory extend is drivers which extend for memory management
+		functions, can be used for memory debug or other features.
+
+config AMLOGIC_PAGE_TRACE
+	bool "Amlogic trace for page allocate"
+	depends on AMLOGIC_MEMORY_EXTEND
+	depends on KALLSYMS
+	depends on !NUMA_BALANCING
+	default y
+	help
+		Amlogic page trace will record function address of caller for page
+		allocate/free, according with allocate flags and order. trace
+		information is stored in a pre-allocated memory block. And can be shown
+		with allocate page count information of each caller functions from
+		/proc/pagetrace
+
+config AMLOGIC_RAMDUMP
+	bool "Amlogic RAM DUMP support"
+	depends on AMLOGIC_MEMORY_EXTEND
+	depends on PANIC_TIMEOUT != 0
+	default n
+	help
+		RAM dump support for amlogic platform, when system is rebooted
+		after panic/watch dog reboot, you may need this option to save
+		whole ram to /data/ partition. Which can be used for analyze
+		crash reason.
+
+config AMLOGIC_CMA
+	bool "Amlogic CMA change"
+	depends on AMLOGIC_MEMORY_EXTEND
+	depends on CMA
+	default y
+	help
+		Amlogic CMA optimization for cma alloc/free problems
+		Including policy change of CMA usage
+
+config AMLOGIC_VMAP
+	bool "Amlogic kernel stack"
+	depends on AMLOGIC_MEMORY_EXTEND
+	depends on !KASAN
+	default y
+	help
+		This config is used to enable amlogic kernel stack
+		usage optimization with vmalloc. It depends on
+		AMLOGIC_MEMORY_EXTEND. This config only opened
+		on 64 bit platform.
+
+config AMLOGIC_SLUB_DEBUG
+	bool "Amlogic debug for trace all slub objects"
+	depends on AMLOGIC_PAGE_TRACE
+	depends on SLUB
+	default n
+	help
+		This option open trace debug for each slub objects. And will give
+		slub objdect allocator information when detected bad objects
+
+config AMLOGIC_WATCHPOINT
+	tristate "Amlogic point driver"
+	depends on HAVE_HW_BREAKPOINT
+	depends on AMLOGIC_MEMORY_EXTEND
+	default y
+	help
+		This driver export a debug sysfs in order
+		to using watch point function on ARMv8.
+		say y to enable Amlogic watch point driver

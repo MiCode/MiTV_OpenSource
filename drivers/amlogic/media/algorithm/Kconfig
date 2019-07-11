@@ -1,0 +1,22 @@
+#
+# Amlogic multimedia algorithm configuration
+#
+
+menu "Amlogic multimedia algorithm configuration"
+
+config AMLOGIC_MEDIA_ALGORITHM
+	bool "Amlgoic Multimedia Algorithm Support"
+	default n
+	help
+		Amlogic multimedia algorithm include:
+		dnlp
+		hdr10
+		sl_hdr
+		ldim
+
+if AMLOGIC_MEDIA_ALGORITHM
+#source "drivers/amlogic/media/algorithm/ldim/Kconfig"
+#source "drivers/amlogic/media/algorithm/dnlp/Kconfig"
+endif
+
+endmenu

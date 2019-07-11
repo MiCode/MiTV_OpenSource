@@ -1,0 +1,15 @@
+obj-$(CONFIG_AMLOGIC_MEDIA_COMMON)	+=	common/
+obj-$(CONFIG_AMLOGIC_MEDIA_VIDEO)	+=	frame_sync/
+obj-$(CONFIG_AMLOGIC_MEDIA_VIDEO)	+=	video_sink/
+obj-$(CONFIG_AMLOGIC_MEDIA_FB)	+=	osd/
+obj-$(CONFIG_AMLOGIC_MEDIA_FB_EXT)	+=	osd_ext/
+obj-$(CONFIG_AMLOGIC_VOUT)		+=	vout/
+obj-$(CONFIG_AMLOGIC_MEDIA_DEINTERLACE)	+=	deinterlace/
+obj-$(CONFIG_AMLOGIC_MEDIA_VIN)		+=	vin/
+obj-$(CONFIG_AMLOGIC_MEDIA_VIDEO_PROCESSOR)	+=	video_processor/
+obj-$(CONFIG_AMLOGIC_MEDIA_ENHANCEMENT) += enhancement/
+obj-$(CONFIG_AMLOGIC_DTV_DEMOD) += dtv_demod/
+obj-$(CONFIG_AMLOGIC_MEDIA_GDC) += gdc/
+
+obj-$(CONFIG_AMLOGIC_MEDIA_ALGORITHM) += algorithm/
+obj-$(CONFIG_AMLOGIC_VIDEO_CAPTURE) += camera/

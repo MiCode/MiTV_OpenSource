@@ -1,0 +1,152 @@
+Amlogic Meson Display Controller
+================================
+
+The Amlogic Meson Display controller is composed of several components
+that are going to be documented below:
+
+DMC|---------------VPU (Video Processing Unit)----------------|------HHI------|
+   | vd1   _______     _____________    _________________     |               |
+D  |-------|      |----|            |   |                |    |   HDMI PLL    |
+D  | vd2   | VIU  |    | Video Post |   | Video Encoders |<---|-----VCLK      |
+R  |-------|      |----| Processing |   |                |    |               |
+   | osd2  |      |    |            |---| Enci ----------|----|-----VDAC------|
+R  |-------| CSC  |----| Scalers    |   | Encp ----------|----|----HDMI-TX----|
+A  | osd1  |      |    | Blenders   |   | Encl ----------|----|---------------|
+M  |-------|______|----|____________|   |________________|    |               |
+___|__________________________________________________________|_______________|
+
+
+VIU: Video Input Unit
+---------------------
+
+The Video Input Unit is in charge of the pixel scanout from the DDR memory.
+It fetches the frames addresses, stride and parameters from the "Canvas" memory.
+This part is also in charge of the CSC (Colorspace Conversion).
+It can handle 2 OSD Planes and 2 Video Planes.
+
+VPP: Video Post Processing
+--------------------------
+
+The Video Post Processing is in charge of the scaling and blending of the
+various planes into a single pixel stream.
+There is a special "pre-blending" used by the video planes with a dedicated
+scaler and a "post-blending" to merge with the OSD Planes.
+The OSD planes also have a dedicated scaler for one of the OSD.
+
+VENC: Video Encoders
+--------------------
+
+The VENC is composed of the multiple pixel encoders :
+ - ENCI : Interlace Video encoder for CVBS and Interlace HDMI
+ - ENCP : Progressive Video Encoder for HDMI
+ - ENCL : LCD LVDS Encoder
+The VENC Unit gets a Pixel Clocks (VCLK) from a dedicated HDMI PLL and clock
+tree and provides the scanout clock to the VPP and VIU.
+The ENCI is connected to a single VDAC for Composite Output.
+The ENCI and ENCP are connected to an on-chip HDMI Transceiver.
+
+Device Tree Bindings:
+---------------------
+
+VPU: Video Processing Unit
+--------------------------
+
+Required properties:
+- compatible: value should be different for each SoC family as :
+	- GXBB (S905) : "amlogic,meson-gxbb-vpu"
+	- GXL (S905X, S905D) : "amlogic,meson-gxl-vpu"
+	- GXM (S912) : "amlogic,meson-gxm-vpu"
+	- TXL (T962X, T962E) : "amlogic,meson-txl-vpu"
+	- TXLX (T962X, T962E) : "amlogic,meson-txlx-vpu"
+	- AXG (A113G, A113D) : "amlogic,meson-axg-vpu"
+	- G12A (S905D2) : "amlogic,meson-g12a-vpu"
+	- G12B (W400) : "amlogic,meson-g12b-vpu"
+	followed by the common "amlogic,meson-gx-vpu"
+- reg: base address and size of he following memory-mapped regions :
+	- vpu
+	- hhi
+	- dmc
+- reg-names: should contain the names of the previous memory regions
+- interrupts: should contain the VENC Vsync interrupt number
+
+Required nodes:
+
+The connections to the VPU output video ports are modeled using the OF graph
+bindings specified in Documentation/devicetree/bindings/graph.txt.
+
+The following table lists for each supported model the port number
+corresponding to each VPU output.
+
+		Port 0		Port 1
+-----------------------------------------
+ S905 (GXBB)	CVBS VDAC	HDMI-TX
+ S905X (GXL)	CVBS VDAC	HDMI-TX
+ S905D (GXL)	CVBS VDAC	HDMI-TX
+ S912 (GXM)	CVBS VDAC	HDMI-TX
+
+Example:
+
+	drm_amhdmitx: drm-amhdmitx {
+		status = "disabled";
+		compatible = "amlogic,drm-amhdmitx";
+		dev_name = "meson-amhdmitx";
+		interrupts = <GIC_SPI 3 IRQ_TYPE_EDGE_RISING>;
+		drm_feature = <1>;
+		ports {
+			port {
+				#address-cells = <1>;
+				#size-cells = <0>;
+				hdmi_in_vpu: endpoint@0 {
+					reg = <0>;
+					remote-endpoint = <&vpu_out_hdmi>;
+				};
+			};
+		};
+	};
+
+	drm_lcd: drm-lcd {
+		status = "disabled";
+		compatible = "amlogic,drm-lcd";
+		dev_name = "meson-lcd";
+		ports {
+			port {
+				#address-cells = <1>;
+				#size-cells = <0>;
+				lcd_in_vpu: endpoint@0 {
+					reg = <0>;
+					remote-endpoint = <&vpu_out_lcd>;
+				};
+			};
+		};
+	};
+
+	drm_vpu: drm-vpu@0xff900000  {
+		status = "disabled";
+		compatible = "amlogic,meson-g12a-vpu";
+		reg = <0x0 0xff900000 0x0 0x40000>,
+			  <0x0 0xff63c000 0x0 0x2000>,
+			  <0x0 0xff638000 0x0 0x2000>;
+		reg-names = "base", "hhi", "dmc";
+		interrupts = <GIC_SPI 3 IRQ_TYPE_EDGE_RISING>;
+		dma-coherent;
+		vpu_out: port {
+			#address-cells = <1>;
+			#size-cells = <0>;
+
+			vpu_out_hdmi: endpoint@0 {
+				reg = <0>;
+				remote-endpoint = <&hdmi_in_vpu>;
+			};
+			vpu_out_lcd: endpoint@1 {
+				reg = <1>;
+				remote-endpoint = <&lcd_in_vpu>;
+			};
+		};
+	};
+
+	drm_subsystem: drm-subsystem {
+		status = "okay";
+		compatible = "amlogic,drm-subsystem";
+		ports = <&vpu_out>;
+	};
+

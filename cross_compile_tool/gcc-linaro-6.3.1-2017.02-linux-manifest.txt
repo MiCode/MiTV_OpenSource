@@ -1,0 +1,141 @@
+manifest_format=1.3
+
+# Note that for ABE, these parameters are not used
+# Component data for gmp
+gmp_url=http://snapshots.linaro.org/components/toolchain/infrastructure
+gmp_filespec=gmp-6.1.0.tar.xz
+gmp_md5sum=a9868ef2556ad6a2909babcd1428f3c7
+gmp_configure="--enable-cxx --enable-fft"
+gmp_staticlink="yes"
+
+# Component data for mpfr
+mpfr_url=http://snapshots.linaro.org/components/toolchain/infrastructure
+mpfr_filespec=mpfr-3.1.4.tar.xz
+mpfr_md5sum=064b2c18185038e404a401b830d59be8
+mpfr_configure="--with-gmp=${local_builds}/destdir/${host}"
+mpfr_staticlink="yes"
+
+# Component data for mpc
+mpc_url=http://snapshots.linaro.org/components/toolchain/infrastructure/
+mpc_filespec=mpc-1.0.3.tar.gz
+mpc_md5sum=d6a1d5f8ddea3abd2cc3e98f58352d26
+mpc_configure="--with-gmp=${local_builds}/destdir/${host} --with-mpfr=${local_builds}/destdir/${host}"
+mpc_staticlink="yes"
+
+# Component data for linux
+linux_url=http://snapshots.linaro.org/components/toolchain/infrastructure
+linux_filespec=linux-4.6.tar.xz
+linux_md5sum=d2927020e24a76da4ab482a8bc3e9ef3
+linux_staticlink="yes"
+
+# Component data for dejagnu
+dejagnu_url=http://git.linaro.org/git/toolchain
+dejagnu_branch=linaro-local/stable
+dejagnu_revision=9c19d3d7473ef731b74f3a48fcce5a168bf701ec
+dejagnu_filespec=dejagnu.git
+dejagnu_staticlink="yes"
+
+# Component data for binutils
+binutils_url=http://git.linaro.org/git/toolchain
+binutils_branch=linaro_binutils-2_27-branch
+binutils_revision=11090cc0707e40498c9d0a88b16c414c8b86c277
+binutils_filespec=binutils-gdb.git
+binutils_configure="--enable-lto --enable-plugins --enable-gold --disable-werror CPPFLAGS=-UFORTIFY_SOURCE --with-pkgversion=Linaro_Binutils-2017.02 --disable-gdb --disable-sim --disable-libdecnumber --disable-readline --with-sysroot=${sysroots}"
+binutils_staticlink="yes"
+
+# Component data for gcc
+gcc_url=http://dev-01.tcwglab/~tcwg-buildslave/releases/sources
+gcc_filespec=gcc-linaro-6.3-2017.02.tar.xz
+gcc_makeflags="MAKEINFOFLAGS=--force"
+gcc_md5sum=563d2332bbe9928e841da66ffefa8fbf
+gcc_configure=
+gcc_staticlink="no"
+gcc_stage1_flags="--with-mpc=${local_builds}/destdir/${host} --with-mpfr=${local_builds}/destdir/${host} --with-gmp=${local_builds}/destdir/${host} --with-gnu-as --with-gnu-ld --disable-libmudflap --enable-lto --enable-objc-gc --enable-shared --without-included-gettext --enable-nls --disable-sjlj-exceptions --enable-gnu-unique-object --enable-linker-build-id --disable-libstdcxx-pch --enable-c99 --enable-clocale=gnu --enable-libstdcxx-debug --enable-long-long --with-cloog=no --with-ppl=no --with-isl=no --disable-multilib --enable-fix-cortex-a53-835769 --enable-fix-cortex-a53-843419 --with-arch=armv8-a --enable-threads=posix --enable-multiarch --enable-libstdcxx-time=yes --enable-gnu-indirect-function --disable-libssp --disable-libquadmath --disable-threads --without-headers --with-newlib --disable-libmudflap --disable-bootstrap --disable-decimal-float --disable-libgomp --disable-libatomic --disable-libsanitizer --disable-plugins --disable-libitm --enable-languages=c --with-sysroot=${local_builds}/sysroot-aarch64-linux-gnu --disable-shared --with-glibc-version=2.18"
+gcc_stage2_flags="--with-mpc=${local_builds}/destdir/${host} --with-mpfr=${local_builds}/destdir/${host} --with-gmp=${local_builds}/destdir/${host} --with-gnu-as --with-gnu-ld --disable-libmudflap --enable-lto --enable-objc-gc --enable-shared --without-included-gettext --enable-nls --disable-sjlj-exceptions --enable-gnu-unique-object --enable-linker-build-id --disable-libstdcxx-pch --enable-c99 --enable-clocale=gnu --enable-libstdcxx-debug --enable-long-long --with-cloog=no --with-ppl=no --with-isl=no --disable-multilib --enable-fix-cortex-a53-835769 --enable-fix-cortex-a53-843419 --with-arch=armv8-a --enable-threads=posix --enable-multiarch --enable-libstdcxx-time=yes --enable-gnu-indirect-function --with-build-sysroot=${sysroots} --with-sysroot=${local_builds}/destdir/${host}/aarch64-linux-gnu/libc --enable-checking=release --disable-bootstrap --enable-languages=c,c++,fortran,lto"
+
+# Component data for glibc
+glibc_url=http://git.linaro.org/git/toolchain
+glibc_branch=linaro/2.23/master
+glibc_revision=058b5a41d56b9a8860dede14d97dd443792d064b
+glibc_filespec=glibc.git
+glibc_makeflags="PARALLELMFLAGS=-j32"
+glibc_configure="--disable-profile --without-gd --enable-obsolete-rpc --with-headers=${sysroots}/usr/include libc_cv_forced_unwind=yes libc_cv_c_cleanup=yes --without-selinux --disable-werror"
+
+# Component data for gdb
+gdb_url=http://git.linaro.org/git/toolchain
+gdb_branch=gdb-7.12-branch
+gdb_revision=3697f0cfa22543967e44acc4ee197c114ed8ef97
+gdb_filespec=binutils-gdb.git
+gdb_configure="--with-gnu-ld --enable-plugins --enable-tui --with-pkgversion=Linaro_GDB-2017.02 --disable-gas --disable-binutils --disable-ld --disable-gold --disable-gprof --with-python=yes"
+gdb_staticlink="yes"
+
+# Component data for gdbserver
+gdbserver_url=http://git.linaro.org/git/toolchain
+gdbserver_branch=gdb-7.12-branch
+gdbserver_revision=3697f0cfa22543967e44acc4ee197c114ed8ef97
+gdbserver_filespec=binutils-gdb.git
+gdbserver_configure="LDFLAGS=-static CFLAGS=--sysroot=${sysroots} CXXFLAGS=--sysroot=${sysroots}"
+gdbserver_staticlink="yes"
+
+
+clibrary=glibc
+target=aarch64-linux-gnu
+manifestid=fb791fff42a1964abd8a00ad1f7ced8f7b6fead8
+
+ ##############################################################################
+ # Everything below this line is only for informational purposes for developers
+ ##############################################################################
+
+# Build machine data
+build: linux
+host: x86_64-unknown-linux-gnu
+kernel: 4.4.0-45-generic
+hostname: docker-trusty-amd64-tcwg
+distribution: trusty
+host_gcc: gcc version 4.8.4 (Ubuntu 4.8.4-2ubuntu1~14.04.3) 
+
+# These aren't used in the repeat build. just a sanity check for developers
+build directory: /home/tcwg-buildslave/workspace/tcwg-make-release/label/docker-trusty-amd64-tcwg-build/target/aarch64-linux-gnu/_build/builds
+sysroot directory: /home/tcwg-buildslave/workspace/tcwg-make-release/label/docker-trusty-amd64-tcwg-build/target/aarch64-linux-gnu/_build/sysroots/aarch64-linux-gnu
+snapshots directory: /home/tcwg-buildslave/workspace/tcwg-make-release/label/docker-trusty-amd64-tcwg-build/target/aarch64-linux-gnu/snapshots
+git reference directory: /home/tcwg-buildslave/snapshots-ref
+
+abe_url=https://git-us.linaro.org/toolchain
+abe_branch=branch=
+abe_revision=ee36efafa133ee0c8313485a392e29258107a4e5
+abe_filespec=abe.git
+abe_configure="--with-local-snapshots=${local_snapshots} --with-git-reference-dir=/home/tcwg-buildslave/snapshots-ref"
+
+--------------------- binutils ----------------------
+commit 11090cc0707e40498c9d0a88b16c414c8b86c277
+Author: Christophe Lyon <christophe.lyon@linaro.org>
+Date:   Wed Oct 19 10:44:26 2016 +0200
+
+    Merge with binutils-2_27-branch rev fd813b0
+
+--------------------- glibc ----------------------
+commit 058b5a41d56b9a8860dede14d97dd443792d064b
+Author: Florian Weimer <fweimer@redhat.com>
+Date:   Fri Aug 26 22:40:27 2016 +0200
+
+    malloc: Simplify static malloc interposition [BZ #20432]
+    
+    Existing interposed mallocs do not define the glibc-internal
+    fork callbacks (and they should not), so statically interposed
+    mallocs lead to link failures because the strong reference from
+    fork pulls in glibc's malloc, resulting in multiple definitions
+    of malloc-related symbols.
+
+--------------------- abe ----------------------
+commit ee36efafa133ee0c8313485a392e29258107a4e5
+Author: Christophe Lyon <christophe.lyon@linaro.org>
+Date:   Wed Feb 15 10:27:46 2017 +0000
+
+    testsuite/test.sh: Fix dejagnu branch name.
+    
+    The 'linaro' branch has been deleted from the repo,
+    so use linaro-local/stable instead, which is the
+    branch we normally use for our builds/validations.
+    
+    Change-Id: I77c29aec3f16a521a4bd8e9e62ab117d8a5b66e6
+
