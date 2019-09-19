@@ -1,0 +1,8 @@
+#
+# Xiaomi driver configuration
+#
+menu "Xiaomi Device Drivers"
+
+source "drivers/xiaomi/hw_version/Kconfig"
+
+endmenu

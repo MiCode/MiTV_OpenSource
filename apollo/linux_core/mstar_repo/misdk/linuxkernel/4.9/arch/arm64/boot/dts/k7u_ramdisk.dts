@@ -1,0 +1,115 @@
+/*
+ * ARM Ltd.
+ *
+ * ARMv8 Foundation model DTS
+  #bootargs = "root=/dev/ram0 rw init=/sbin/init ip=dhcp console=ttyS0,115200 LX_MEM=0x02000000 loglevel=4";
+ */
+
+/dts-v1/;
+/ {
+	model = "Kano-v8A";
+	compatible = "arm,foundation-aarch64", "arm,kano";
+	interrupt-parent = <&gic>;
+	#address-cells = <2>;
+	#size-cells = <2>;
+
+	chosen {
+         bootargs = "root=/dev/ram0 rw init=/sbin/init ip=dhcp console=ttyS0,115200 LX_MEM=0x02000000 debug";
+        };
+
+	cpus {
+		#address-cells = <2>;
+		#size-cells = <0>;
+
+		cpu@0 {
+			device_type = "cpu";
+			compatible = "arm,armv8";
+			reg = <0x0 0x0>;
+			enable-method = "mstar-spin-table";
+			cpu-release-addr = <0x0 0x00100510>;
+		};
+		cpu@1 {
+			device_type = "cpu";
+			compatible = "arm,armv8";
+			reg = <0x0 0x1>;
+			enable-method = "mstar-spin-table";
+			cpu-release-addr = <0x0 0x00100510>;
+		};
+		cpu@2 {
+			device_type = "cpu";
+			compatible = "arm,armv8";
+			reg = <0x0 0x2>;
+			enable-method = "mstar-spin-table";
+			cpu-release-addr = <0x0 0x00100510>;
+		};
+
+		cpu@3 {
+			device_type = "cpu";
+			compatible = "arm,armv8";
+			reg = <0x0 0x3>;
+			enable-method = "mstar-spin-table";
+			cpu-release-addr = <0x0 0x00100510>;
+		};
+	};
+
+	memory@20200000 {
+		device_type = "memory";
+		reg = <0x00000000 0x20200000 0x00000000 0x05000000>;
+	};
+
+	gic: interrupt-controller@16001000 {
+		compatible = "arm,cortex-a15-gic", "arm,cortex-a9-gic";
+		#interrupt-cells = <3>;
+		#address-cells = <0>;
+		interrupt-controller;
+		reg = <0x0 0x16001000 0 0x1000>,
+		      <0x0 0x16002000 0 0x4000>;
+		interrupts = <1 9 0xf04>;
+	};
+
+	timer {
+		compatible = "arm,armv8-timer";
+		interrupts = <1 13 0xff01>,
+			     <1 14 0xff01>,
+			     <1 11 0xff01>,
+			     <1 10 0xff01>;
+		clock-frequency = <12000000>;
+	};
+
+	switch_gpio {
+		compatible = "mstar,switch-gpio";
+		switch-name = "h2w";
+		switch-gpio = <999>;
+		switch-inverse = <0>;
+	};
+
+	pmu {
+		compatible = "arm,armv8-pmuv3";
+		interrupts = <0 60 4>,
+			     <0 61 4>,
+			     <0 62 4>,
+			     <0 63 4>;
+	};
+
+	emac {
+	        compatible = "mstar-emac";
+	};
+
+    ethsys: syscon@1fc00000 {
+        #address-cells = <1>;
+        #size-cells = <1>;
+        compatible = "eth,noe-sys", "syscon";
+        reg = <0 0x1fc00000 0 0x200000>;
+        #clock-cells = <1>;
+    };
+
+    eth: ethernet{
+        compatible = "eth,noe";
+        noe,ethsys = <&ethsys>;
+        #reset-cells = <1>;
+        #address-cells = <1>;
+        #size-cells = <0>;
+        local-mac-address = [00 88 01 00 00 01];
+        status = "okay";
+    };
+};

@@ -1,0 +1,29 @@
+/dts-v1/;
+/plugin/;
+
+/ {
+        fragment@0 {
+               target = <&soc_m7322>;
+               __overlay__ {
+                      android {
+                          vbmeta {
+                                        compatible = "android,vbmeta";
+                                        parts = "vbmeta,boot,system,vendor";
+                                        by_name_prefix ="/dev/block/platform/mstar_mci.0/by-name/vbmeta";
+                                    };
+                          fstab {
+                                    compatible = "android,fstab";
+                                    vendor {
+                                        compatible = "android,vendor";
+                                        dev = "/dev/block/platform/mstar_mci.0/by-name/vendor";
+                                        type = "ext4";
+                                        mnt_flags = "ro";
+                                        fsmgr_flags = "wait,avb";
+                                    };
+                            };
+                      };
+               };
+        };
+};
+
+

@@ -1,0 +1,146 @@
+/dts-v1/;
+
+/ {
+	model = "m3822";
+	compatible = "arm,foundation-arm", "arm,m3822";
+	interrupt-parent = <0x1>;
+	#address-cells = <0x2>;
+	#size-cells = <0x2>;
+
+	chosen {
+		bootargs = "console=ttyS0,38400 androidboot.console=ttyS0 root=/dev/ram rw rootwait init=/init CORE_DUMP_PATH=/data/garmin/core_dump.%%p.gz KDebug=1 delaylogo=true androidboot.selinux=permissive platform=sn LX_MEM=0x10000000";
+	};
+
+	cpus {
+		#address-cells = <0x1>;
+		#size-cells = <0x0>;
+
+		cpu@0 {
+			device_type = "cpu";
+			compatible = "arm,cortex-a9";
+			reg = <0>;
+			enable-method = "mstar-spin-table";
+			cpu-release-addr = <0x100510>;
+		};
+
+	};
+
+	memory@20200000 {
+		device_type = "memory";
+		reg = <0x0 0x20200000 0x0 0x10000000>;
+	};
+
+	gic: interrupt-controller@16001000 {
+		compatible = "arm,cortex-a9-gic";
+		#interrupt-cells = <0x3>;
+		#address-cells = <0x0>;
+		interrupt-controller;
+		reg = <0x0 0x16001000 0x0 0x1000>,
+		      <0x0 0x16000100 0x0 0x100>;
+
+		interrupts = <0x1 0x9 0xf04>;
+		linux,phandle = <0x1>;
+		phandle = <0x1>;
+	};
+
+	uart0 {
+		compatible = "mstar8250-uart";
+		interrupt-names = "mimi_uart";
+		interrupts = <0x0 0x0 0x4>;
+	};
+
+        timer {
+		compatible = "arm,armv7-timer";
+                interrupts = <1 10 0xff01>;
+                clock-frequency = <12000000>;
+        };
+
+	pmu {
+		compatible = "arm,armv7-pmuv3";
+		interrupts = <0 60 4>,
+			     <0 61 4>,
+			     <0 62 4>,
+			     <0 63 4>;
+	};
+
+	emac {
+		compatible = "mstar-emac";
+	};
+
+        ir {
+	        compatible = "mstar-ir";
+	};
+
+	mbx {
+	        compatible = "mstar-mbx";
+	};
+
+	xc {
+		compatible = "mstar-xc";
+	};
+
+	gflip {
+		compatible = "mstar-gflip";
+	};
+
+	alsa {
+		compatible = "Mstar-alsa";
+	};
+
+	rtc {
+	        compatible = "mstar-rtc";
+	};
+
+	Mstar-ehci-1 {
+		compatible = "Mstar-ehci-1";
+		/* In chip_int.h, E_IRQ_UHC is 199. */
+		interrupts = <0 167 0>;
+	};
+
+	Mstar-ehci-2 {
+		compatible = "Mstar-ehci-2";
+		/* In chip_int.h, E_IRQEXPL_UHC1 is 226. */
+		interrupts = <0 194 0>;
+	};
+
+	Mstar-ehci-3 {
+		compatible = "Mstar-ehci-3";
+		/* In chip_int.h, E_IRQEXPL_UHC2 is 229. */
+		interrupts = <0 197 0>;
+	};
+
+	Mstar-ehci-4 {
+		compatible = "Mstar-ehci-4";
+		/* In chip_int.h, E_IRQ_UHC3 is 217. */
+		interrupts = <0 185 0>;
+        };
+
+        gpio: gpio{
+		compatible = "mstar,gpio";
+		gpio-controller;
+		#gpio-cells = <1>;
+		interrupt-controller;
+		#interrupt-cells = <2>; /* cell name GPIO_PAD, trigger-type*/
+	};
+
+	switch_gpio {
+		compatible = "mstar,switch-gpio";
+		switch-name = "h2w";
+		switch-gpio = <999>;
+		switch-inverse = <0>;
+	};
+
+	i2c1: i2c@1 {
+		compatible = "mstar,swi2c";
+		bus-index = <1>;
+		sda-gpio = <90>;
+		scl-gpio = <89>;
+		speed-khz = <100>;
+		def-delay = <100>;
+		retries = <5>;
+		status = "okay";
+		iic-mode = <0>;
+		hw-port = <0>;
+		pad-mux = <0>;
+	};
+};

@@ -1,0 +1,5 @@
+config XIAOMI_HW_VERSION
+	bool "For get the hardware verison of MiTV "
+	default Y
+	help
+	  Say Y here for always.

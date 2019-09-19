@@ -1,0 +1,808 @@
+#include <dt-bindings/interrupt-controller/arm-gic.h>
+#include <dt-bindings/interrupt-controller/irq.h>
+
+/dts-v1/;
+
+/ {
+	model = "M7221";
+	compatible = "arm,foundation-arm", "arm,m7221";
+	interrupt-parent = <0x1>;
+	#address-cells = <0x2>;
+	#size-cells = <0x2>;
+
+	chosen {
+		bootargs = "console=ttyS0,115200 androidboot.console=ttyS0 root=/dev/ram rw rootwait init=/init CORE_DUMP_PATH=/data/core_dump.%%p.gz KDebug=1 delaylogo=true androidboot.selinux=permissive LX_MEM=0x3D500000 LX_MEM2=0xC0000000,0x1FF00000 EMAC_MEM=0x100000 PM51_ADDR=0x20010000 PM51_LEN=0x10000 CMA0=OTHERS,miu=0,hid=23,sz=0x7000000,st=0x11000000 CMA1=VDEC0,miu=0,hid=20,sz=0x3000000,st=0x18000000 CMA2=XC0,miu=0,hid=22,sz=0x6000000,st=0x1b000000 CMA3=OTHERS2,miu=1,hid=24,sz=0xec00000,st=0x0 CMA4=VDEC1,miu=1,hid=19,sz=0x7000000,st=0xec00000 CMA5=RETURN_ENUM,miu=1,hid=25,sz=0x2400000,st=0x15c00000 BOOTLOGO_IN_MBOOT ENV_VAR_OFFSET=0x0 ENV_VAR_SIZE=0x10000 ENV=EMMC SECURITY=ON";
+	};
+
+	cpus {
+		#address-cells = <0x2>;
+		#size-cells = <0x0>;
+
+		cpu-map {
+
+			cluster0 {
+				#cooling-cells = <0x2>;
+
+				core0 {
+					cpu = <0x2>;
+				};
+                                
+				core1 {
+					cpu = <0x3>;
+				};
+			};
+                        
+			cluster1 {
+				#cooling-cells = <0x2>;
+
+				core0 {
+					cpu = <0x4>;
+				};
+
+				core1 {
+					cpu = <0x5>;
+				};
+			};
+                       
+		};
+
+		cpu@0 {
+			compatible = "arm,cortex-a53", "arm,armv8";
+			reg = <0x0 0x0>;
+			device_type = "cpu";
+			enable-method = "mstar-spin-table";
+			cpu-release-addr = <0x0 0x100510>;
+			linux,phandle = <0x2>;
+			phandle = <0x2>;
+			sched-energy-costs = <&CPU_COST_1 &CLUSTER_COST_1>;
+		};
+
+		cpu@1 {
+			compatible = "arm,cortex-a53", "arm,armv8";
+			reg = <0x0 0x1>;
+			device_type = "cpu";
+			enable-method = "mstar-spin-table";
+			cpu-release-addr = <0x0 0x100510>;
+			linux,phandle = <0x3>;
+			phandle = <0x3>;
+			sched-energy-costs = <&CPU_COST_1 &CLUSTER_COST_1>;
+		};
+
+		cpu@100 {
+			compatible = "arm,cortex-a73", "arm,armv8";
+			reg = <0x0 0x100>;
+			device_type = "cpu";
+			enable-method = "mstar-spin-table";
+			cpu-release-addr = <0x0 0x100510>;
+			linux,phandle = <0x4>;
+			phandle = <0x4>;
+			sched-energy-costs = <&CPU_COST_0 &CLUSTER_COST_0>;
+		};
+
+		cpu@101 {
+			compatible = "arm,cortex-a73", "arm,armv8";
+			reg = <0x0 0x101>;
+			device_type = "cpu";
+			enable-method = "mstar-spin-table";
+			cpu-release-addr = <0x0 0x100510>;
+			linux,phandle = <0x5>;
+			phandle = <0x5>;
+			sched-energy-costs = <&CPU_COST_0 &CLUSTER_COST_0>;
+		};
+	};
+
+	memory@20200000 {
+		device_type = "memory";
+		reg = <0x0 0x20200000 0x0 0x3200000>;
+	};
+
+	memory@36F00000 {
+		device_type = "memory";
+		reg = <0x0 0x36F00000 0x0 0x4A00000>;
+	};
+
+	memory@ACC00000 {
+		device_type = "memory";
+		reg = <0x0 0xACC00000 0x0 0x13400000>;
+	};
+
+	interrupt-controller@16001000 {
+		compatible = "arm,cortex-a15-gic", "arm,cortex-a9-gic";
+		#interrupt-cells = <0x3>;
+		#address-cells = <0x0>;
+		interrupt-controller;
+		reg = <0x0 0x16001000 0x0 0x1000 0x0 0x16002000 0x0 0x4000>;
+		linux,phandle = <0x1>;
+		phandle = <0x1>;
+	};
+
+	timer {
+		compatible = "arm,armv8-timer";
+		clock-frequency = <0xb71b00>;
+	};
+
+	pmu {
+		compatible = "arm,armv8-pmuv3";
+	};
+
+	uart0 {
+		compatible = "mstar8250-uart";
+	};
+
+	pm_sleep {
+		compatible = "pm_sleep";
+	};
+
+	vd_evd_r22hi {
+		compatible = "vd_evd_r22hi";
+	};
+
+	mvd {
+		compatible = "mvd";
+	};
+
+	ps {
+		compatible = "Mstar-mvd";
+	};
+
+	nfie {
+		compatible = "nfie";
+	};
+
+	Mstar-usb {
+		compatible = "Mstar-usb";
+	};
+
+	Mstar-ehci-1 {
+		compatible = "Mstar-ehci-1";
+	};
+
+	lpll {
+		compatible = "lpll";
+	};
+
+	emac {
+		compatible = "mstar-emac";
+	};
+
+	scaler {
+		compatible = "mstar-scaler";
+	};
+
+	mspi {
+		compatible = "mspi";
+	};
+
+	ge {
+		compatible = "ge";
+	};
+
+	evd   {
+		compatible = "evd";
+	};
+
+	comb {
+		compatible = "comb";
+	};
+
+	mod {
+		compatible = "mod";
+	};
+
+	mstar-tsp {
+		compatible = "Mstar-tsp";
+	};
+
+	cec {
+		compatible = "cec";
+	};
+
+	disp_fe {
+		compatible = "disp_fe";
+	};
+
+	dc {
+		compatible = "dc";
+	};
+
+	gflip {
+		compatible = "mstar-gflip";
+	};
+
+	scdc {
+		compatible = "scdc";
+	};
+
+	otg {
+		compatible = "otg";
+	};
+
+	d2b {
+		compatible = "d2b";
+	};
+
+	audma_v2 {
+		compatible = "audma_v2";
+	};
+
+	vbdma {
+		compatible = "vbdma";
+	};
+
+	emmc_osp {
+		compatible = "emmc_osp";
+	};
+
+	scm {
+		compatible = "scm";
+	};
+
+	vbi {
+		compatible = "vbi";
+	};
+
+	mvd2arm {
+		compatible = "mvd2arm";
+	};
+
+	gpd {
+		compatible = "gpd";
+	};
+
+	tso {
+		compatible = "tso";
+	};
+
+	hvd {
+		compatible = "hvd";
+	};
+
+	usb1 {
+		compatible = "usb1";
+	};
+
+	miu {
+		compatible = "miu";
+	};
+
+	error_res {
+		compatible = "error_res";
+	};
+
+	usb2p2 {
+		compatible = "usb2p2";
+	};
+
+	rtc2 {
+		compatible = "rtc2";
+	};
+
+	aesdma_s {
+		compatible = "aesdma_s";
+	};
+
+	uart1 {
+		compatible = "uart1";
+	};
+
+	disp_mfdec {
+		compatible = "disp_mfdec";
+	};
+
+	mspi_cilink {
+		compatible = "mspi_cilink";
+	};
+
+	miu_sec {
+		compatible = "miu_sec";
+	};
+
+	dipw {
+		compatible = "dipw";
+	};
+
+	miic2 {
+		compatible = "miic2";
+	};
+
+	jpd {
+		compatible = "jpd";
+	};
+
+	pm_irq {
+		compatible = "pm_irq";
+	};
+
+	pka_all {
+		compatible = "pka_all";
+	};
+
+	bdma_merge {
+		compatible = "Mstar-dipw";
+	};
+
+	pas_pts {
+		compatible = "pas_pts";
+	};
+
+	uart2mcu {
+		compatible = "uart2mcu";
+	};
+
+	uartdma2mcu {
+		compatible = "uartdma2mcu";
+	};
+
+	hdmitx4vx1 {
+		compatible = "mstar-hdmitx4vx1";
+	};
+
+	g3d2mcu {
+		compatible = "g3d2mcu";
+	};
+
+	fcie_tee {
+		compatible = "fcie_tee";
+	};
+
+	cilink_soc_if {
+		compatible = "cilink_soc_if";
+	};
+
+	hdcp_x74 {
+		compatible = "hdcp_x74 ";
+	};
+
+	wadr_err {
+		compatible = "wadr_err";
+	};
+
+	ci_gpio {
+		compatible = "ci_gpio";
+	};
+
+	sdio {
+		compatible = "sdio";
+	};
+
+	acpu {
+		compatible = "acpu";
+	};
+
+	miic1 {
+		compatible = "miic1";
+	};
+
+	usb2p3 {
+		compatible = "usb2p3";
+	};
+
+	miic0 {
+		compatible = "miic0";
+	};
+
+	timer0{
+		compatible = "timer0";
+	};
+
+	timer1{
+		compatible = "timer1";
+	};
+
+	wdt {
+		compatible = "wdt";
+	};
+
+	au_spdif_tx_cs0 {
+		compatible = "au_spdif_tx_cs0";
+	};
+
+	au_spdif_tx_cs1 {
+		compatible = "au_spdif_tx_cs1";
+	};
+
+	mb_dsp2tomcu0 {
+		compatible = "mb_dsp2tomcu0";
+	};
+
+	mb_dsp2tomcu1 {
+		compatible = "mb_dsp2tomcu1";
+	};
+
+	usb2p0 {
+		compatible = "usb2p0";
+	};
+
+	uhc2p0 {
+		compatible = "uhc2p0";
+	};
+
+	hdmi2mcu {
+		compatible = "hdmi2mcu";
+	};
+
+	spdif2mcu {
+		compatible = "spdif2mcu";
+	};
+
+	lan_esd {
+		compatible = "lan_esd";
+	};
+
+	se_dsp2up {
+		compatible = "se_dsp2up";
+	};
+
+	tsp2aeon {
+		compatible = "tsp2aeon";
+	};
+
+	vivaldi_str {
+		compatible = "vivaldi_str";
+	};
+
+	vivaldi_pts {
+		compatible = "vivaldi_pts";
+	};
+
+	dsp_miu_port {
+		compatible = "dsp_miu_port";
+	};
+
+	xiu_timeout {
+		compatible = "xiu_timeout";
+	};
+
+	dmdmcu2hk {
+		compatible = "dmdmcu2hk";
+	};
+
+	ir_in {
+		compatible = "ir_in";
+	};
+
+	imi_top {
+		compatible = "imi_top";
+	};
+
+	vdmcu2hk {
+		compatible = "vdmcu2hk";
+	};
+
+	ldm_dma_done0 {
+		compatible = "ldm_dma_done0";
+	};
+
+	ldm_dma_done1 {
+		compatible = "ldm_dma_done1";
+	};
+
+	pm_sd_cdz {
+		compatible = "pm_sd_cdz";
+	};
+
+	mb_aur2tomcu0 {
+		compatible = "mb_aur2tomcu0";
+	};
+
+	afec_vsync {
+		compatible = "afec_vsync";
+	};
+
+	mb_aur2tomcu1 {
+		compatible = "mb_aur2tomcu1";
+	};
+
+	dsp2arm {
+		compatible = "dsp2arm";
+	};
+
+	au_dma_buffer {
+		compatible = "au_dma_buffer";
+	};
+
+	int_all {
+		compatible = "int_all";
+	};
+
+	reg_hst0to3 {
+		compatible = "reg_hst0to3";
+	};
+
+	reg_hst0to2 {
+		compatible = "reg_hst0to3";
+	};
+
+	reg_hst0to1 {
+		compatible = "reg_hst0to3";
+	};
+
+	ext_gpio0 {
+		compatible = "ext_gpio0";
+	};
+
+	reg_hst1to3 {
+		compatible = "reg_hst0to3";
+	};
+
+	emac_man {
+		compatible = "emac_man";
+	};
+
+	reg_hst1to0 {
+		compatible = "reg_hst1to0";
+	};
+
+	ext_gpio1 {
+		compatible = "ext_gpio1";
+	};
+
+	reg_hst2to3 {
+		compatible = "reg_hst2to3";
+	};
+
+	timer2 {
+		compatible = "timer2";
+	};
+
+	reg_hst2to0 {
+		compatible = "reg_hst2to0";
+	};
+
+	ext_gpio2 {
+		compatible = "ext_gpio2";
+	};
+
+	reg_hst3to2 {
+		compatible = "reg_hst3to2";
+	};
+
+	reg_hst3to1 {
+		compatible = "reg_hst3to1";
+	};
+
+	reg_hst3to0 {
+		compatible = "reg_hst3to0";
+	};
+
+	usb_int_merge1 {
+		compatible = "usb_int_merge1";
+	};
+
+	usb_int_merge2 {
+		compatible = "usb_int_merge2";
+	};
+
+	ext_gpio3 {
+		compatible = "ext_gpio3";
+	};
+
+	ext_gpio4 {
+		compatible = "ext_gpio4";
+	};
+
+	ext_gpio5 {
+		compatible = "ext_gpio5";
+	};
+
+	ext_gpio6 {
+		compatible = "ext_gpio6";
+	};
+
+	pwm_rp_l {
+		compatible = "pwm_rp_l";
+	};
+
+	pwm_fp_l {
+		compatible = "pwm_fp_l";
+	};
+
+	pwm_rp_r {
+		compatible = "pwm_rp_r";
+	};
+
+	pwm_fp_r {
+		compatible = "pwm_fp_r";
+	};
+
+	ext_gpio7 {
+		compatible = "ext_gpio7";
+	};
+
+	ir {
+		compatible = "mstar-ir";
+	};
+
+	mbx {
+		compatible = "mstar-mbx";
+	};
+
+	xc {
+		compatible = "mstar-xc";
+	};
+
+	alsa {
+		compatible = "Mstar-alsa";
+	};
+
+	rtc {
+		compatible = "mstar-rtc";
+	};
+
+	Mstar-ehci-2 {
+		compatible = "Mstar-ehci-2";
+	};
+
+	Mstar-ehci-3 {
+		compatible = "Mstar-ehci-3";
+	};
+
+	Mstar-ehci-4 {
+		compatible = "Mstar-ehci-4";
+	};
+
+	Mstar-utopia2k-str {
+		compatible = "Mstar-utopia2k-str";
+		mhl {
+		  resume {
+		    stage0 {
+		      pre-condition = "hdmi_rx";
+		    };
+		  };
+		};
+		hdmi_rx {
+		  resume {
+		    stage0 {
+		      post-condition = "hdmi_rx";
+		    };
+		  };
+		};
+		avd {
+		  resume {
+		    stage0 {
+		      pre-condition = "vif";
+		    };
+		  };
+		};
+		vif {
+		  resume {
+		    stage0 {
+		      post-condition = "vif";
+		    };
+		  };
+		};
+        miu {
+          resume {
+            stage0 {
+              post-condition = "miu";
+            };
+          };
+        };
+	};
+
+        Mstar-sys {
+                firmware {
+                        audio {
+                                path = "/vendor/lib/utopia/";
+                        };
+                        vdec {
+                                path = "/vendor/lib/utopia/";
+                        };
+                };
+        };
+
+	mstar-pm {
+		compatible = "mstar-pm";
+                poweroff_led = /bits/ 8 <2>;
+	};
+
+	firmware {
+		android {
+			compatible = "android,firmware";
+			hardware ="m7221";
+			revision ="1234";
+			Serial   ="0000000000000000";
+			Processor ="AArch64 Processor rev 3 (aarch64)";
+			serialno ="123456789";
+			mode ="123456789";
+			baseband ="123456789";
+			bootloader ="123456789";
+		};
+	};
+	gpio: gpio{
+		compatible = "mstar,gpio";
+		gpio-controller;
+		#gpio-cells = <1>;
+		interrupt-controller;
+		#interrupt-cells = <2>; /* cell name GPIO_PAD, trigger-type*/
+	};
+
+	switch_gpio {
+		compatible = "mstar,switch-gpio";
+		switch-name = "h2w";
+		switch-gpio = <999>;
+		switch-inverse = <0>;
+	};
+
+	/* example of consume a gpio pin with mapped irq
+	foo{
+		interrupt-parent = <&gpio>;
+	}
+	*/
+    i2c0: i2c@0 {
+        compatible = "mstar,swi2c";
+        bus-index = <0>;
+        sda-gpio = <63>;
+        scl-gpio = <62>;
+        speed-khz = <100>;
+        def-delay = <100>;
+        retries = <5>;
+        status = "okay";
+        iic-mode = <1>;
+        hw-port = <0>;
+        pad-mux = <1>;
+    };
+    i2c1: i2c@1 {
+        compatible = "mstar,swi2c";
+        bus-index = <1>;
+        sda-gpio = <98>;
+        scl-gpio = <97>;
+        speed-khz = <100>;
+        def-delay = <100>;
+        retries = <5>;
+        status = "okay";
+        iic-mode = <0>;
+        hw-port = <0>;
+        pad-mux = <0>;
+    };
+    energy-costs {
+        CPU_COST_0: core-cost0 {
+            busy-cost-data = <
+                804 657
+                877 769
+                951 890
+                1024 1022
+            >;
+            idle-cost-data = <
+                15
+                0
+            >;
+        };
+        CPU_COST_1: core-cost1 {
+            busy-cost-data = <
+                493 144
+                537 176
+                582 213
+                627 253
+            >;
+            idle-cost-data = <
+                6
+                0
+            >;
+        };
+        CLUSTER_COST_0: cluster-cost0 {
+            busy-cost-data = <
+                804 68
+                877 78
+                951 89
+                1024 100
+            >;
+            idle-cost-data = <
+                65
+                24
+            >;
+        };
+        CLUSTER_COST_1: cluster-cost1 {
+            busy-cost-data = <
+                493 142
+                537 174
+                582 210
+                627 250
+            >;
+            idle-cost-data = <
+                56
+                17
+            >;
+        };
+    };
+};

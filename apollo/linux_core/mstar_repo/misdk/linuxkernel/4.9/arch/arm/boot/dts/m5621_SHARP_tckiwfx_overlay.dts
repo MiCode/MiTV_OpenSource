@@ -1,0 +1,59 @@
+/dts-v1/;
+/plugin/;
+
+/ {
+        fragment@0 {
+               target = <&soc_m5621>;
+               __overlay__ {
+                      android {
+                          vbmeta {
+                                        compatible = "android,vbmeta";
+                                        parts = "vbmeta,boot,system,vendor";
+                                        by_name_prefix ="/dev/block/platform/mstar_mci.0/by-name/vbmeta";
+                                    };
+                          fstab {
+                                    compatible = "android,fstab";
+                                    vendor {
+                                        compatible = "android,vendor";
+                                        dev = "/dev/block/platform/mstar_mci.0/by-name/vendor";
+                                        type = "ext4";
+                                        mnt_flags = "ro";
+                                        fsmgr_flags = "wait,avb";
+                                    };
+
+                                };
+                      };
+               };
+        };
+        fragment@1 {
+            target = <&i2c0>;
+            __overlay__ {
+                pad-mux = <0x1f>;
+            };
+        };
+        fragment@2 {
+            target = <&soc_switch_gpio>;
+            __overlay__ {
+                switch-inverse = <1>;
+            };
+        };
+        fragment@3 {
+            target = <&soc_mstar_dvfs>;
+            __overlay__ {
+                dvfs_package {
+                    control-type = "gpio";
+                    control-number = <2>;
+                    power_level = <4>;
+                    power-status = <95 100 110 115>;
+                    control_status0 {
+                        gpio-num = <1>;
+                        gpio-mode = "output_low","output_low","output_high","output_high";
+                    };
+                    control_status1 {
+                        gpio-num = <13>;
+                        gpio-mode = "output_low","output_high","output_low","output_high";
+                    };
+                };
+            };
+        };
+};

@@ -1,0 +1,60 @@
+menu "Kernel Oprofile tool"
+config ADVANCE_OPROFILE
+       bool "KDEBUGD - Advance OProfile"
+       default y
+       depends on KDEBUGD
+       depends on OPROFILE
+	   depends on KDEBUGD_TRACE
+
+config AOP_CYCLES_SAMPLING_PERIOD
+       int "Sampling period if the Cycles counter is used for sampling"
+       default 1000000
+       depends on CACHE_ANALYZER && ADVANCE_OPROFILE
+
+config AOP_INSTRUCTIONS_SAMPLING_PERIOD
+        int "Sampling period if the Instructions counter is used for sampling"
+        default 50000
+        depends on CACHE_ANALYZER && ADVANCE_OPROFILE
+
+config AOP_L1D_MISSES_SAMPLING_PERIOD
+        int "Sampling period if the L1D misses counter is used for sampling"
+        default 100
+        depends on CACHE_ANALYZER && ADVANCE_OPROFILE
+
+config AOP_L1I_MISSES_SAMPLING_PERIOD
+        int "Sampling period if the L1I misses counter is used for sampling"
+        default 1000
+        depends on CACHE_ANALYZER && ADVANCE_OPROFILE
+
+config AOP_DTLB_MISSES_SAMPLING_PERIOD
+        int "Sampling period if the DTLB misses counter is used for sampling"
+        default 1000
+        depends on CACHE_ANALYZER && ADVANCE_OPROFILE
+
+config AOP_ITLB_MISSES_SAMPLING_PERIOD
+        int "Sampling period if the ITLB misses counter is used for sampling"
+        default 100
+        depends on CACHE_ANALYZER && ADVANCE_OPROFILE
+
+config AOP_BPU_ERRORS_SAMPLING_PERIOD
+        int "Sampling period if the BPU errors counter is used for sampling"
+        default 1000
+        depends on CACHE_ANALYZER && ADVANCE_OPROFILE
+
+config AOP_AUTO_START
+        bool "Advance OProfile Auto start"
+        default n
+        depends on ADVANCE_OPROFILE
+
+config AOP_START_SEC
+       int "Advance OProfile Auto start start sec"
+       default 1
+       depends on AOP_AUTO_START
+
+config CACHE_ANALYZER
+        bool "KDEBUGD - cache analyzer"
+         default n
+         depends on HW_PERF_EVENTS && KDEBUGD
+         help
+          use the hardware per counters to analyze and profile using AOP and pmu counter monitor.
+endmenu

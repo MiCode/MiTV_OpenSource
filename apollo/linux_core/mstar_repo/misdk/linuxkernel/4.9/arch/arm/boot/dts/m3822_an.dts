@@ -1,0 +1,219 @@
+/dts-v1/;
+/ {
+	model = "m3822";
+	compatible = "arm,foundation-arm", "arm,mustang";
+	interrupt-parent = <0x1>;
+	#address-cells = <0x2>;
+	#size-cells = <0x2>;
+
+	chosen {
+		bootargs = "console=ttyS0,115200 androidboot.console=ttyS0 root=/dev/ram rw rootwait init=/init CORE_DUMP_PATH=/data/garmin/core_dump.%%p.gz KDebug=1 delaylogo=true androidboot.selinux=permissive platform=sn EMAC_MEM=0x100000 PM51_ADDR=0x20010000 PM51_LEN=0x10000 BRICK_TERMINATOR_SPI_STATUS_OFFSET=001B3E00 BOOTLOGO_IN_MBOOT ENV_VAR_OFFSET=0x0 ENV_VAR_SIZE=0x10000 ENV=EMMC SECURITY=OFF LX_MEM=0x1C000000 LX_MEM2=0xA0400000,0x1FC00000 LX_MEM3=0xC00A0000,0x20000000 CMA0=OTHERS,miu=0,hid=23,sz=0x7800000,st=0xa800000 CMA1=XC,miu=0,hid=22,sz=0x6000000,st=0x12000000 CMA2=VDEC0,miu=0,hid=20,sz=0x3000000,st=0x18000000 CMA3=OTHERS2,miu=1,hid=24,sz=0x1000000,st=0x400000 CMA4=VDEC1,miu=1,hid=19,sz=0xb000000,st=0x1400000 CMA5=RETURN_ENUM2,miu=1,hid=26,sz=0x2400000,st=0xc400000 BOOTTIME_SBOOT=513 BOOTTIME_UBOOT=2188";
+	};
+
+	cpus {
+		#address-cells = <0x1>;
+		#size-cells = <0x0>;
+
+		cpu@0 {
+			device_type = "cpu";
+			compatible = "arm,cortex-a9";
+			reg = <0>;
+			enable-method = "mstar-spin-table";
+			cpu-release-addr = <0x100510>;
+		};
+
+	};
+
+	memory@20200000 {
+		device_type = "memory";
+		reg = <0x0 0x20200000 0x0 0x1f400000>;
+	};
+
+	memory@38C00000 {
+		device_type = "memory";
+		reg = <0x0 0x4dc00000 0x0 0x8a00000>;
+	};
+
+	memory@A0000000 {
+		device_type = "memory";
+		reg = <0x0 0xb2a00000 0x0 0x2d600000>;
+	};
+
+	interrupt-controller@16001000 {
+		compatible = "arm,cortex-a9-gic";
+		#interrupt-cells = <0x3>;
+		#address-cells = <0x0>;
+		interrupt-controller;
+		reg = <0x0 0x16001000 0x0 0x1000 0x0 0x16000100 0x0 0x4000>;
+		interrupts = <0x1 0x9 0xf04>;
+		linux,phandle = <0x1>;
+		phandle = <0x1>;
+	};
+
+	timer {
+		compatible = "arm,armv7-timer";
+		interrupts = <0x1 0xd 0xff01 0x1 0xe 0xff01 0x1 0xb 0xff01 0x1 0xa 0xff01>;
+		clock-frequency = <0xb71b00>;
+	};
+
+	pmu {
+		compatible = "arm,armv7-pmuv3";
+		interrupts = <0x0 0x3c 0x4 0x0 0x3d 0x4 0x0 0x3e 0x4 0x0 0x3f 0x4>;
+	};
+
+	emac {
+		compatible = "mstar-emac";
+	};
+
+        ir {
+	        compatible = "mstar-ir";
+	};
+
+	mbx {
+	        compatible = "mstar-mbx";
+	};
+
+	xc {
+		compatible = "mstar-xc";
+	};
+
+	gflip {
+		compatible = "mstar-gflip";
+	};
+
+	alsa {
+		compatible = "Mstar-alsa";
+	};
+
+	rtc {
+	        compatible = "mstar-rtc";
+	};
+
+	Mstar-ehci-1 {
+		compatible = "Mstar-ehci-1";
+		/* In chip_int.h, E_IRQ_UHC is 199. */
+		interrupts = <0 167 0>;
+	};
+
+	Mstar-ehci-2 {
+		compatible = "Mstar-ehci-2";
+		/* In chip_int.h, E_IRQEXPL_UHC1 is 226. */
+		interrupts = <0 194 0>;
+	};
+
+	Mstar-ehci-3 {
+		compatible = "Mstar-ehci-3";
+		/* In chip_int.h, E_IRQEXPL_UHC2 is 229. */
+		interrupts = <0 197 0>;
+	};
+
+	Mstar-ehci-4 {
+		compatible = "Mstar-ehci-4";
+		/* In chip_int.h, E_IRQ_UHC3 is 217. */
+		interrupts = <0 185 0>;
+        };
+
+	Mstar-utopia2k-str {
+		compatible = "Mstar-utopia2k-str";
+		mhl {
+		  resume {
+		    stage0 {
+		      pre-condition = "hdmi_rx";
+		    };
+		  };
+		};
+		hdmi_rx {
+		  resume {
+		    stage0 {
+		      post-condition = "hdmi_rx";
+		    };
+		  };
+		};
+		avd {
+		  resume {
+		    stage0 {
+		      pre-condition = "vif";
+		      post-condition = "avd";
+		    };
+		  };
+		};
+		vif {
+		  resume {
+		    stage0 {
+		      post-condition = "vif";
+		    };
+		  };
+		};
+		vdec {
+		  resume {
+		    stage0 {
+		      post-condition = "vdec";
+		    };
+		  };
+		};
+		xc {
+		  resume {
+		    stage0 {
+		      pre-condition = "vdec","avd";
+		    };
+		  };
+		};
+        miu {
+          resume {
+            stage0 {
+              post-condition = "miu";
+            };
+          };
+        };
+	};
+	firmware {
+		android {
+			compatible = "android,firmware";
+			hardware ="mustang";
+			revision ="1234";
+			Serial   ="0000000000000000";
+			Processor ="AArch32 Processor rev 3 (aarch32)";
+			serialno ="123456789";
+			mode ="123456789";
+			baseband ="123456789";
+			bootloader ="123456789";
+		};
+	};
+
+	gpio: gpio {
+		compatible = "mstar,gpio";
+		gpio-controller;
+		#gpio-cells = <1>;
+		interrupt-controller;
+		skip-save-status = <79 80>;
+		#interrupt-cells = <2>; /* cell name GPIO_PAD, trigger-type*/
+	};
+
+	switch_gpio {
+		compatible = "mstar,switch-gpio";
+		switch-name = "h2w";
+		switch-gpio = <999>;
+		switch-inverse = <0>;
+	};
+
+	/* example of consume a gpio pin with mapped irq
+	foo{
+		interrupt-parent = <&gpio>;
+		interrupts = <0 LEVEL_HIGH>;
+	}
+	*/
+
+	i2c1: i2c@1 {
+		compatible = "mstar,swi2c";
+		bus-index = <1>;
+		sda-gpio = <90>;
+		scl-gpio = <89>;
+		speed-khz = <100>;
+		def-delay = <100>;
+		retries = <5>;
+		status = "okay";
+		iic-mode = <0>;
+		hw-port = <0>;
+		pad-mux = <0>;
+	};
+};

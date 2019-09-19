@@ -1,0 +1,361 @@
+/*
+ * ARM Ltd.
+ *
+ * ARMv8 Foundation model DTS
+ */
+
+/dts-v1/;
+/ {
+	model = "Muji-v8A";
+	compatible = "arm,foundation-aarch64", "arm,muji";
+	interrupt-parent = <&gic>;
+	#address-cells = <2>;
+	#size-cells = <2>;
+
+    /* rdinit=/sbin/init */
+	chosen {
+         bootargs = "root=/dev/ram0 rw init=/sbin/init ip=dhcp console=ttyS0,115200,LX_MEM=0x02000000";
+        };
+
+	cpus {
+		#address-cells = <2>;
+		#size-cells = <0>;
+
+		cpu@0 {
+			device_type = "cpu";
+			compatible = "arm,armv8";
+			reg = <0x0 0x0>;
+			enable-method = "mstar-spin-table";
+			cpu-release-addr = <0x0 0x00100510>;
+		};
+
+                cpu@1 {
+                        device_type = "cpu";
+                        compatible = "arm,armv8";
+                        reg = <0x0 0x1>;
+                        enable-method = "mstar-spin-table";
+                        cpu-release-addr = <0x0 0x00100510>;
+                };
+
+                 cpu@2 {
+                        device_type = "cpu";
+                        compatible = "arm,armv8";
+                        reg = <0x0 0x2>;
+                        enable-method = "mstar-spin-table";
+                        cpu-release-addr = <0x0 0x00100510>;
+                };
+
+
+                 cpu@3{
+                        device_type = "cpu";
+                        compatible = "arm,armv8";
+                        reg = <0x0 0x3>;
+                        enable-method = "mstar-spin-table";
+                        cpu-release-addr = <0x0 0x00100510>;
+                };
+
+
+
+
+	};
+
+	memory@20200000 {
+		device_type = "memory";
+		reg = <0x00000000 0x20200000 0x00000000 0x08000000>;
+	};
+
+	gic: interrupt-controller@16001000 {
+		compatible = "arm,cortex-a15-gic", "arm,cortex-a9-gic";
+		#interrupt-cells = <3>;
+		#address-cells = <0>;
+		interrupt-controller;
+		reg = <0x0 0x16001000 0 0x1000>,
+		      <0x0 0x16002000 0 0x4000>;
+		interrupts = <1 9 0xf04>;
+	};
+
+	timer {
+		compatible = "arm,armv8-timer";
+		interrupts = <1 13 0xff01>,
+			     <1 14 0xff01>,
+			     <1 11 0xff01>,
+			     <1 10 0xff01>;
+		clock-frequency = <12000000>;
+	};
+
+	pmu {
+		compatible = "arm,armv8-pmuv3";
+		interrupts = <0 60 4>,
+			     <0 61 4>,
+			     <0 62 4>,
+			     <0 63 4>;
+	};
+
+	emac {
+		compatible = "mstar-emac";
+		interrupts = <0x0 0x9 0x4>;
+	};
+
+	uart_1 {
+		compatible = "mstar8250-uart";
+		interrupts = <0x0 0x0 0x4>;
+	};
+
+	ir {
+		compatible = "mstar-ir";
+		interrupts = <0x0 0x62 0x4>;
+	};
+
+	fcie {
+		compatible = "fcie";
+		interrupts = <0x0 0x5 0x4>;
+	};
+
+	sdio {
+		compatible = "sdio";
+		interrupts = <0x0 0x3B 0x4>;
+	};
+
+	mstar-gflip {
+		compatible = "mstar-gflip";
+		interrupts = <0x0 0x14 0x4>;
+	};
+
+	mbx {
+		compatible = "mstar-mbx";
+		interrupts = <0x0 0x66 0x4 0x0 0x71 0x4 0x0 0x36 0x4>;
+	};
+
+	xc {
+		compatible = "mstar-xc";
+		interrupts = <0x0 0xA 0x4>;
+	};
+
+	mstar-mvd {
+		compatible = "Mstar-mvd";
+		interrupts = <0x0 0x3 0x0>;
+	};
+
+	mstar-tsp {
+		compatible = "Mstar-tsp";
+		interrupts = <0x0 0x10 0x0>;
+	};
+
+	mstar-pcm {
+		compatible = "Mstar-pcm";
+		interrupts = <0x0 0x15 0x0>;
+	};
+
+	mstar-vbi {
+		compatible = "Mstar-vbi";
+		interrupts = <0x0 0x1C 0x0>;
+	};
+
+	mstar-hvd {
+		compatible = "Mstar-hvd";
+		interrupts = <0x0 0x20 0x0>;
+	};
+
+	mstar-dipw {
+		compatible = "Mstar-dipw";
+		interrupts = <0x0 0x2B 0x0>;
+	};
+
+	mstar-aesdma-waddr-err {
+		compatible = "Mstar-aesdma-waddr-err";
+		interrupts = <0x0 0x39 0x0>;
+	};
+
+	mstar-dsp-up {
+		compatible = "Mstar-dsp-up";
+		interrupts = <0x0 0x4E 0x0>;
+	};
+
+	mstar-xiu-timeout {
+		compatible = "Mstar-xiu-timeout";
+		interrupts = <0x0 0x53 0x0>;
+	};
+
+	mstar-cec-int-pm {
+		compatible = "Mstar-cec-int-pm";
+		interrupts = <0x0 0xa4 0x0>;
+	};
+
+	mstar-ldm-dma-done-0 {
+		compatible = "Mstar-ldm-dma-done-0";
+		interrupts = <0x0 0xc4 0x0>;
+	};
+
+	irq-mali {
+		compatible = "mstar-mali";
+		interrupts = <0x0 0x35 0x4>;
+	};
+
+	hdmitx4vx1 {
+		compatible = "mstar-hdmitx4vx1";
+		interrupts = <0x0 0x34 0x0>;
+	};
+
+	scaler {
+		compatible = "mstar-scaler";
+	};
+
+	gflip {
+		compatible = "mstar-gflip";
+	};
+
+	alsa {
+		compatible = "Mstar-alsa";
+	};
+
+	rtc {
+		compatible = "mstar-rtc";
+	};
+
+	Mstar-ehci-1 {
+		compatible = "Mstar-ehci-1";
+		interrupts = <0x0 0x7 0x0>;
+	};
+
+	Mstar-ehci-2 {
+		compatible = "Mstar-ehci-2";
+		interrupts = <0x0 0x22 0x0>;
+	};
+
+	Mstar-ehci-3 {
+		compatible = "Mstar-ehci-3";
+		interrupts = <0x0 0x25 0x0>;
+	};
+
+	Mstar-ehci-4 {
+		compatible = "Mstar-ehci-4";
+		interrupts = <0x0 0xa2 0x0>;
+	};
+
+	Mstar-ehci-5 {
+		compatible = "Mstar-ehci-5";
+		interrupts = <0x0 0xaa 0x0>;
+	};
+
+	Mstar-xhci-1 {
+		compatible = "Mstar-xhci-1";
+		interrupts = <0x0 0x2 0x0>;
+	};
+
+	Mstar-utopia2k-str {
+		compatible = "Mstar-utopia2k-str";
+
+		mhl {
+
+			resume {
+
+				stage0 {
+					pre-condition = "hdmi_rx";
+				};
+			};
+		};
+
+		hdmi_rx {
+
+			resume {
+
+				stage0 {
+					post-condition = "hdmi_rx";
+				};
+			};
+		};
+
+		avd {
+
+			resume {
+
+				stage0 {
+					pre-condition = "vif";
+				};
+			};
+		};
+
+		vif {
+
+			resume {
+
+				stage0 {
+					post-condition = "vif";
+				};
+			};
+		};
+	};
+
+	mstar-pm {
+		compatible = "mstar-pm";
+	};
+
+	firmware {
+
+		android {
+			compatible = "android,firmware";
+			hardware = "maxim";
+			revision = "1234";
+			Serial = "0000000000000000";
+			Processor = "AArch64 Processor rev 3 (aarch64)";
+			serialno = "123456789";
+			mode = "123456789";
+			baseband = "123456789";
+			bootloader = "123456789";
+		};
+	};
+
+	switch_gpio {
+		compatible = "mstar,switch-gpio";
+		switch-name = "h2w";
+		switch-gpio = <999>;
+		switch-inverse = <0>;
+	};
+
+	gpio {
+		compatible = "mstar,gpio";
+		gpio-controller;
+		#gpio-cells = <0x1>;
+		interrupt-controller;
+		#interrupt-cells = <0x2>;
+	};
+
+	12c@0 {
+		compatible = "mstar,swi2c";
+		bus-index = <0x0>;
+		sda-gpio = <0x39>;
+		scl-gpio = <0x38>;
+		speed-khz = <0x64>;
+		def-delay = <0x64>;
+		retries = <0x5>;
+		staus = "okay";
+		#address-cells = <0x1>;
+		#size-cells = <0x0>;
+	};
+
+	i2c@1 {
+		compatible = "mstar,swi2c";
+		bus-index = <0x1>;
+		sda-gpio = <0x9a>;
+		scl-gpio = <0x99>;
+		speed-khz = <0x64>;
+		def-delay = <0x64>;
+		retries = <0x5>;
+		status = "okay";
+	};
+
+	i2c@2 {
+		compatible = "mstar,swi2c";
+		bus-index = <0x2>;
+		sda-gpio = <0x4e>;
+		scl-gpio = <0x4d>;
+		speed-khz = <0x64>;
+		def-delay = <0x64>;
+		retries = <0x5>;
+		status = "okay";
+	};
+
+
+
+
+};

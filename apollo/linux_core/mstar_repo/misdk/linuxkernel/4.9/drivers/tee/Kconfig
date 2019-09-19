@@ -1,0 +1,31 @@
+# Generic Trusted Execution Environment Configuration
+config TEE_2_4
+	bool "Trusted Execution Environment support optee 2.4 exclusive of optee 1.0.1 "
+	default n
+	select OPTEE
+	select GENERIC_ALLOCATOR
+	select DMA_SHARED_BUFFER
+	help
+	  This implements a generic interface towards a Trusted Execution
+	  Environment (TEE).
+
+config TEE_3_2
+        bool "Trusted Execution Environment support optee 3.2 exclusive of optee 1.0.1 "
+        default n
+        select OPTEE
+        select TEE_2_4
+        select GENERIC_ALLOCATOR
+        select DMA_SHARED_BUFFER
+        help
+          This implements a generic interface towards a Trusted Execution
+          Environment (TEE).
+
+if TEE_2_4
+
+menu "TEE drivers"
+
+source "drivers/tee/optee/Kconfig"
+
+endmenu
+
+endif

@@ -1,0 +1,327 @@
+menuconfig REDLION_DEBUG
+       bool "REDLION DEBUG"
+       default y
+       depends on MP_DEBUG_TOOL_KDEBUG
+
+if REDLION_DEBUG
+menu "Redlion options"
+comment "kernel 3.10.23"
+
+
+config SERIAL_INPUT_MANIPULATION
+    bool "Manipulate serial input in N_TTY"
+    help
+      Decide whether serial input by user is enabled or not.
+
+config SERIAL_INPUT_DISABLE_STRING
+    string "Serial input disable string"
+    default "~~bye"
+    depends on SERIAL_INPUT_MANIPULATION=y
+    help
+      Default string that disable serial input by user.
+
+config SERIAL_INPUT_DEFAULT_SETUP_ENABLE
+    bool "Serial input enable setup at boot"
+    default y
+    depends on SERIAL_INPUT_MANIPULATION=y
+
+config SERIAL_INPUT_MANIPULATION_PORTNUM
+    int "Serial input port line number"
+    default 0
+    depends on SERIAL_INPUT_MANIPULATION=y
+
+config SERIAL_INPUT_ENABLE_HELP_MSG
+    bool "Print help message for serial input"
+    default y
+    depends on SERIAL_INPUT_MANIPULATION=y
+
+config KDEBUGD
+        bool "KDEBUGD - core"
+        default y
+        depends on SHOW_FAULT_TRACE_INFO
+        depends on SERIAL_INPUT_MANIPULATION
+        help
+         kdebugd - kernel debugging helper
+         kdebugd is a good solution for kernel hacker who want to know
+         kernel information easily.
+
+config SHOW_FAULT_TRACE_INFO
+	bool "Tmp for fixing compiling error"
+	default y
+
+config KDEBUGD_TRACE
+            bool "KDEBUGD - backtrace"
+            default y
+        depends on KDEBUGD
+        help
+          kdebugd - backtrace
+          1. Dump backtrace(User)
+
+config KDEBUGD_FTRACE
+    bool "KDEBUGD - Ftrace Support"
+    default y
+    depends on KDEBUGD
+    select FTRACE
+    select GENERIC_TRACER
+    help
+      Enable the kernel to trace every kernel function. This is done
+      by using a compiler feature to insert a small, 5-byte No-Operation
+      instruction at the beginning of every kernel function, which NOP
+      sequence is then dynamically patched into a tracer call when
+      tracing is enabled by the administrator. If it's runtime disabled
+      (the bootup default), then the overhead of the instructions is very
+      small and not measurable even in micro-benchmarks.
+
+config KDEBUGD_FTRACE_HR_CLOCK
+        bool "High resolution trace clock"
+        depends on KDEBUGD_FTRACE
+        default y
+
+config FTRACE_DEFAULT_TRACER
+    string "Default tracer(check help for details)"
+    default "function"
+    depends on KDEBUGD_FTRACE
+    help
+        Default tracer(function, function_graph, sched_switch,
+		wakeup, irqsoff, preemptoff, stack, kmemtrace, branch)
+
+config FTRACE_DEFAULT_TRACE_LIST
+    string "Default trace list"
+    default ""
+    depends on KDEBUGD_FTRACE
+    help
+        Default trace list
+
+config FTRACE_DEFAULT_TRACE_NOT_LIST
+    string "Default trace not list"
+    default ""
+    depends on KDEBUGD_FTRACE
+    help
+        Default trace not list
+
+config FTRACE_DEFAULT_TRACE_GRAPH_LIST
+    string "Default trace graph list"
+    default ""
+    depends on KDEBUGD_FTRACE
+    help
+        Default trace graph list
+
+config FTRACE_DEFAULT_TRACE_MODE
+	int "Default trace mode(1 print,2 log)"
+	default 1
+    depends on KDEBUGD_FTRACE
+    help
+        Default trace mode
+
+config FTRACE_DEFAULT_TRACE_OUTPUT_NUM_LINES
+	int "Default trace output num lines(0 to FTRACE_MAX_OUTPUT_NUM_LINES)"
+	default 0
+    depends on KDEBUGD_FTRACE
+    help
+        Default trace output num lines
+
+config FTRACE_DEFAULT_TRACE_OUTPUT_FILE_NAME
+    string "Default trace output file name"
+    default "/mtd_rwarea/trace.dat"
+    depends on KDEBUGD_FTRACE
+    help
+        Default trace output file name
+
+config FTRACE_DEFAULT_TRACE_SIZE_KB
+    int "Default trace buffer size(kb)(1 to FTRACE_MAX_TRACE_SIZE_KB)"
+    default 1
+    depends on KDEBUGD_FTRACE
+    help
+        Default trace buffer size(kb)
+
+config FTRACE_DEFAULT_TRACE_CPU_MASK
+    int "Default trace cpu mask(1 to CONFIG_NR_CPUS)"
+    default 3
+	 depends on SMP
+    depends on KDEBUGD_FTRACE
+    help
+        Default trace cpu mask
+		 Binary value 11(Decimal 3) represents mask set for 1st and 2nd CPU.
+		 By default CPU mask is 3.
+		 This means tracing will be done for 1st and 2nd CPU both.
+
+config FTRACE_TIMESTAMP_NSEC_STATUS
+    int "Default timestamp nanosecond resolution"
+    default 0
+    depends on KDEBUGD_FTRACE_HR_CLOCK
+    help
+        Default timestamp nanosecond resolution
+        By default it is disabled
+
+config KDEBUGD_FUTEX
+        bool "KDEBUGD - Futex List"
+        default y
+        depends on FUTEX
+        depends on KDEBUGD
+        help
+          kdebugd - Futex List
+          1. Dump the list of threads (with backtrace) waiting on futex
+
+config KDEBUGD_MISC
+        bool "KDEBUGD - miscellaneous functions"
+        default y
+        depends on KDEBUGD
+        help
+         kdebugd - kernel debugging helper
+         1. A list of tasks and their relation information
+         2. A list of tasks and their priority information
+         3. A list of tasks and their inforamtion + backtrace(kernel)
+         4. Turn On/Off O(1) Scheduler prints
+         5. Dump task register with pid
+         6. Dump task maps with pid
+         7. Dump user stack with pid
+         8. Trace thread execution(look at PC)
+         9. Schedule history logger
+
+config SHOW_TASK_STATE
+            bool "Show task state"
+            default y
+        depends on KDEBUGD_MISC
+        help
+          kdebugd -A list of tasks and their relation information
+
+config SHOW_TASK_PRIORITY
+            bool "Show task priority"
+            default y
+        depends on KDEBUGD_MISC
+        help
+          kdebugd -A list of tasks and their priority  information
+
+
+config TASK_STATE_BACKTRACE
+            bool "Show task state backtrace"
+            default y
+        depends on KDEBUGD_MISC
+        help
+          kdebugd - A list of tasks and their inforamtion + backtrace(kernel).
+
+config TASK_FOR_COREDUMP
+            bool "Kill task to coredump"
+            default y
+        depends on KDEBUGD_MISC
+        help
+          kdebugd - Kill the task to create coredump
+
+config SHOW_USER_THREAD_REGS
+            bool "Dump task register with pids"
+            default y
+        depends on KDEBUGD_MISC
+        help
+          kdebugd - Dump task register with pid
+
+config SHOW_USER_MAPS_WITH_PID
+            bool "Dump task maps with pid "
+            default y
+        depends on KDEBUGD_MISC
+        help
+          kdebugd - Dump task maps with pid
+
+config SHOW_USER_STACK_WITH_PID
+            bool "Dump task stack with pid "
+            default y
+        depends on KDEBUGD_MISC
+        help
+          kdebugd - Dump task stack with pid
+
+config VIRTUAL_TO_PHYSICAL
+            bool "Usermode Virtual to Physical Address Converter"
+            default y
+        depends on KDEBUGD_MISC
+        help
+         kdebugd - converts user mode virtual address to physical address and dumps contents of given location
+
+config MEMORY_VALIDATOR
+            bool "Memory Value Watcher"
+            default y
+        depends on VIRTUAL_TO_PHYSICAL
+        help
+          kdebugd - Memory Value Watcher
+
+config TRACE_THREAD_PC
+            bool "Trace thread execution(look at PC)"
+            default y
+        depends on KDEBUGD_MISC
+        help
+          kdebugd - Trace thread execution(look at PC)
+
+config SCHED_HISTORY
+            bool "show schedule history"
+            default y
+        depends on KDEBUGD_MISC
+        help
+          kdebugd - Show schedule history logger
+
+config KDEBUGD_COUNTER_MONITOR
+           bool "KDEBUGD - counter monitor"
+           default y
+        depends on KDEBUGD
+       help
+          kdebugd - counter monitor
+          1. CPU Usage
+          2. CPU Usage for each thread
+          3. Memory Usage
+          4. Disk Usage
+          5. Network Usage
+
+config LPJ_MANUAL_SETTING
+    bool "LPJ value manual setting"
+    default y
+    help
+      Manually set the loops_per_jiffy value, to skip calibrating delay loop
+      on boot to improve boot time.
+      Pls note that for each architecture this value is different, therefore
+      first run target without this patch to get value.
+      Once value is found from boot message log, enable this option and
+      assign value to "Manual LPJ value"
+
+config LPJ_VALUE
+    int "Manual LPJ Value"
+    default 0
+    depends on LPJ_MANUAL_SETTING=y
+    help
+      Find value for your architecture before setting this.
+config KDEBUGD_CPUUSAGE_BUFFER_SIZE
+        int "CPU usage buffer size"
+        default 120
+        depends on KDEBUGD_COUNTER_MONITOR
+
+config KDEBUGD_TOPTHREAD_BUFFER_SIZE
+        int "Topthread buffer size"
+        default 120
+        depends on KDEBUGD_COUNTER_MONITOR
+
+
+config KDEBUGD_MEMUSAGE_BUFFER_SIZE
+        int "Memory usage buffer size"
+        default 120
+        depends on KDEBUGD_COUNTER_MONITOR
+
+config KDEBUGD_DISKUSAGE_BUFFER_SIZE
+        int "Disk usage buffer size"
+        default 120
+        depends on KDEBUGD_COUNTER_MONITOR
+
+config KDEBUGD_NETUSAGE_BUFFER_SIZE
+        int "Network usage buffer size"
+        default 120
+        depends on KDEBUGD_COUNTER_MONITOR
+
+config ELF_MODULE
+        bool "KDEBUGD - ELF Module"
+        default y
+       depends on KDEBUGD
+
+config DWARF_MODULE
+        bool "DWARF Module"
+        default y
+       depends on ELF_MODULE
+
+source "arch/Kconfig.oprofile"
+
+endmenu # end of "Redlion options" menu
+endif # end of "REDLION_DEBUG"

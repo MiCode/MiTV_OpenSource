@@ -1,0 +1,2 @@
++CONFIG_CMDLINE_EXTEND=y
++CONFIG_CMDLINE="loop.max_part=7"

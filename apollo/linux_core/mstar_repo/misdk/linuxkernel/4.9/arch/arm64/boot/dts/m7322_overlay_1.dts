@@ -1,0 +1,34 @@
+/dts-v1/;
+/plugin/;
+
+/ {
+        fragment@0 {
+               target = <&soc_m7322>;
+               __overlay__ {
+                      android {
+                          test1 = "adddd_node";
+                          fstab {
+                                    compatible = "android,fstab";
+                                    system {
+                                        compatible = "android,system";
+                                        dev = "/dev/block/platform/mstar_mci.0/by-name/system";
+                                        type = "ext4";
+                                        mnt_flags = "ro";
+                                        fsmgr_flags = "wait";
+                                    };
+                                    vendor {
+                                        compatible = "android,vendor";
+                                        dev = "/dev/block/platform/mstar_mci.0/by-name/vendor";
+                                        type = "ext4";
+                                        mnt_flags = "ro";
+                                        fsmgr_flags = "wait";
+                                    };
+
+                                };
+                      };
+                      android_test {
+                                test_case = "adddd_subeNode_property";
+                        };
+               };
+        };
+};

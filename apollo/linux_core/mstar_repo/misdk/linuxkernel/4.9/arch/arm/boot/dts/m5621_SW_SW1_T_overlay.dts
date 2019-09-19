@@ -1,0 +1,41 @@
+/dts-v1/;
+/plugin/;
+
+/ {
+        fragment@0 {
+               target = <&soc_m5621>;
+               __overlay__ {
+                      android {
+                          vbmeta {
+                                        compatible = "android,vbmeta";
+                                        parts = "vbmeta,boot,system,vendor";
+                                        by_name_prefix ="/dev/block/platform/mstar_mci.0/by-name/vbmeta";
+                                    };
+                          fstab {
+                                    compatible = "android,fstab";
+                                    vendor {
+                                        compatible = "android,vendor";
+                                        dev = "/dev/block/platform/mstar_mci.0/by-name/vendor";
+                                        type = "ext4";
+                                        mnt_flags = "ro";
+                                        fsmgr_flags = "wait,avb";
+                                    };
+
+                                };
+                      };
+               };
+        };
+        fragment@1 {
+               target = <&soc_backlight>;
+               __overlay__ {
+                            default-brightness-level = <255>;
+
+                };
+        };
+        fragment@2 {
+               target = <&soc_switch_gpio>;
+               __overlay__ {
+               switch-gpio = <999>;
+               };
+             };
+};

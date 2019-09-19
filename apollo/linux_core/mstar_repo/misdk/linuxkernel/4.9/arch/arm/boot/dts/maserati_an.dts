@@ -1,0 +1,171 @@
+/dts-v1/;
+
+/ {
+	model = "Maserati";
+	compatible = "arm,foundation-arm", "arm,maserati";
+	interrupt-parent = <0x1>;
+	#address-cells = <0x2>;
+	#size-cells = <0x2>;
+
+	chosen {
+		bootargs = "root=/dev/mmcblk0p4 rootfstype=ext4 rw rootwait init=/sbin/init ip=dhcp console=ttyS0,115200,LX_MEM=0x02000000";
+	};
+
+	cpus {
+		#address-cells = <0x1>;
+		#size-cells = <0x0>;
+
+		cpu@0 {
+			device_type = "cpu";
+			compatible = "arm,armv8";
+			reg = <0>;
+			enable-method = "mstar-spin-table";
+			cpu-release-addr = <0x100510>;
+		};
+
+		cpu@1 {
+			device_type = "cpu";
+			compatible = "arm,armv8";
+			reg = <1>;
+			enable-method = "mstar-spin-table";
+			cpu-release-addr = <0x100510>;
+		};
+		cpu@2 {
+			device_type = "cpu";
+			compatible = "arm,armv8";
+			reg = <2>;
+			enable-method = "mstar-spin-table";
+			cpu-release-addr = <0x100510>;
+		};
+
+		cpu@3 {
+			device_type = "cpu";
+			compatible = "arm,armv8";
+			reg = <3>;
+			enable-method = "mstar-spin-table";
+			cpu-release-addr = <0x100510>;
+		};
+
+	};
+
+	memory@20200000 {
+		device_type = "memory";
+		reg = <0x0 0x20200000 0x0 0x1f400000>;
+	};
+
+	memory@38C00000 {
+		device_type = "memory";
+		reg = <0x0 0x4dc00000 0x0 0x8a00000>;
+	};
+
+	memory@A0000000 {
+		device_type = "memory";
+		reg = <0x0 0xb2a00000 0x0 0x2d600000>;
+	};
+
+	interrupt-controller@16001000 {
+		compatible = "arm,cortex-a15-gic", "arm,cortex-a9-gic";
+		#interrupt-cells = <0x3>;
+		#address-cells = <0x0>;
+		interrupt-controller;
+		reg = <0x0 0x16001000 0x0 0x1000 0x0 0x16002000 0x0 0x4000>;
+		interrupts = <0x1 0x9 0xf04>;
+		linux,phandle = <0x1>;
+		phandle = <0x1>;
+	};
+
+	timer {
+		compatible = "arm,armv8-timer";
+		interrupts = <0x1 0xd 0xff01 0x1 0xe 0xff01 0x1 0xb 0xff01 0x1 0xa 0xff01>;
+		clock-frequency = <0xb71b00>;
+	};
+
+	pmu {
+		compatible = "arm,armv8-pmuv3";
+		interrupts = <0x0 0x3c 0x4 0x0 0x3d 0x4 0x0 0x3e 0x4 0x0 0x3f 0x4>;
+	};
+
+	emac {
+		compatible = "mstar-emac";
+	};
+
+        ir {
+	        compatible = "mstar-ir";
+	};
+
+	mbx {
+	        compatible = "mstar-mbx";
+	};
+
+    mstar-miu {
+        compatible = "mstar-miu";
+    };
+
+	xc {
+		compatible = "mstar-xc";
+	};
+
+	scaler {
+		compatible = "mstar-scaler";
+	};
+
+	gflip {
+		compatible = "mstar-gflip";
+	};
+
+	alsa {
+		compatible = "Mstar-alsa";
+	};
+
+	mstar-rtc@0 {
+		compatible = "mstar-rtc";
+		index = <0>;
+		xtal = <12000000>;
+		freq = <1>;
+	};
+
+	Mstar-ehci-1 {
+		compatible = "Mstar-ehci-1";
+	};
+
+	Mstar-ehci-2 {
+		compatible = "Mstar-ehci-2";
+	};
+
+	Mstar-ehci-3 {
+		compatible = "Mstar-ehci-3";
+        };
+
+	Mstar-ehci-4 {
+		compatible = "Mstar-ehci-4";
+        };
+
+	Mstar-ehci-5 {
+		compatible = "Mstar-ehci-5";
+        };
+	/* USB 3.0 Port */
+	Mstar-xhci-1 {
+		compatible = "Mstar-xhci-1";
+        };
+
+	switch_gpio {
+		compatible = "mstar,switch-gpio";
+		switch-name = "h2w";
+		switch-gpio = <999>;
+		switch-inverse = <0>;
+	};
+
+	firmware {
+		android {
+			compatible = "android,firmware";
+			hardware ="maserati";
+			revision ="1234";
+			Serial   ="0000000000000000";
+			Processor ="AArch64 Processor rev 3 (aarch64)";
+			serialno ="123456789";
+			mode ="123456789";
+			baseband ="123456789";
+			bootloader ="123456789";
+		};
+	};
+};

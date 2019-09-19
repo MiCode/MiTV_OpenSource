@@ -1,0 +1,146 @@
+/*
+ * ARM Ltd.
+ *
+ * ARMv8 Foundation model DTS
+ */
+
+/dts-v1/;
+/ {
+	model = "Maserati-v8A";
+	compatible = "arm,foundation-aarch64", "arm,maserati";
+	interrupt-parent = <&gic>;
+	#address-cells = <2>;
+	#size-cells = <2>;
+
+    /* rdinit=/sbin/init */
+	chosen {
+         bootargs = "root=/dev/ram0 rw init=/sbin/init ip=dhcp console=ttyS0,115200";
+        };
+
+	cpus {
+		#address-cells = <2>;
+		#size-cells = <0>;
+
+		cpu@0 {
+			device_type = "cpu";
+			compatible = "arm,armv8";
+			reg = <0x0 0x0>;
+			enable-method = "mstar-spin-table";
+			cpu-release-addr = <0x0 0x00100510>;
+		};
+
+
+		cpu@1 {
+			device_type = "cpu";
+			compatible = "arm,armv8";
+			reg = <0x0 0x1>;
+			enable-method = "mstar-spin-table";
+			cpu-release-addr = <0x0 0x00100510>;
+		};
+
+		cpu@100 {
+			device_type = "cpu";
+			compatible = "arm,armv8";
+			/* reg = <0x0 0x1>; */
+			/* 0x0 is high 32bit, 0x100 is low 32bit ==> this means this cpu's CPUID (MPIDR_EL1)*/
+			reg = <0x0 0x100>;
+			enable-method = "mstar-spin-table";
+			cpu-release-addr = <0x0 0x00100510>;
+		};
+
+
+		cpu@101 {
+			device_type = "cpu";
+			compatible = "arm,armv8";
+			/* reg = <0x0 0x1>; */
+			/* 0x0 is high 32bit, 0x100 is low 32bit ==> this means this cpu's CPUID (MPIDR_EL1)*/
+			reg = <0x0 0x101>;
+			enable-method = "mstar-spin-table";
+			cpu-release-addr = <0x0 0x00100510>;
+		};
+
+      };
+
+	memory@20200000 {
+		device_type = "memory";
+		reg = <0x00000000 0x20200000 0x00000000 0x20000000>;
+	};
+
+	gic: interrupt-controller@16001000 {
+		compatible = "arm,cortex-a15-gic", "arm,cortex-a9-gic";
+		#interrupt-cells = <3>;
+		#address-cells = <0>;
+		interrupt-controller;
+		reg = <0x0 0x16001000 0 0x1000>,
+		      <0x0 0x16002000 0 0x4000>;
+		interrupts = <1 9 0xf04>;
+	};
+
+	timer {
+		compatible = "arm,armv8-timer";
+		interrupts = <1 13 0xff01>,
+			     <1 14 0xff01>,
+			     <1 11 0xff01>,
+			     <1 10 0xff01>;
+		clock-frequency = <12000000>;
+	};
+
+	pmu {
+		compatible = "arm,armv8-pmuv3";
+		interrupts = <0 60 4>,
+			     <0 61 4>,
+			     <0 62 4>,
+			     <0 63 4>;
+	};
+
+	emac {
+	        compatible = "mstar-emac";
+	};
+
+	ir {
+	        compatible = "mstar-ir";
+	};
+
+	Mstar-ehci-1 {
+		compatible = "Mstar-ehci-1";
+		/* UHC1 int : 199 */
+		interrupts = <0 167 0>;
+	};
+
+	Mstar-ehci-2 {
+		compatible = "Mstar-ehci-2";
+		/* UHC2 int : 226 */
+		interrupts = <0 194 0>;
+	};
+
+	Mstar-ehci-3 {
+		compatible = "Mstar-ehci-3";
+		/* UHC3 int : 229 */
+		interrupts = <0 197 0>;
+	};
+
+	 Mstar-ehci-4 {
+	        compatible = "Mstar-ehci-4";
+	        // UHC4 int : 330
+	        interrupts = <0 298 0>;
+	  };
+
+	  Mstar-ehci-5 {
+	        compatible = "Mstar-ehci-5";
+	        // UHC5 int : 328
+	        interrupts = <0 296 0>;
+	  };
+
+	switch_gpio {
+		compatible = "mstar,switch-gpio";
+		switch-name = "h2w";
+		switch-gpio = <999>;
+		switch-inverse = <0>;
+	};
+
+	Mstar-xhci-1 {
+		compatible = "Mstar-xhci-1";
+		/* XHC1 int : 194 */
+		interrupts = <0 162 0>;
+	};
+};

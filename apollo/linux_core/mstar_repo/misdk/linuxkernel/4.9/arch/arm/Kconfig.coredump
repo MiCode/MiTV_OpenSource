@@ -1,0 +1,15 @@
+menu "Kernel Core Dump Tool"
+
+config BINFMT_ELF_COMP
+	bool "Kernel support for compressed ELF binaries(Ultimate Coredump)"
+	default y
+
+config SEPARATE_PRINTK_FROM_USER
+    bool "It separate messages(printf, printk) between user and kernel."
+    default y
+
+config DUMP_USE_REGSET
+    bool "Show address range including PC, LR"
+    default y
+
+endmenu
