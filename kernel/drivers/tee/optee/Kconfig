@@ -1,0 +1,38 @@
+# OP-TEE Trusted Execution Environment Configuration
+config OPTEE
+	tristate "OP-TEE"
+	depends on HAVE_ARM_SMCCC
+	depends on MMU
+	help
+	  This implements the OP-TEE Trusted Execution Environment (TEE)
+	  driver.
+
+config OPTEE_SHM_NUM_PRIV_PAGES
+	int "Private Shared Memory Pages"
+	default 1
+	depends on OPTEE
+	help
+	  This sets the number of private shared memory pages to be
+	  used by OP-TEE TEE driver.
+
+config TEE_2_4
+	bool "Trusted Execution Environment support optee 2.4 exclusive of optee 1.0.1 "
+	default n
+	select OPTEE
+	select GENERIC_ALLOCATOR
+	select DMA_SHARED_BUFFER
+	help
+	  This implements a generic interface towards a Trusted Execution
+	  Environment (TEE).
+
+config TEE_3_2
+        bool "Trusted Execution Environment support optee 3.2 exclusive of optee 1.0.1 "
+        default n
+        select OPTEE
+        select TEE_2_4
+        select GENERIC_ALLOCATOR
+        select DMA_SHARED_BUFFER
+        help
+          This implements a generic interface towards a Trusted Execution
+          Environment (TEE).
+

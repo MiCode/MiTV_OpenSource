@@ -1,0 +1,31 @@
+/dts-v1/;
+/plugin/;
+
+/ {
+	fragment@0 {
+		target = <&soc_m7332>;
+		__overlay__ {
+			android {
+				vbmeta {
+					compatible = "android,vbmeta";
+					parts = "vbmeta,boot,system,vendor,oem";
+					by_name_prefix ="/dev/block/platform/mstar_mci.0/by-name/vbmeta";
+				};
+			};
+		};
+	};
+
+	fragment@1 {
+		target = <&soc_m7332_switch>;
+		__overlay__ {
+			switch-gpio = <66>;
+		};
+	};
+
+	fragment@2 {
+		target = <&soc_m7332_wifi>;
+		__overlay__ {
+			wifi-ctl-gpio = <17>;
+		};
+	};
+};

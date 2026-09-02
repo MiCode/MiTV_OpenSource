@@ -1,0 +1,28 @@
+/dts-v1/;
+/plugin/;
+
+/ {
+	fragment@0 {
+		target = <&soc_m7332>;
+		__overlay__ {
+			android {
+			};
+		};
+	};
+
+	fragment@1 {
+		target = <&soc_m7332_switch>;
+		__overlay__ {
+			switch-gpio = <66>;
+		};
+	};
+
+	fragment@2 {
+		target = <&soc_m7332_wifi>;
+		__overlay__ {
+			wifi-ctl-gpio = <17>;
+		};
+	};
+};
+
+

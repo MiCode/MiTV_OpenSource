@@ -1,0 +1,355 @@
+/dts-v1/;
+
+#include "m5621_nontee.dtsi"
+
+/ {
+	chosen {
+		bootargs = "root=/dev/mmcblk0p4 rootfstype=ext4 rw rootwait init=/sbin/init ip=dhcp console=ttyS0,115200,LX_MEM=0x02000000";
+	};
+
+	memory@20200000 {
+		device_type = "memory";
+		reg = <0x0 0x20200000 0x0 0x1f400000>;
+	};
+
+	memory@38C00000 {
+		device_type = "memory";
+		reg = <0x0 0x4dc00000 0x0 0x8a00000>;
+	};
+
+	memory@A0000000 {
+		device_type = "memory";
+		reg = <0x0 0xb2a00000 0x0 0x2d600000>;
+	};
+
+	Mstar-utopia2k-str {
+		compatible = "Mstar-utopia2k-str";
+		mhl {
+		  resume {
+		    stage0 {
+		      pre-condition = "hdmi_rx";
+		    };
+		  };
+		};
+		hdmi_rx {
+		  resume {
+		    stage0 {
+		      post-condition = "hdmi_rx";
+		    };
+		  };
+		};
+		avd {
+		  resume {
+		    stage0 {
+		      pre-condition = "vif";
+		      post-condition = "avd";
+		    };
+		  };
+		};
+		vif {
+		  resume {
+		    stage0 {
+		      post-condition = "vif";
+		    };
+		  };
+		};
+		vdec {
+		  resume {
+		    stage0 {
+		      post-condition = "vdec";
+		    };
+		  };
+		};
+
+        miu {
+          resume {
+            stage0 {
+              post-condition = "miu";
+            };
+          };
+        };
+
+		pq {
+          		suspend {
+		    		stage0 {
+		      			post-condition = "pq";
+		    		};
+		  	};
+		  	resume {
+		    		stage0 {
+		      			post-condition = "pq";
+		      			pre-condition = "xc";
+		    		};
+		  	};
+		};
+
+		mvop {
+			resume {
+				stage0 {
+					post-condition = "mvop";
+				};
+			};
+		};
+
+		pnl {
+			suspend {
+				stage0 {
+				pre-condition = "xc";
+				};
+			};
+			resume {
+				stage0 {
+				post-condition = "pnl";
+				};
+			};
+		};
+
+		ace {
+			suspend {
+				stage0 {
+				post-condition = "ace";
+				};
+			};
+			resume {
+				stage0 {
+				post-condition = "ace";
+				pre-condition = "xc";
+				};
+			};
+		};
+
+		ve {
+		  resume {
+		    stage0 {
+		      pre-condition = "miu","xc";
+		    };
+		  };
+		};
+
+		
+		xc {
+			suspend {
+			stage0 {
+				pre-condition = "pq","ace";
+				post-condition = "xc";
+				};
+			};
+			resume {
+		 		stage0 {
+				pre-condition = "vdec","avd","miu","mvop","pnl";
+				post-condition = "xc";
+			};
+		  };
+		};
+	    dmx {
+		  suspend {
+			stage0 {
+			  pre-condition = "dscmb";
+		      post-condition = "dmx";
+			};
+		  };
+		  resume {
+		    stage0 {
+			pre-condition = "dscmb";
+		    post-condition = "dmx";
+		    };
+		  };
+	    };
+
+		dscmb {
+		  suspend {
+			stage0 {
+			  post-condition = "dscmb";
+			};
+		  };
+		  resume {
+			stage0 {
+			  post-condition = "dscmb";
+			};
+		  };
+		};
+
+	};
+
+	Mstar-sys {
+		firmware {
+			audio {
+				path = "/vendor/lib/utopia/audio_bin/";
+			};
+			vdec_fw {
+				path = "/vendor/lib/utopia/vdec_bin/";
+			};
+		};
+	};
+
+	firmware {
+		optee {
+			compatible = "linaro,optee-tz-1.0.1";
+			method = "smc";
+		};
+
+		android {
+			compatible = "android,firmware";
+			hardware ="m5621";
+			revision ="1234";
+			Serial   ="0000000000000000";
+			Processor ="AArch32 Processor rev 3 (aarch32)";
+			serialno ="123456789";
+			mode ="123456789";
+			baseband ="123456789";
+
+			fstab {
+				compatible = "android,fstab";
+
+
+				vendor {
+					compatible = "android,vendor";
+					dev = "/dev/block/platform/mstar_mci.0/by-name/vendor";
+					type = "ext4";
+					mnt_flags = "ro";
+					fsmgr_flags = "wait";
+				};
+			};
+		};
+	};
+
+	gpio_wifi_ctl {
+		compatible = "mstar,gpio-wifi-ctl";
+		wifi-ctl-gpio = <21>;
+	};
+
+	switch_gpio {
+		compatible = "mstar,switch-gpio";
+		switch-name = "h2w";
+		switch-gpio = <170>;
+		switch-inverse = <0>;
+	};
+
+	gpio: gpio{
+		compatible = "mstar,gpio";
+		gpio-controller;
+		#gpio-cells = <1>;
+		interrupt-controller;
+		skip-save-status = <13 45 5>;
+		#interrupt-cells = <2>; /* cell name GPIO_PAD, trigger-type*/
+	};
+
+	backlight {
+		compatible = "backlight";
+		brightness-levels = <0 255>;
+		default-brightness-level = <255>;
+		bl_ctrl = <13>;
+		bl_ctrl_inverse = <0>;
+		vcc_gpio = <45>;
+		vcc_gpio_invert = <0>;
+		led_gpio = <5>;
+		led_gpio_invert = <0>;
+		/* led-pwm-control-support; */
+		/* led-pwm-control-channel = <0>; */
+		/* led-pwm-control-resume-period = <0xb71a>; */
+		/* led-pwm-control-resume-duty = <0xb71a>; */
+		/* led-pwm-control-resume-div = <0xff>; */
+		/* led-pwm-control-resume-polarity = <0>; */
+		/* led-pwm-control-suspend-period = <0xb71a>; */
+		/* led-pwm-control-suspend-duty = <0xb71a>; */
+		/* led-pwm-control-suspend-div = <0xff>; */
+		/* led-pwm-control-suspend-polarity = <0>; */
+	};
+
+	/* example of consume a gpio pin with mapped irq
+	foo{
+		interrupt-parent = <&gpio>;
+		interrupts = <0 LEVEL_HIGH>;
+	}
+	*/
+
+	i2c0: i2c@0 {
+		compatible = "mstar,swi2c";
+		bus-index = <0x1>;
+		sda-gpio = <0x33>;
+		scl-gpio = <0x32>;
+		speed-khz = <0x64>;
+		def-delay = <0x64>;
+		retries = <0x5>;
+		staus = "okay";
+		iic-mode = <0x0>;
+		hw-port = <0x0>;
+		pad-mux = <0x0>;
+	};
+
+	i2c1: i2c@1 {
+		compatible = "mstar,swi2c";
+		bus-index = <0x1>;
+		sda-gpio = <0x33>;
+		scl-gpio = <0x32>;
+		speed-khz = <0x64>;
+		def-delay = <0x64>;
+		retries = <0x5>;
+		staus = "okay";
+		iic-mode = <0x1>;
+		hw-port = <0x3>;
+		pad-mux = <0x1a>;
+	};
+
+	i2c2: i2c@2 {
+		compatible = "mstar,swi2c";
+		bus-index = <1>;
+		sda-gpio = <142>;
+		scl-gpio = <141>;
+		speed-khz = <100>;
+		def-delay = <100>;
+		retries = <5>;
+		staus = "okay";
+		iic-mode = <0>;
+		hw-port = <0>;
+		pad-mux = <0>;
+	};
+
+	mtktvmac@0 {
+		compatible = "mediatek,mtk-tv-mac";
+		reg = <0 0x1f3a4200 0 0x200>,
+			/*<0 0x1f204000 0 0x200>,*/
+			  <0 0x1f204200 0 0x200>,
+			  <0 0x1f006400 0 0x600>,
+			  <0 0x1f201600 0 0x200>,
+			  <0 0x1f203c00 0 0x200>;
+		local-mac-address = [00 99 88 77 66 00];
+		xiu32-support;
+		interrupts = <0x0 0x9 0x4>;
+		internal-phy;
+	};
+
+        mstar_sensor0: mstar-sensor@0 {
+                compatible = "mstar-thermal";
+                #thermal-sensor-cells = <1>;
+        };
+
+        thermal-zones {
+                mstar_thermal: mstar-thermal {
+                        polling-delay = <1000>;
+                        polling-delay-passive = <100>;
+                        sustainable-power = <1789 1789 2286>;
+
+                        thermal-sensors = <&mstar_sensor0 0>;
+                        trips {
+                                threshold: trip-point@0 {
+                                        temperature = <120000>;
+                                        hysteresis = <1000>;
+                                        type = "passive";
+                                };
+                                target: trip-point@1 {
+                                        temperature = <130000>;
+                                        hysteresis = <1000>;
+                                        type = "passive";
+                                };
+                        };
+                        cooling-maps {
+                                map0 {
+                                        trip = <&target>;
+                                        contribution = <1024>;
+                                        cooling-device = <&cluster0 0xffffffff 0xffffffff>;
+                                };
+
+                        };
+                };
+        };};

@@ -1,0 +1,1 @@
+obj-(SMAF_OPTEE) += smaf-optee.o

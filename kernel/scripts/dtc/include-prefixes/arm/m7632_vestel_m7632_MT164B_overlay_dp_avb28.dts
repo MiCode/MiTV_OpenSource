@@ -1,0 +1,61 @@
+/dts-v1/;
+/plugin/;
+/include/ "overlay_avb_SysAsRoot.dtsi"
+
+/ {
+    fragment@1 {
+    target = <&power_info>;
+    __overlay__ {
+            type = "gpio";
+            parm {
+                level = <4>;
+                control_0 {
+                    vol = <95>;
+                    num = <2>;
+                    gpio_num = <51 52>;
+                    gpio_mode = <0 0>;
+                };
+                control_1 {
+                    vol = <100>;
+                    num = <2>;
+                    gpio_num = <51 52>;
+                    gpio_mode = <0 1>;
+                };
+                control_2 {
+                    vol = <110>;
+                    num = <2>;
+                    gpio_num = <51 52>;
+                    gpio_mode = <1 0>;
+                };
+                control_3 {
+                    vol = <115>;
+                    num = <2>;
+                    gpio_num = <51 52>;
+                    gpio_mode = <1 1>;
+                };
+            };
+        };
+    };
+    fragment@2 {
+		target = <&soc_m7632_backlight>;
+		__overlay__ {
+           	        bl_ctrl_inverse = <1>;
+			led-pwm-control-support;
+			led-pwm-control-channel = <0>;
+			led-pwm-control-resume-period = <0xb71a>;
+			led-pwm-control-resume-duty = <0xb71a>;
+			led-pwm-control-resume-div = <0xff>;
+			led-pwm-control-resume-polarity = <1>;
+			led-pwm-control-suspend-period = <0xb71a>;
+			led-pwm-control-suspend-duty = <0xb71a>;
+			led-pwm-control-suspend-div = <0xff>;
+			led-pwm-control-suspend-polarity = <0>;
+		};
+	};
+    fragment@3 {
+	    target = <&soc_m7632_wifi>;
+	    __overlay__ {
+            wifi-power-ctl-gpio = <0xFFFF>;
+	    };
+    };
+};

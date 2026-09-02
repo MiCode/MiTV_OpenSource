@@ -1,0 +1,24 @@
+/dts-v1/;
+/plugin/;
+
+/ {
+        fragment@0 {
+               target = <&soc_mt5862>;
+               __overlay__ {
+                      android {
+                          fstab {
+                                    compatible = "android,fstab";
+                                    vendor {
+                                        compatible = "android,vendor";
+                                        dev = "/dev/block/platform/mstar_mci.0/by-name/vendor";
+                                        type = "ext4";
+                                        mnt_flags = "ro";
+                                        fsmgr_flags = "wait";
+                                    };
+                            };
+                      };
+               };
+        };
+};
+
+

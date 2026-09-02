@@ -1,0 +1,156 @@
+/*
+ * ARM Ltd.
+ *
+ * ARMv8 Foundation model DTS
+ */
+
+/dts-v1/;
+#include "../../../../../drivers/mstar2/hal/m7632/gpio/mhal_gpio_reg.h"
+#include "m7632.dtsi"
+
+/ {
+	chosen {
+         bootargs = "root=/dev/ram0 rw init=/sbin/init ip=dhcp console=ttyS0,38400,LX_MEM=0x03000000";
+        };
+
+	memory@20200000 {
+		device_type = "memory";
+		reg = <0x00000000 0x20200000 0x00000000 0x08000000>;
+	};
+
+	Mstar-sys {
+		firmware {
+			audio {
+				path = "/vendor/lib/utopia/audio_bin/";
+			};
+			vdec_fw {
+				path = "/vendor/lib/utopia/vdec_bin/";
+			};
+		};
+	};
+
+	firmware {
+
+		android {
+			compatible = "android,firmware";
+			hardware = "m7632";
+			revision = "1234";
+			Serial = "0000000000000000";
+			Processor = "AArch64 Processor rev 3 (aarch64)";
+			mode = "123456789";
+
+			fstab {
+				compatible = "android,fstab";
+
+				vendor {
+					compatible = "android,vendor";
+					dev = "/dev/block/platform/mstar_mci.0/by-name/vendor";
+					type = "ext4";
+					mnt_flags = "ro";
+					fsmgr_flags = "wait";
+				};
+			};
+		};
+	};
+
+	gpio: gpio {
+		compatible = "mstar,gpio";
+		gpio-controller;
+		#gpio-cells = <1>;
+		interrupt-controller;
+		skip-save-status = <9 31 21>;
+		#interrupt-cells = <2>; /* cell name GPIO_PAD, trigger-type*/
+	};
+
+	switch_gpio {
+		compatible = "mstar,switch-gpio";
+		switch-name = "h2w";
+		switch-gpio = <64>;
+		switch-inverse = <0>;
+	};
+
+	gpio_wifi_ctl {
+		compatible = "mstar,gpio-wifi-ctl";
+		wifi-ctl-gpio = <26>;
+	};
+
+	backlight {
+		compatible = "backlight";
+		brightness-levels = <0 255>;
+		default-brightness-level = <255>;
+		bl_ctrl = <9>;
+		bl_ctrl_inverse = <0>;
+		vcc_gpio = <31>;
+		vcc_gpio_invert = <0>;
+		led_gpio = <21>;
+		led_gpio_invert = <0>;
+		/* led-pwm-control-support; */
+		/* led-pwm-control-channel = <0>; */
+		/* led-pwm-control-resume-period = <0xb71a>; */
+		/* led-pwm-control-resume-duty = <0xb71a>; */
+		/* led-pwm-control-resume-div = <0xff>; */
+		/* led-pwm-control-resume-polarity = <0>; */
+		/* led-pwm-control-suspend-period = <0xb71a>; */
+		/* led-pwm-control-suspend-duty = <0xb71a>; */
+		/* led-pwm-control-suspend-div = <0xff>; */
+		/* led-pwm-control-suspend-polarity = <0>; */
+	};
+
+	serflash {
+		compatible = "mst,serflash";
+		speed-Mhz = <0x36>;
+		read-mode = <0x5>;
+	};
+
+	i2c0: i2c@0 {
+		compatible = "mstar,swi2c";
+		bus-index = <0>;
+		sda-gpio = <55>;
+		scl-gpio = <54>;
+		speed-khz = <100>;
+		def-delay = <100>;
+		retries = <5>;
+		status = "okay";
+		iic-mode = <0>;
+		hw-port = <0>;
+		pad-mux = <0>;
+	};
+
+	i2c1: i2c@1 {
+		compatible = "mstar,swi2c";
+		bus-index = <0>;
+		sda-gpio = <55>;
+		scl-gpio = <54>;
+		speed-khz = <100>;
+		def-delay = <100>;
+		retries = <5>;
+		status = "okay";
+		iic-mode = <1>;
+		hw-port = <3>;
+		pad-mux = <25>;
+	};
+
+	i2c2: i2c@2 {
+		compatible = "mstar,swi2c";
+		bus-index = <1>;
+		sda-gpio = <143>;
+		scl-gpio = <142>;
+		speed-khz = <100>;
+		def-delay = <100>;
+		retries = <5>;
+		status = "okay";
+		iic-mode = <0>;
+		hw-port = <0>;
+		pad-mux = <0>;
+	};
+
+    mstar_dvfs: mstar_dvfs {
+        package-number = <1>;
+        dvfs_package0: dvfs_package0 {
+            control-type = "pwm";
+            channed = <0>;
+            power-base = <129>;
+            power-level = <48>;
+        };
+    };
+};

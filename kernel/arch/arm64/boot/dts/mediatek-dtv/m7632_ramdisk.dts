@@ -1,0 +1,158 @@
+/*
+ * ARM Ltd.
+ *
+ * ARMv8 Foundation model DTS
+ */
+
+/dts-v1/;
+#include "../../../../../drivers/mstar2/hal/m7632/gpio/mhal_gpio_reg.h"
+#include "m7632.dtsi"
+
+/ {
+	chosen {
+         bootargs = "root=/dev/ram0 rw init=/sbin/init ip=dhcp console=ttyS0,38400,LX_MEM=0x03000000";
+        };
+
+	memory@20200000 {
+		device_type = "memory";
+		reg = <0x00000000 0x20200000 0x00000000 0x08000000>;
+	};
+
+	Mstar-utopia2k-str {
+		compatible = "Mstar-utopia2k-str";
+
+		mhl {
+
+			resume {
+
+				stage0 {
+					pre-condition = "hdmi_rx";
+				};
+			};
+		};
+
+		hdmi_rx {
+
+			resume {
+
+				stage0 {
+					pre-condition = "hdmi_earc";
+                                        post-condition = "hdmi_rx";
+				};
+			};
+		};
+
+		hdmi_earc {
+
+			resume {
+
+				stage0 {
+					post-condition = "hdmi_earc";
+				};
+			};
+                };
+
+		avd {
+			resume {
+
+				stage0 {
+					pre-condition = "vif";
+				};
+			};
+		};
+
+		vif {
+
+			resume {
+
+				stage0 {
+					post-condition = "vif";
+				};
+			};
+		};
+	};
+
+	Mstar-sys {
+		firmware {
+			audio {
+				path = "/vendor/lib/utopia/audio_bin/";
+			};
+			vdec_fw {
+				path = "/vendor/lib/utopia/vdec_bin/";
+			};
+		};
+	};
+
+	firmware {
+
+		android {
+			compatible = "android,firmware";
+			hardware = "m7632";
+			revision = "1234";
+			Serial = "0000000000000000";
+			Processor = "AArch64 Processor rev 3 (aarch64)";
+			mode = "123456789";
+			fstab {
+				compatible = "android,fstab";
+				system {
+					compatible = "android,system";
+					dev = "/dev/block/platform/mstar_mci.0/by-name/system";
+					type = "ext4";
+					mnt_flags = "ro";
+					fsmgr_flags = "wait";
+				};
+				vendor {
+					compatible = "android,system";
+					dev = "/dev/block/platform/mstar_mci.0/by-name/vendor";
+					type = "ext4";
+					mnt_flags = "ro";
+					fsmgr_flags = "wait";
+				};
+			};
+		};
+	};
+
+	switch_gpio {
+		compatible = "mstar,switch-gpio";
+		switch-name = "h2w";
+		switch-gpio = <999>;
+		switch-inverse = <0>;
+	};
+
+	gpio: gpio {
+		compatible = "mstar,gpio";
+		gpio-controller;
+		#gpio-cells = <1>;
+		interrupt-controller;
+		skip-save-status = <PAD_GPIO0_PM PAD_SAR2>;
+		#interrupt-cells = <2>; /* cell name GPIO_PAD, trigger-type*/
+	};
+
+	i2c0: i2c@0 {
+		compatible = "mstar,swi2c";
+		bus-index = <0>;
+		sda-gpio = <PAD_DDCR_DA>;
+		scl-gpio = <PAD_DDCR_CK>;
+		speed-khz = <100>;
+		def-delay = <100>;
+		retries = <5>;
+		status = "okay";
+		iic-mode = <1>;
+		hw-port = <3>;
+		pad-mux = <25>;
+	};
+
+	i2c1: i2c@1 {
+		compatible = "mstar,swi2c";
+		bus-index = <1>;
+		sda-gpio = <PAD_TGPIO3>;
+		scl-gpio = <PAD_TGPIO2>;
+		speed-khz = <100>;
+		def-delay = <100>;
+		retries = <5>;
+		status = "okay";
+		iic-mode = <0>;
+		hw-port = <0>;
+		pad-mux = <0>;
+	};
+};

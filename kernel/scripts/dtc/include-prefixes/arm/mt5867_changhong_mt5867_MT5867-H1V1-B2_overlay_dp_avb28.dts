@@ -1,0 +1,10 @@
+/dts-v1/;
+/plugin/;
+/include/ "overlay_avb_SysAsRoot.dtsi"
+
+&gpio_wifi_ctl {
+	wifi-ctl-gpio = <28>;
+	wifi-ctl-invert = <1>;
+	wifi-ctl-delayms = <100>;
+	wifi-ctl-powerdown = <0>;
+};

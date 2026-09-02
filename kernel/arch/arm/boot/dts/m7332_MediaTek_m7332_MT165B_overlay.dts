@@ -1,0 +1,32 @@
+/dts-v1/;
+/plugin/;
+
+&firmware {
+	android {
+		fstab {
+			compatible = "android,fstab";
+			system {
+				compatible = "android,system";
+				dev = "/dev/block/platform/mstar_mci.0/by-name/system";
+				type = "ext4";
+				mnt_flags = "ro";
+				fsmgr_flags = "wait";
+			};
+			vendor {
+				compatible = "android,vendor";
+				dev = "/dev/block/platform/mstar_mci.0/by-name/vendor";
+				type = "ext4";
+				mnt_flags = "ro";
+				fsmgr_flags = "wait";
+			};
+		};
+	};
+};
+
+&switch_gpio {
+	switch-gpio = <60>;
+};
+
+&gpio_wifi_ctl {
+	wifi-ctl-gpio = <15>;
+};

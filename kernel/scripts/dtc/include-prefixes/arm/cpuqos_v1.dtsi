@@ -1,0 +1,173 @@
+/*
+ * ARMv8 Foundation model DTS
+ * dts-v1
+ *
+ * Refer to the link to find more w/ corresponding CPUQoS version.
+ * https://wiki.mediatek.inc/display/MSTMainPage/CPUQoS+-+latest
+ */
+
+/ {
+    qos {
+		dts_version = <1 0>; /* Major, Minor version number */
+		/* waiting for the controlled feature to register, 0 for don't care, 1 for must.
+         * Set to 1 means a thread will waiting the cb to be registered infinitely.
+         */
+		ctrl_reg_opt = <0 0 0 0>;
+        cpu {
+            /* registry, do it for every N secs (default N=15) */
+            registry {
+                keep-0 {
+                    target = "TID";
+                    path = "/dev/cpuctl/limit/tasks";
+                    comm_pid = "system_server";
+                    comm_tid = "InputDispatcher";
+					pid_num = <1>;
+					tid_num = <1>;
+                };
+                // examples for usage of registry
+            };
+            /* output-level mapping, id should start from "1", "0" is reserved as disable */
+            output-map {
+                WRITER-1 {
+                    owner = "writer";
+					id = <1>; /* id SHOULD NOT BE 0, 0 is used as "NOT CONTROLLED" */
+                    write-0 {
+                        path = "/dev/cpuctl/limit/cpu.shares";
+                        output_set = "2", "64", "128", "256", "512", "768",
+						"896", "1024";
+                    };
+                    write-1 {
+                        path = "/dev/cpuctl/limit/cpu.cfs_quota_us";
+                        output_set = "5000", "6000", "7000", "8000", "10000",
+						"-1", "-1", "-1";
+                    };
+                };
+                // not used, but an example to use freezer
+                WRITER-2 {
+                    owner = "writer";
+					id = <2>;
+                    write-0 {
+                        path = "/dev/freezer/hate/freezer.state";
+                        output_set = "FROZEN", "FROZEN", "THAWED", "THAWED",
+						"THAWED", "THAWED", "THAWED", "THAWED";
+                    };
+                };
+                // AIPQ only support 0 to be DISABLE, others are treated as ENABLE.
+                AIPQ-1 {
+                    owner = "AIPQ";
+					id = <1>;
+                    output_set = <0 1 2 3 4 5 6 7>;
+                };
+                AIPQ-2 {
+                    owner = "AIPQ";
+					id = <2>;
+                    output_set = <0 0 0 0 0 0 7 7>;
+                };
+                // UCD control is not implemented yet, left as an example
+				UCD-1 {
+					owner = "UCD";
+					id = <1>;
+					output_set = <0 0 0 0 0 0 0 7>;
+				};
+                // EPOLL only support 1 client, CN is occupied by LoadingEqualizer
+				EPOLL-1 {
+					owner = "epoll";
+					id = <1>;
+					output_set = <0 1 2 3 4 5 6 7>;
+				};
+            };
+            scenarios {
+			    /* 
+				 * a scenario input can be mapped to multiple scenarios,
+				 * the first matched one is used.
+				 * "output_map" maps to the "id" in "output-map"
+				 */
+                SD-key {
+					output_map = <1 2 0 1>; /* map to WRITER, AIPQ, UCD, EPOLL */
+					delay_ctrl = <0 0 0 0>;
+					init_ctrl = <5>;
+					trigger_map = <90>; /* cpu loading threshold */
+                    input-events {
+                        /* events not specified are set as disabled */
+						key_press = <1>;
+						voice = <0>;
+						video = <0 2 0 0>; /* IGNORE, SD, IGNORE, IGNORE */
+                    };
+                };
+                SD-voc {
+					output_map = <0 2 0 1>; /* map to WRITER, AIPQ, UCD, EPOLL */
+					delay_ctrl = <0 0 0 0>;
+					init_ctrl = <5>;
+					trigger_map = <85>; /* cpu loading threshold */
+                    input-events {
+                        /* events not specified are set as disabled */
+						key_press = <0>;
+						voice = <1>;
+						video = <0 2 0 0>; /* IGNORE, SD, IGNORE, IGNORE */
+                    };
+                };
+                SD {
+					output_map = <0 2 0 1>; /* map to WRITER, AIPQ, UCD, EPOLL */
+					delay_ctrl = <0 0 0 0>;
+					init_ctrl = <7>;
+					trigger_map = <90>; /* cpu loading threshold */
+                    input-events {
+                        /* events not specified are set as disabled */
+						video = <0 2 0 0>; /* IGNORE, SD, IGNORE, IGNORE */
+                    };
+                };
+                SD-voc-key {
+					output_map = <1 2 0 1>; /* map to WRITER, AIPQ, UCD, EPOLL */
+					delay_ctrl = <1 1 0 1>;
+					init_ctrl = <3>;
+					trigger_map = <80>; /* cpu loading threshold */
+                    input-events {
+                        /* events not specified are set as disabled */
+						key_press = <1>;
+						voice = <1>;
+						video = <0 2 0 0>; /* IGNORE, SD, IGNORE, IGNORE */
+                    };
+                };
+                /* the default scenario, the order of scenarios matters */
+                default-key {
+					output_map = <1 0 0 1>; /* map to WRITER, AIPQ, UCD, EPOLL */
+                    /* cpu loading threshold, timing latency may cause cpu load > 100 sometimes.
+                     * Therefore, set to a number > 101 or 102 is fine to indicate DISABLE.
+                     */
+					trigger_map = <90>;
+                    input-events {
+                        /* events not specified are set as disabled */
+						key_press = <1>;
+						video = <0 0 0 0>; /* IGNORE, IGNORE, IGNORE, IGNORE */
+                    };
+                };
+                default {
+					output_map = <0 0 0 0>; /* map to WRITER, AIPQ, UCD, EPOLL */
+					trigger_map = <999>; /* cpu loading threshold, DISABLE */
+                    input-events {
+                        /* events not specified are set as disabled */
+						video = <0 0 0 0>; /* IGNORE, IGNORE, IGNORE, IGNORE */
+                    };
+                };
+                default-voc {
+					output_map = <0 0 0 0>; /* map to WRITER, AIPQ, UCD, EPOLL */
+					trigger_map = <999>; /* cpu loading threshold, DISABLE */
+                    input-events {
+                        /* events not specified are set as disabled */
+                        voice = <1>;
+						video = <0 0 0 0>; /* IGNORE, IGNORE, IGNORE, IGNORE */
+                    };
+                };
+                default-voc-key {
+					output_map = <1 0 0 1>; /* map to WRITER, AIPQ, UCD, EPOLL */
+					trigger_map = <90>; /* cpu loading threshold, DISABLE */
+                    input-events {
+						key_press = <1>;
+                        voice = <1>;
+						video = <0 0 0 0>; /* IGNORE, IGNORE, IGNORE, IGNORE */
+                    };
+                };
+            };
+        };
+    };
+};

@@ -1,0 +1,12 @@
+/dts-v1/;
+/plugin/;
+
+&firmware {
+	android {
+		vbmeta {
+			compatible = "android,vbmeta";
+			parts = "vbmeta,boot,system,vendor,linux_rootfs_a,3rd_a,tvservice,factory_a";
+			by_name_prefix ="/dev/block/platform/mstar_mci.0/by-name/vbmeta";
+		};
+	};
+};

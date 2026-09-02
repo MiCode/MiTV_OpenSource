@@ -1,0 +1,50 @@
+/dts-v1/;
+/plugin/; /* allow undefined references and record them */
+
+/ {
+	fragment@0 {
+		target = <&mtktv_regulator>;
+		__overlay__ {
+			regulator-min-microvolt = <900000>;
+			regulator-max-microvolt = <1200000>;
+			regulator-default = <1000000>;
+			regulator-port = <0>;
+			regulator-shift = <68>;
+		};
+	};
+};
+
+/ {
+	fragment@1 {
+		target = <&cpu_opp_table>;
+		__overlay__ {
+			boost-0 = <1300000000>;
+			boost-1 = <1300000000>;
+			boost-2 = <1300000000>;
+			boost-3 = <1300000000>;
+			boost-4 = <1300000000>;
+
+			opp-800000000 {
+				opp-hz = /bits/ 64 <800000000>;
+				opp-microvolt = <900000>;
+				opp-corner-offset = <0>;
+			};
+			opp-1000000000 {
+					opp-hz = /bits/ 64 <1000000000>;
+					opp-microvolt = <1000000>;
+					opp-corner-offset = <50000>;
+			};
+			opp-1200000000 {
+					opp-hz = /bits/ 64 <1200000000>;
+					opp-microvolt = <1100000>;
+					opp-corner-offset = <50000>;
+			};
+			opp-1300000000 {
+					opp-hz = /bits/ 64 <1300000000>;
+					opp-microvolt = <1150000>;
+					opp-corner-offset = <50000>;
+			};
+
+		};
+	};
+};

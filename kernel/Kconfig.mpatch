@@ -1,0 +1,1990 @@
+menu "Mstar Patch Apply (Only for control patch apply to kernel or not)"
+
+menu "Platform Porting layer"
+
+config MP_PLATFORM_ARCH_GENERAL
+bool "General Config For ARCH"
+default y
+
+config MP_PLATFORM_ARM
+bool "For ARM only"
+default y
+
+config MP_MULTIPLE_KSWAPDS
+bool "For speedup reclaim"
+default n
+
+config MP_PLATFORM_MIPS
+bool "For MIPS only"
+default y
+
+config MP_PLATFORM_PM
+bool "For PM Power Off"
+default y
+
+config MP_PLATFORM_ARM_64bit_PORTING
+bool "Mstar ARM64 porting modification"
+default y
+
+config MP_PLATFORM_ARM_32bit_PORTING
+bool "Mstar ARM32 porting modification"
+default y
+
+config MP_PLATFORM_ARM_64bit_BOOTARGS_NODTB
+bool "parsing bootargs without DTB"
+default n
+
+config MP_PLATFORM_MSTAR_LEGANCY_INTR
+bool "For Second Level Interrupt"
+default y
+
+config MP_PLATFORM_SW_PATCH_L2_SRAM_RMA
+bool "For L2 Sram RMA"
+default n
+
+config MP_PLATFORM_MIPS74K_TIMER
+bool "Increase waiting time for timer to response"
+default y
+
+config MP_PLATFORM_ARM_MSTAR_ETM
+bool "For ARM ETM patch"
+default y
+
+config MP_PLATFORM_INT_1_to_1_SPI
+bool "Interupts connect to gic spi separately"
+default n
+
+config MP_PLATFORM_NATIVE_IRQ
+	bool "Use native interrupt framework"
+	default n
+
+config MP_PLATFORM_ARM_PMU
+bool "For ARM PMU"
+default y
+
+config MP_PLATFORM_LZMA_BIN_COMPRESSED
+bool "Enable lzma bin compressed suppor"
+default y
+
+config MP_PLATFORM_CPU_SETTING
+bool "Enable DVFS(dynamic voltage frequency scaling) function"
+default y
+
+config MP_PLATFORM_T_SENSOR_OBSERVATION
+bool "Use kthread to observe the temperature difference"
+default n
+
+config MP_PLATFORM_FIXME
+bool "PLEASE FIX ME"
+default y
+
+config MP_PLATFORM_FIQ_IRQ_HYP
+bool "the extra irq and fiq which is designed for CA12"
+default n
+
+config MP_PLATFORM_UTOPIA2_INTERRUPT
+bool "Support utopia2 interrupt framework"
+default n
+
+config MP_PLATFORM_UTOPIA2K_EXPORT_SYMBOL
+bool "Export function for utopia2k"
+default n
+
+config MP_PLATFORM_ARM_MEMORY_HOTPLUG
+bool "Add lx_mem2 to high mem page after SN starting"
+default n
+
+config MP_PLATFORM_ARM64_DTB_IRQNUM_CHECK_OFF
+bool "turn off the dtb irq number check to avoid irq number which is bigger than 256 registering failed"
+default y
+
+config MP_PLATFORM_FRC_MAPPING
+bool "mapping 2MB for FRC usage, this is used for manhattan for now"
+default n
+
+config MP_PLATFORM_XC_EXT_MAPPING
+bool "mapping 2MB for XC_EXT usage(from mooney), this is used for mooney for now"
+default n
+
+config MP_PLATFORM_ARM64_POWER_CONSUMPTION
+bool "This code can test ARM64 power consumption for CAE"
+default n
+
+config MP_PLATFORM_SINGLE_CORE_PRIVATE_TIMER
+bool "For no smp system, add support of twd timer"
+default n
+
+config MP_PLATFORM_PIPE_FLUSH_DOUBLE_CHECK
+bool "Dummy read for flushing pipe correctness"
+default n
+
+config MP_PLATFORM_GIC_SET_MULTIPLE_CPUS
+bool "Use affinity hint to allow multiple CPUs for IRQ, depends on ARM_GIC && SMP. If this option is enabled, affinity is also set to all cpus present in affinity_hint and requested masks."
+default y
+
+config MP_PLATFORM_FORCE_INT_BALANCE
+bool "Distribute irq to all core forcelly"
+default n
+
+config MP_PLATFORM_3G_MIU0
+bool "3G miu0 memory platform"
+default n
+
+config ZRAM_RESERVED_DISKSIZE
+hex "carvout zram disksize at low-bandwidth address"
+default 0x8000000
+
+config MP_PLATFORM_PHY_ADDRESS_MORE_THAN_2G_SET_MOVABLE
+bool "address more than 2G set as Movable"
+default n
+
+menu "-------------------Debug Options-------------------"
+endmenu
+
+config MP_PLATFORM_ARCH_GENERAL_DEBUG
+bool "(Debug) General Config For ARCH"
+depends on MP_PLATFORM_ARCH_GENERAL
+default n
+
+config MP_PLATFORM_ARM_DEBUG
+bool "(Debug) For ARM only"
+depends on MP_PLATFORM_ARM
+default n
+
+config MP_PLATFORM_MIPS_DEBUG
+bool "(Debug) For MIPS only"
+depends on MP_PLATFORM_MIPS
+default n
+
+config MP_PLATFORM_PM_DEBUG
+bool "(Debug) For PM Power Off"
+depends on MP_PLATFORM_PM
+default n
+
+config MP_PLATFORM_ARM_64bit_PORTING_DEBUG
+bool "(Debug) Mstar ARM64 porting modification"
+depends on MP_PLATFORM_ARM_64bit_PORTING
+default n
+
+config MP_PLATFORM_ARM_32bit_PORTING_DEBUG
+bool "(Debug) Mstar ARM32 porting modification"
+depends on MP_PLATFORM_ARM_32bit_PORTING
+default n
+
+config MP_PLATFORM_ARM_64bit_BOOTARGS_NODTB_DEBUG
+bool "(Debug) parsing bootargs without DTB"
+depends on MP_PLATFORM_ARM_64bit_BOOTARGS_NODTB
+default n
+
+config MP_PLATFORM_MSTAR_LEGANCY_INTR_DEBUG
+bool "(Debug) For Second Level Interrupt"
+depends on MP_PLATFORM_MSTAR_LEGANCY_INTR
+default n
+
+config MP_PLATFORM_SW_PATCH_L2_SRAM_RMA_DEBUG
+bool "(Debug) For L2 Sram RMA"
+depends on MP_PLATFORM_SW_PATCH_L2_SRAM_RMA
+default n
+
+config MP_PLATFORM_MIPS74K_TIMER_DEBUG
+bool "(Debug) Increase waiting time for timer to response"
+depends on MP_PLATFORM_MIPS74K_TIMER
+default n
+
+config MP_PLATFORM_ARM_MSTAR_ETM_DEBUG
+bool "(Debug) For ARM ETM patch"
+depends on MP_PLATFORM_ARM_MSTAR_ETM
+default n
+
+config MP_PLATFORM_INT_1_to_1_SPI_DEBUG
+bool "(Debug) Interupts connect to gic spi separately"
+depends on MP_PLATFORM_INT_1_to_1_SPI
+default n
+
+config MP_PLATFORM_ARM_PMU_DEBUG
+bool "(Debug) For ARM PMU"
+depends on MP_PLATFORM_ARM_PMU
+default n
+
+config MP_PLATFORM_LZMA_BIN_COMPRESSED_DEBUG
+bool "(Debug) Enable lzma bin compressed suppor"
+depends on MP_PLATFORM_LZMA_BIN_COMPRESSED
+default n
+
+config MP_PLATFORM_CPU_SETTING_DEBUG
+bool "(Debug) Enable DVFS(dynamic voltage frequency scaling) function"
+depends on MP_PLATFORM_CPU_SETTING
+default n
+
+config MP_PLATFORM_T_SENSOR_OBSERVATION_DEBUG
+bool "(Debug) Use kthread to observe the temperature difference"
+depends on MP_PLATFORM_T_SENSOR_OBSERVATION
+default n
+
+config MP_PLATFORM_FIXME_DEBUG
+bool "(Debug) PLEASE FIX ME"
+depends on MP_PLATFORM_FIXME
+default n
+
+config MP_PLATFORM_FIQ_IRQ_HYP_DEBUG
+bool "(Debug) the extra irq and fiq which is designed for CA12"
+depends on MP_PLATFORM_FIQ_IRQ_HYP
+default n
+
+config MP_PLATFORM_UTOPIA2_INTERRUPT_DEBUG
+bool "(Debug) Support utopia2 interrupt framework"
+depends on MP_PLATFORM_UTOPIA2_INTERRUPT
+default n
+
+config MP_PLATFORM_UTOPIA2K_EXPORT_SYMBOL_DEBUG
+bool "(Debug) Export function for utopia2k"
+depends on MP_PLATFORM_UTOPIA2K_EXPORT_SYMBOL
+default n
+
+config MP_PLATFORM_ARM_MEMORY_HOTPLUG_DEBUG
+bool "(Debug) Add lx_mem2 to high mem page after SN starting"
+depends on MP_PLATFORM_ARM_MEMORY_HOTPLUG
+default n
+
+config MP_PLATFORM_ARM64_DTB_IRQNUM_CHECK_OFF_DEBUG
+bool "(Debug) turn off the dtb irq number check to avoid irq number which is bigger than 256 registering failed"
+depends on MP_PLATFORM_ARM64_DTB_IRQNUM_CHECK_OFF
+default n
+
+config MP_PLATFORM_FRC_MAPPING_DEBUG
+bool "(Debug) mapping 2MB for FRC usage, this is used for manhattan for now"
+depends on MP_PLATFORM_FRC_MAPPING
+default n
+
+config MP_PLATFORM_XC_EXT_MAPPING_DEBUG
+bool "(Debug) mapping 2MB for XC_EXT usage(from mooney), this is used for mooney for now"
+depends on MP_PLATFORM_XC_EXT_MAPPING
+default n
+
+config MP_PLATFORM_ARM64_POWER_CONSUMPTION_DEBUG
+bool "(Debug) This code can test ARM64 power consumption for CAE"
+depends on MP_PLATFORM_ARM64_POWER_CONSUMPTION
+default n
+
+config MP_PLATFORM_SINGLE_CORE_PRIVATE_TIMER_DEBUG
+bool "(Debug) For no smp system, add support of twd timer"
+depends on MP_PLATFORM_SINGLE_CORE_PRIVATE_TIMER
+default n
+
+config MP_PLATFORM_PIPE_FLUSH_DOUBLE_CHECK_DEBUG
+bool "(Debug) Dummy read for flushing pipe correctness"
+depends on MP_PLATFORM_PIPE_FLUSH_DOUBLE_CHECK
+default n
+
+config MP_PLATFORM_GIC_SET_MULTIPLE_CPUS_DEBUG
+bool "(Debug) Use affinity hint to allow multiple CPUs for IRQ, depends on ARM_GIC && SMP. If this option is enabled, affinity is also set to all cpus present in affinity_hint and requested masks."
+depends on MP_PLATFORM_GIC_SET_MULTIPLE_CPUS
+default n
+
+config MP_PLATFORM_PHY_ADDRESS_MORE_THAN_2G_SET_MOVABLE_DEBUG
+bool "address more than 2G set as Movable"
+depends on MP_PLATFORM_PHY_ADDRESS_MORE_THAN_2G_SET_MOVABLE
+default n
+
+endmenu
+
+menu "NAND Driver Porting layer"
+
+config MP_NAND_UBI
+bool  "Patch for UBI"
+default  y
+
+config MP_NAND_MTD
+bool  "Patch for MTD"
+default  y
+
+config MP_NAND_UBIFS
+bool "Patch for UBIFS"
+default  y
+
+config MP_NAND_Spansion
+bool "Patch for specific customers"
+default  y
+
+config MP_NAND_BBT
+bool "patch for the security mechanism of bbt"
+default  y
+
+config MP_NAND_BBT_SIZE
+bool "add bbt size compatibility and pair page effect"
+default  y
+
+menu "-------------------Debug Options-------------------"
+endmenu
+
+config MP_NAND_UBI_DEBUG
+bool "(Debug) Patch for UBI"
+depends on MP_NAND_UBI
+default n
+
+config MP_NAND_MTD_DEBUG
+bool "(Debug) Patch for MTD"
+depends on MP_NAND_MTD
+default n
+
+config MP_NAND_UBIFS_DEBUG
+bool "(Debug) Patch for UBIFS"
+depends on MP_NAND_UBIFS
+default n
+
+config MP_NAND_Spansion_DEBUG
+bool "(Debug) Patch for specific customers"
+depends on MP_NAND_Spansion
+default n
+
+config MP_NAND_BBT_DEBUG
+bool "(Debug) patch for the security mechanism of bbt"
+depends on MP_NAND_BBT
+default n
+
+config MP_NAND_BBT_SIZE_DEBUG
+bool "(Debug) add bbt size compatibility and pair page effect"
+depends on MP_NAND_BBT_SIZE
+default n
+
+endmenu
+
+menu "USB Driver Patch"
+
+config MP_USB_MSTAR
+bool  "MSTAR USB Porting"
+default  y
+
+menu "-------------------Debug Options-------------------"
+endmenu
+
+config MP_USB_MSTAR_DEBUG
+bool "(Debug) MSTAR USB Porting"
+depends on MP_USB_MSTAR
+default n
+
+endmenu
+
+menu "USB STR patch"
+
+config MP_USB_STR_PATCH
+bool "MSTAR Patch for usb str"
+default y
+
+menu "-------------------Debug Options-------------------"
+endmenu
+
+config MP_USB_STR_PATCH_DEBUG
+bool "(Debug) MSTAR Patch for usb str"
+depends on MP_USB_STR_PATCH
+default n
+
+endmenu
+
+menu "EMMC driver patch"
+
+config MP_EMMC_TRIM
+bool  "TRIM patch for EMMC driver"
+default  y
+
+menu "-------------------Debug Options-------------------"
+endmenu
+
+config MP_EMMC_TRIM_DEBUG
+bool "(Debug) TRIM patch for EMMC driver"
+depends on MP_EMMC_TRIM
+default n
+
+endmenu
+
+menu "JBD2 Patch"
+
+config MP_JBD2_REMOVE_JOURNAL_CHECKPOINT
+bool  "Remove the jbd2 journal checkpoint when plug usb abnormal"
+default  y
+
+menu "-------------------Debug Options-------------------"
+endmenu
+
+config MP_JBD2_REMOVE_JOURNAL_CHECKPOINT_DEBUG
+bool "(Debug) Remove the jbd2 journal checkpoint when plug usb abnormal"
+depends on MP_JBD2_REMOVE_JOURNAL_CHECKPOINT
+default n
+
+endmenu
+
+menu  "Print for autotest"
+
+config MP_CHECKPT_BOOT
+bool "Add a checkpoint for boottime autotest"
+default y
+
+menu "-------------------Debug Options-------------------"
+endmenu
+
+config MP_CHECKPT_BOOT_DEBUG
+bool "(Debug) Add a checkpoint for boottime autotest"
+depends on MP_CHECKPT_BOOT
+default n
+
+endmenu
+
+menu "Fix Compiler Error"
+
+config MP_COMPILER_ERROR
+bool "Please Fix Compiler Error"
+default y
+
+menu "-------------------Debug Options-------------------"
+endmenu
+
+config MP_COMPILER_ERROR_DEBUG
+bool "(Debug) Please Fix Compiler Error"
+depends on MP_COMPILER_ERROR
+default n
+
+endmenu
+
+menu "MSTAR Android Patch"
+
+config MP_Android_DUMMY_MSTAR_RTC
+bool "MSTAR Fake RTC For Android"
+default n
+
+config MP_Android_MSTAR_HARDCODE_LPJ
+bool "hardcode lpj for china customer"
+default n
+
+config MP_Android_MSTAR_RC_MAP_DEFINE
+bool "MStar rc map define, depend on CONFIG_MSTAR_IR_INPUT_DEVICE"
+default y
+
+config MP_Android_MSTAR_ADJUST_LOW_MEM_KILLER_POLICY
+bool "Adjust low_mem_killer's policy for low ram device"
+default n
+
+config MP_Android_MSTAR_CHANGE_IRQ_FILE_PERMISSION
+bool "Chagne /proc/irq/*/irq permission to 666"
+default y
+
+config MP_Android_MSTAR_PER_AN_VERSION_MODIFICATION
+bool "For each an_version, do specified modification for it"
+default y
+
+menu "-------------------Debug Options-------------------"
+endmenu
+
+config MP_Android_DUMMY_MSTAR_RTC_DEBUG
+bool "(Debug) MSTAR Fake RTC For Android"
+depends on MP_Android_DUMMY_MSTAR_RTC
+default n
+
+config MP_Android_MSTAR_HARDCODE_LPJ_DEBUG
+bool "(Debug) hardcode lpj for china customer"
+depends on MP_Android_MSTAR_HARDCODE_LPJ
+default n
+
+config MP_Android_MSTAR_RC_MAP_DEFINE_DEBUG
+bool "(Debug) MStar rc map define, depend on CONFIG_MSTAR_IR_INPUT_DEVICE"
+depends on MP_Android_MSTAR_RC_MAP_DEFINE
+default n
+
+config MP_Android_MSTAR_ADJUST_LOW_MEM_KILLER_POLICY_DEBUG
+bool "(Debug) Adjust low_mem_killer's policy for low ram device"
+depends on MP_Android_MSTAR_ADJUST_LOW_MEM_KILLER_POLICY
+default n
+
+config MP_Android_MSTAR_CHANGE_IRQ_FILE_PERMISSION_DEBUG
+bool "(Debug) Chagne /proc/irq/*/irq permission to 666"
+depends on MP_Android_MSTAR_CHANGE_IRQ_FILE_PERMISSION
+default n
+
+config MP_Android_MSTAR_PER_AN_VERSION_MODIFICATION_DEBUG
+bool "(Debug) For each an_version, do specified modification for it"
+depends on MP_Android_MSTAR_PER_AN_VERSION_MODIFICATION
+default n
+
+endmenu
+
+menu "MSTAR DEBUG_TOOL"
+
+config MP_DEBUG_TOOL_COREDUMP
+	bool "Enable COREDUMP Item"
+	default y
+	depends on ZLIB_DEFLATE
+
+config MP_DEBUG_TOOL_KDEBUG
+	bool "Enable KDEBUG Item"
+	default y
+
+config MP_DEBUG_TOOL_OPROFILE
+	bool "Enable OProfile Item"
+	default y
+
+config MP_DEBUG_TOOL_PMU_TIMER_MODE
+	bool "Enable PMU Timer Mode"
+	default n
+
+config MP_DEBUG_TOOL_VM_USED_SIZE_CHECK
+	bool "Add a Check for VM Space Usage"
+	default y
+
+config MP_DEBUG_TOOL_CHANGELIST
+	bool "Display Kernel Changelist"
+	default y
+
+config MP_DEBUG_TOOL_MEMORY_USAGE_MONITOR
+	bool "To monitor the order and migratetype of buddy system pages, and the page_alloc time cose"
+	default n
+
+config MP_DEBUG_TOOL_MEMORY_USAGE_TRACE
+	bool "Tools to trace all page allocation, we can used it to analysis mem leak, or trace migration failed pages"
+	default n
+
+config MP_DEBUG_TOOL_THREAD_CREATE_MONITOR
+	bool "Trace and print thead info creations"
+	default n
+
+config MP_DEBUG_TOOL_DUMP_STACK_EACH_CPU
+	bool  "dump each cpu's stack on timer"
+	default  n
+
+config MP_DEBUG_TOOL_SHOW_CPU_WORKQUEUE_INFO
+	bool "To show the cpu work_queue info(debug for dpm_wd_handler)"
+	default n
+
+config MP_DEBUG_TOOL_TASK_PRIORITY
+	bool "To detect task priority change"
+	default y
+
+config MP_DEBUG_TOOL_LOG_PREFIX
+	bool "Enable DEBUG prefix"
+	default n
+
+config MP_DEBUG_TOOL_MSTAR_PAGE_OWNER
+	bool "Enable a specified pfn owner info"
+	default n
+
+config MP_DEBUG_TOOL_SYSRQ
+	bool "Enable Mstar sysrq"
+	select MAGIC_SYSRQ
+	default n
+
+config MP_DISABLE_COREDUMP_FILEMODE_CHECK
+	bool "Disable coredump file mode check"
+	default n
+
+menu "-------------------Debug Options-------------------"
+endmenu
+
+config MP_DEBUG_TOOL_COREDUMP_DEBUG
+bool "(Debug) Enable COREDUMP Item"
+depends on MP_DEBUG_TOOL_COREDUMP
+default n
+
+config MP_DEBUG_TOOL_KDEBUG_DEBUG
+bool "(Debug) Enable KDEBUG Item"
+depends on MP_DEBUG_TOOL_KDEBUG
+default n
+
+config MP_DEBUG_TOOL_OPROFILE_DEBUG
+bool "(Debug) Enable OProfile Item"
+depends on MP_DEBUG_TOOL_OPROFILE
+default n
+
+config MP_DEBUG_TOOL_PMU_TIMER_MODE_DEBUG
+bool "(Debug) Enable PMU Timer Mode"
+depends on MP_DEBUG_TOOL_PMU_TIMER_MODE
+default n
+
+config MP_DEBUG_TOOL_VM_USED_SIZE_CHECK_DEBUG
+bool "(Debug) Add a Check for VM Space Usage"
+depends on MP_DEBUG_TOOL_VM_USED_SIZE_CHECK
+default n
+
+config MP_DEBUG_TOOL_CHANGELIST_DEBUG
+bool "(Debug) Display Kernel Changelist"
+depends on MP_DEBUG_TOOL_CHANGELIST
+default n
+
+config MP_DEBUG_TOOL_MEMORY_USAGE_MONITOR_DEBUG
+bool "(Debug) To monitor the order and migratetype of buddy system pages, and the page_alloc time cose"
+depends on MP_DEBUG_TOOL_MEMORY_USAGE_MONITOR
+default n
+
+config MP_DEBUG_TOOL_MEMORY_USAGE_TRACE_DEBUG
+bool "(Debug) Tools to trace all page allocation, we can used it to analysis mem leak, or trace migration failed pages"
+depends on MP_DEBUG_TOOL_MEMORY_USAGE_TRACE
+default n
+
+config MP_DEBUG_TOOL_THREAD_CREATE_MONITOR_DEBUG
+bool "(Debug) Trace and print thead info creations"
+depends on MP_DEBUG_TOOL_THREAD_CREATE_MONITOR
+default n
+
+config MP_DEBUG_TOOL_DUMP_STACK_EACH_CPU_DEBUG
+bool "(Debug) dump each cpu's stack on timer"
+depends on MP_DEBUG_TOOL_DUMP_STACK_EACH_CPU
+default n
+
+config MP_DEBUG_TOOL_SHOW_CPU_WORKQUEUE_INFO_DEBUG
+bool "(Debug) To show the cpu work_queue info(debug for dpm_wd_handler)"
+depends on MP_DEBUG_TOOL_SHOW_CPU_WORKQUEUE_INFO
+default n
+
+config MP_DEBUG_TOOL_TASK_PRIORITY_DEBUG
+bool "(Debug) To detect task priority change"
+depends on MP_DEBUG_TOOL_TASK_PRIORITY
+default n
+
+config MP_DEBUG_TOOL_LOG_PREFIX_DEBUG
+bool "(Debug) Enable DEBUG prefix"
+depends on MP_DEBUG_TOOL_LOG_PREFIX
+default n
+
+config MP_DEBUG_TOOL_MSTAR_PAGE_OWNER_DEBUG
+bool "(Debug) Enable a specified pfn owner info"
+depends on MP_DEBUG_TOOL_MSTAR_PAGE_OWNER
+default n
+
+endmenu
+
+menu "MIPS Mstar L2 Patch"
+
+config MP_MIPS_L2_CACHE
+bool "Enable MIPS L2 Cache Mechanism"
+default y
+
+menu "-------------------Debug Options-------------------"
+endmenu
+
+config MP_MIPS_L2_CACHE_DEBUG
+bool "(Debug) Enable MIPS L2 Cache Mechanism"
+depends on MP_MIPS_L2_CACHE
+default n
+
+endmenu
+
+menu "Core 2 control"
+
+config MP_SMP_STARTUP
+bool "Booting address of core2"
+default y
+
+menu "-------------------Debug Options-------------------"
+endmenu
+
+config MP_SMP_STARTUP_DEBUG
+bool "(Debug) Booting address of core2"
+depends on MP_SMP_STARTUP
+default n
+
+endmenu
+
+menu "MSTAR UART"
+
+config MP_UART_SERIAL_8250_RIU_BASE
+bool "RIU BASE for SERIAL 8250"
+default y
+
+menu "-------------------Debug Options-------------------"
+endmenu
+
+config MP_UART_SERIAL_8250_RIU_BASE_DEBUG
+bool "(Debug) RIU BASE for SERIAL 8250"
+depends on MP_UART_SERIAL_8250_RIU_BASE
+default n
+
+endmenu
+
+menu "NTFS3G CONTROL"
+
+config MP_NTFS3G_WRAP
+bool "Enable NTFS3G WRAP"
+default y
+
+menu "-------------------Debug Options-------------------"
+endmenu
+
+config MP_NTFS3G_WRAP_DEBUG
+bool "(Debug) Enable NTFS3G WRAP"
+depends on MP_NTFS3G_WRAP
+default n
+
+endmenu
+
+menu "MStar STR"
+
+config MP_MSTAR_STR_BASE
+bool "Enable MStar STR"
+default n
+
+config MP_MSTAR_STR_PROCESS_FREEZE_LATE
+bool "During STR suspend phase,support user mode process can be frozen after all user space processes but together with kernel threads"
+default y
+
+config MP_MSTAR_STR_OF_ORDER
+bool "Parser DTB to change driver STR order and policy"
+default y
+
+config MP_PNL_STR_CUST
+bool "Panel resume callback for custom"
+default n
+
+menu "-------------------Debug Options-------------------"
+endmenu
+
+config MP_MSTAR_STR_BASE_DEBUG
+bool "(Debug) Enable MStar STR"
+depends on MP_MSTAR_STR_BASE
+default n
+
+config MP_MSTAR_STR_PROCESS_FREEZE_LATE_DEBUG
+bool "(Debug) During STR suspend phase,support user mode process can be frozen after all user space processes but together with kernel threads"
+depends on MP_MSTAR_STR_PROCESS_FREEZE_LATE
+default n
+
+endmenu
+
+menu "CA7 Quad Core patch"
+
+config MP_CA7_QUAD_CORE_PATCH
+bool "MSTAR porting code for CA7 Quad-Core"
+default n
+
+menu "-------------------Debug Options-------------------"
+endmenu
+
+config MP_CA7_QUAD_CORE_PATCH_DEBUG
+bool "(Debug) MSTAR porting code for CA7 Quad-Core"
+depends on MP_CA7_QUAD_CORE_PATCH
+default n
+
+endmenu
+
+menu "Sync 3.1.10 setting"
+
+config MP_SYNC_3_1_10_SETTING_VMALLOC_SETTING
+bool "Sync 3.1.10 vmalloc setting"
+default n
+
+menu "-------------------Debug Options-------------------"
+endmenu
+
+config MP_SYNC_3_1_10_SETTING_VMALLOC_SETTING_DEBUG
+bool "(Debug) Sync 3.1.10 vmalloc setting"
+depends on MP_SYNC_3_1_10_SETTING_VMALLOC_SETTING
+default n
+
+endmenu
+
+menu "Reserved VMA Patch"
+
+config MP_RESERVED_VMA_PATCH_FOR_DFB
+bool "Reserved VMA for DFB"
+default y
+
+menu "-------------------Debug Options-------------------"
+endmenu
+
+config MP_RESERVED_VMA_PATCH_FOR_DFB_DEBUG
+bool "(Debug) Reserved VMA for DFB"
+depends on MP_RESERVED_VMA_PATCH_FOR_DFB
+default n
+
+endmenu
+
+menu "CMA PATCH"
+
+config MP_CMA_PATCH_LX_MEMORY_ALIGN_TO_8K_CHECK
+bool "cma_buffer will be re-mapped, so we need to ensure LX_MEMORY alignment"
+default y
+
+config MP_CMA_PATCH_CMA_MSTAR_DRIVER_BUFFER
+bool "Store MSTAR DRIVER CMA BUFFER INFO"
+default y
+
+config MP_CMA_PATCH_CMA_AGGRESSIVE_ALLOC
+bool "Aggressively allocate the pages on cma reserved memory, depends on CONFIG_CMA"
+default y
+
+config MP_CMA_PATCH_CMA_DYNAMIC_STRATEGY
+bool "Dynamic strategy to control allocation ratio between CMA and normal memory"
+default y
+
+config MP_CMA_PATCH_CMA_DEFAULT_BUFFER_LIMITTED_TO_LX0
+bool "cma default buffer will be limitted to LX0 MEM, otherwise, it will be limitted to arm_lowmem_limit"
+default y
+
+config MP_CMA_PATCH_FORCE_ALLOC_START_ADDR
+bool "dma_alloc_at_from_contiguous() will change start_addr if alloc_contig_range is failed and start is 0x0(offset of cma_pool is 0x0), this will lead dma_release_from_contiguous failed"
+default y
+
+config MP_CMA_PATCH_DELAY_FREE
+bool "Delay Free CMA Buffer"
+default y
+
+config MP_CMA_PATCH_MIGRATION_FILTER
+bool "compaction migrate bdev/journal buffer page is not allowed"
+default y
+
+config MP_CMA_PATCH_SMALLER_SOCKET_BUFFER
+bool "change the socket buffer max_order from 2 to 0, for preventing memory fragmentation issue"
+default y
+
+config MP_CMA_PATCH_DO_FORK_PAGE_POOL
+bool "reserve a page_pool of order 2 page, for preventing memory fragmentation issue when do_fork @ creating thread_info"
+default y
+
+config MP_CMA_PATCH_SMALLER_SLAB_PAGE
+bool "change the alloc_slab_page() size to min order 0"
+default y
+
+config MP_CMA_PATCH_ION_LOW_ORDER_ALLOC
+bool "change the ion only alloc order 0 page"
+default y
+depends on !MP_MMA_ENABLE
+
+config MP_CMA_PATCH_DISABLE_HIORDER
+bool "Disable all hiorder page alloc"
+default y
+
+config MP_CMA_PATCH_KSM_MIGRATION_FAILURE
+bool "Patch for KSM page migrating failture"
+default y
+
+config MP_CMA_PATCH_VM_UNMAP
+bool "Forcibly removed VM unuse pages"
+default y
+
+config MP_CMA_PATCH_SPARSEMEM_MAPPING_256MB
+bool "ARM64 SPARSEMEM SECTION bit use 28bit to mapping,for reduce mapping size"
+default n
+
+config MP_CMA_PATCH_MBOOT_STR_USE_CMA
+bool "We will reserver a cma_memory for mboot use. Reserver before str_suspend, and Release after str_resume"
+default y
+
+config MP_CMA_PATCH_COUNT_TIMECOST
+bool "If you need to count the time cost of each cma_ioctl"
+default y
+
+config MP_CMA_PATCH_POOL_UTOPIA_TO_KERNEL
+bool "CMA POOL utopia to kernel mode"
+default y
+
+config MP_CMA_PATCH_USE_UNMOVABLE_FILE_CACHE
+bool "use non-movable memory for ext4 superblock and jbd superblock"
+default y
+
+config MP_PLATFORM_SKIP_RELA_SORT_KO_LIST
+string "skipped ko list when do .rela sort"
+default none
+
+menu "-------------------Debug Options-------------------"
+endmenu
+
+config MP_CMA_PATCH_LX_MEMORY_ALIGN_TO_8K_CHECK_DEBUG
+bool "(Debug) cma_buffer will be re-mapped, so we need to ensure LX_MEMORY alignment"
+depends on MP_CMA_PATCH_LX_MEMORY_ALIGN_TO_8K_CHECK
+default n
+
+config MP_CMA_PATCH_CMA_MSTAR_DRIVER_BUFFER_DEBUG
+bool "(Debug) Store MSTAR DRIVER CMA BUFFER INFO"
+depends on MP_CMA_PATCH_CMA_MSTAR_DRIVER_BUFFER
+default n
+
+config MP_CMA_PATCH_CMA_AGGRESSIVE_ALLOC_DEBUG
+bool "(Debug) Aggressively allocate the pages on cma reserved memory, depends on CONFIG_CMA"
+depends on MP_CMA_PATCH_CMA_AGGRESSIVE_ALLOC
+default n
+
+config MP_CMA_PATCH_CMA_DYNAMIC_STRATEGY_DEBUG
+bool "(Debug) Dynamic strategy to control allocation ratio between CMA and normal memory"
+depends on MP_CMA_PATCH_CMA_DYNAMIC_STRATEGY
+default n
+
+config MP_CMA_PATCH_CMA_DEFAULT_BUFFER_LIMITTED_TO_LX0_DEBUG
+bool "(Debug) cma default buffer will be limitted to LX0 MEM, otherwise, it will be limitted to arm_lowmem_limit"
+depends on MP_CMA_PATCH_CMA_DEFAULT_BUFFER_LIMITTED_TO_LX0
+default n
+
+config MP_CMA_PATCH_FORCE_ALLOC_START_ADDR_DEBUG
+bool "(Debug) dma_alloc_at_from_contiguous() will change start_addr if alloc_contig_range is failed and start is 0x0(offset of cma_pool is 0x0), this will lead dma_release_from_contiguous failed"
+depends on MP_CMA_PATCH_FORCE_ALLOC_START_ADDR
+default n
+
+config MP_CMA_PATCH_DELAY_FREE_DEBUG
+bool "(Debug) Delay Free CMA Buffer"
+depends on MP_CMA_PATCH_DELAY_FREE
+default n
+
+config MP_CMA_PATCH_MIGRATION_FILTER_DEBUG
+bool "(Debug) compaction migrate bdev/journal buffer page is not allowed"
+depends on MP_CMA_PATCH_MIGRATION_FILTER
+default n
+
+config MP_CMA_PATCH_SMALLER_SOCKET_BUFFER_DEBUG
+bool "(Debug) change the socket buffer max_order from 2 to 0, for preventing memory fragmentation issue"
+depends on MP_CMA_PATCH_SMALLER_SOCKET_BUFFER
+default n
+
+config MP_CMA_PATCH_DO_FORK_PAGE_POOL_DEBUG
+bool "(Debug) reserve a page_pool of order 2 page, for preventing memory fragmentation issue when do_fork @ creating thread_info"
+depends on MP_CMA_PATCH_DO_FORK_PAGE_POOL
+default n
+
+config MP_CMA_PATCH_SMALLER_SLAB_PAGE_DEBUG
+bool "(Debug) change the alloc_slab_page() size to min order 0"
+depends on MP_CMA_PATCH_SMALLER_SLAB_PAGE
+default n
+
+config MP_CMA_PATCH_ION_LOW_ORDER_ALLOC_DEBUG
+bool "(Debug) change the ion only alloc order 0 page"
+depends on MP_CMA_PATCH_ION_LOW_ORDER_ALLOC
+default n
+
+config MP_CMA_PATCH_DISABLE_HIORDER_DEBUG
+bool "(Debug) Disable all hiorder page alloc"
+depends on MP_CMA_PATCH_DISABLE_HIORDER
+default n
+
+config MP_CMA_PATCH_KSM_MIGRATION_FAILURE_DEBUG
+bool "(Debug) Patch for KSM page migrating failture"
+depends on MP_CMA_PATCH_KSM_MIGRATION_FAILURE
+default n
+
+config MP_CMA_PATCH_VM_UNMAP_DEBUG
+bool "(Debug) Forcibly removed VM unuse pages"
+depends on MP_CMA_PATCH_VM_UNMAP
+default n
+
+config MP_CMA_PATCH_SPARSEMEM_MAPPING_256MB_DEBUG
+bool "(Debug) ARM64 SPARSEMEM SECTION bit use 28bit to mapping,for reduce mapping size"
+depends on MP_CMA_PATCH_SPARSEMEM_MAPPING_256MB
+default n
+
+config MP_CMA_PATCH_MBOOT_STR_USE_CMA_DEBUG
+bool "(Debug) We will reserver a cma_memory for mboot use. Reserver before str_suspend, and Release after str_resume"
+depends on MP_CMA_PATCH_MBOOT_STR_USE_CMA
+default n
+
+config MP_CMA_PATCH_COUNT_TIMECOST_DEBUG
+bool "(Debug) If you need to count the time cost of each cma_ioctl"
+depends on MP_CMA_PATCH_COUNT_TIMECOST
+default n
+
+config MP_CMA_PATCH_POOL_UTOPIA_TO_KERNEL_DEBUG
+bool "(Debug) CMA POOL utopia to kernel mode"
+depends on MP_CMA_PATCH_POOL_UTOPIA_TO_KERNEL
+default n
+
+config MP_CMA_PATCH_USE_UNMOVABLE_FILE_CACHE_DEBUG
+bool "(Debug) use non-movable memory for ext4 superblock and jbd superblock"
+depends on MP_CMA_PATCH_USE_UNMOVABLE_FILE_CACHE
+default n
+
+endmenu
+
+menu "Global timer use external crystal"
+
+config MP_GLOBAL_TIMER_12MHZ_PATCH
+bool "Global timer use 12MHz Xtali"
+default n
+
+menu "-------------------Debug Options-------------------"
+endmenu
+
+config MP_GLOBAL_TIMER_12MHZ_PATCH_DEBUG
+bool "(Debug) Global timer use 12MHz Xtali"
+depends on MP_GLOBAL_TIMER_12MHZ_PATCH
+default n
+
+endmenu
+
+menu "ION PATCH"
+
+config MP_ION_PATCH_MSTAR
+bool "Choose this option if you wish to use ion on an mstar platform, depend on ION"
+default y
+
+config MP_ION_PATCH_CACHE_FLUSH_MOD
+bool "modify cacheflush for user to call"
+default y
+
+config MP_ION_PATCH_FAKE_MEM
+bool "use fake cma to satisfy dma_buf"
+default y
+
+config MP_ION_PATCH_PERF
+	bool "ion perf patch"
+	default n
+
+menu "-------------------Debug Options-------------------"
+endmenu
+
+config MP_ION_PATCH_MSTAR_DEBUG
+bool "(Debug) Choose this option if you wish to use ion on an mstar platform, depend on ION"
+depends on MP_ION_PATCH_MSTAR
+default n
+
+config MP_ION_PATCH_CACHE_FLUSH_MOD_DEBUG
+bool "(Debug) modify cacheflush for user to call"
+depends on MP_ION_PATCH_CACHE_FLUSH_MOD
+default n
+
+config MP_ION_PATCH_FAKE_MEM_DEBUG
+bool "(Debug) use fake cma to satisfy dma_buf"
+depends on MP_ION_PATCH_FAKE_MEM
+default n
+
+endmenu
+
+menu  "Buddy System Alloc Patch"
+
+config MP_BUDDY_SYS_PATCH_FAIR_ZONE_ALLOC
+bool "enable fair zone allocation"
+default y
+
+menu "-------------------Debug Options-------------------"
+endmenu
+
+config MP_BUDDY_SYS_PATCH_FAIR_ZONE_ALLOC_DEBUG
+bool "(Debug) enable fair zone allocation"
+depends on MP_BUDDY_SYS_PATCH_FAIR_ZONE_ALLOC
+default n
+
+endmenu
+
+menu "Use static timer"
+
+config MP_STATIC_TIMER_CLOCK_SOURCE
+bool "Change timer clock source"
+default n
+
+menu "-------------------Debug Options-------------------"
+endmenu
+
+config MP_STATIC_TIMER_CLOCK_SOURCE_DEBUG
+bool "(Debug) Change timer clock source"
+depends on MP_STATIC_TIMER_CLOCK_SOURCE
+default n
+
+endmenu
+
+menu "SPARSE_MEMORY_PATCH"
+
+config MP_SPARSE_MEM_ENABLE_HOLES_IN_ZONE_CHECK
+bool "Check if we enable CONFIG_HOLES_IN_ZONE for ARM chips(MIPS does not eanbled)"
+default y
+
+menu "-------------------Debug Options-------------------"
+endmenu
+
+config MP_SPARSE_MEM_ENABLE_HOLES_IN_ZONE_CHECK_DEBUG
+bool "(Debug) Check if we enable CONFIG_HOLES_IN_ZONE for ARM chips(MIPS does not eanbled)"
+depends on MP_SPARSE_MEM_ENABLE_HOLES_IN_ZONE_CHECK
+default n
+
+endmenu
+
+menu "FAT Filesystem"
+
+config MP_FAT_VOLUME_LABEL
+bool "ENABLE FAT VOLUME LABEL"
+default y
+
+config MP_FAT_DEBUG_MESSAGE_CONTROL
+bool "CONTROL FAT DEBUG MESSAGE"
+default y
+
+config MP_FAT_FALLOCATE
+bool "MSTAR Patch for fat fallocate system call"
+default n
+
+menu "-------------------Debug Options-------------------"
+endmenu
+
+config MP_FAT_VOLUME_LABEL_DEBUG
+bool "(Debug) ENABLE FAT VOLUME LABEL"
+depends on MP_FAT_VOLUME_LABEL
+default n
+
+config MP_FAT_DEBUG_MESSAGE_CONTROL_DEBUG
+bool "(Debug) CONTROL FAT DEBUG MESSAGE"
+depends on MP_FAT_DEBUG_MESSAGE_CONTROL
+default n
+
+config MP_FAT_FALLOCATE_DEBUG
+bool "(Debug) MSTAR Patch for fat fallocate system call"
+depends on MP_FAT_FALLOCATE
+default n
+
+endmenu
+
+menu "KERNEL SELF NTFS CONTROL"
+
+config MP_NTFS_IOCTL
+bool "Enable NTFS IOCTL"
+default y
+
+config MP_NTFS_VOLUME_LABEL
+bool "Enable NTFS VOLUME LABEL"
+default y
+
+config MP_NTFS_VOLUME_ID
+bool "Enable NTFS VOLUME ID"
+default y
+
+config MP_NTFS_READ_PAGES
+	bool "ADD and Enable NTFS READ PAGES"
+	default n
+
+config MP_NTFS_2TB_PLUS_PARTITION_SUPPORT
+bool "Add 2TB+ Partition Support"
+default n
+
+config MP_NTFS_PAGE_CACHE_READAHEAD
+bool "Add page cache readahead for some operations to improve performance"
+default y
+
+menu "-------------------Debug Options-------------------"
+endmenu
+
+config MP_NTFS_IOCTL_DEBUG
+bool "(Debug) Enable NTFS IOCTL"
+depends on MP_NTFS_IOCTL
+default n
+
+config MP_NTFS_VOLUME_LABEL_DEBUG
+bool "(Debug) Enable NTFS VOLUME LABEL"
+depends on MP_NTFS_VOLUME_LABEL
+default n
+
+config MP_NTFS_VOLUME_ID_DEBUG
+bool "(Debug) Enable NTFS VOLUME ID"
+depends on MP_NTFS_VOLUME_ID
+default n
+
+config MP_NTFS_READ_PAGES_DEBUG
+bool "(Debug) ADD and Enable NTFS READ PAGES"
+depends on MP_NTFS_READ_PAGES
+default n
+
+config MP_NTFS_2TB_PLUS_PARTITION_SUPPORT_DEBUG
+bool "(Debug) Add 2TB+ Partition Support"
+depends on MP_NTFS_2TB_PLUS_PARTITION_SUPPORT
+default n
+
+config MP_NTFS_PAGE_CACHE_READAHEAD_DEBUG
+bool "(Debug) Add page cache readahead for some operations to improve performance"
+depends on MP_NTFS_PAGE_CACHE_READAHEAD
+default n
+
+endmenu
+
+menu "SCSI sd card"
+
+config MP_SCSI_MSTAR_SD_CARD_HOTPLUG
+bool "MSTAR Patch for sd card hotplug"
+default y
+
+config MP_SCSI_MSTAR_SD_CARD_IMMEDIATELY_UNPLUG
+bool "MSTAR Patch for sd card Immediately unplug after plug"
+default y
+
+config MP_SCSI_HD_SUSPEND
+bool "Do not clean cache when suspend"
+default y
+
+config MP_SCSI_MULTI_LUN
+bool "recognize multi-lun device's luns which are not the first lun"
+default y
+
+menu "-------------------Debug Options-------------------"
+endmenu
+
+config MP_SCSI_MSTAR_SD_CARD_HOTPLUG_DEBUG
+bool "(Debug) MSTAR Patch for sd card hotplug"
+depends on MP_SCSI_MSTAR_SD_CARD_HOTPLUG
+default n
+
+config MP_SCSI_MSTAR_SD_CARD_IMMEDIATELY_UNPLUG_DEBUG
+bool "(Debug) MSTAR Patch for sd card Immediately unplug after plug"
+depends on MP_SCSI_MSTAR_SD_CARD_IMMEDIATELY_UNPLUG
+default n
+
+config MP_SCSI_HD_SUSPEND_DEBUG
+bool "(Debug) Do not clean cache when suspend"
+depends on MP_SCSI_HD_SUSPEND
+default n
+
+config MP_SCSI_MULTI_LUN_DEBUG
+bool "(Debug) recognize multi-lun device's luns which are not the first lun"
+depends on MP_SCSI_MULTI_LUN
+default n
+
+endmenu
+
+menu "Enhane smartbit result"
+
+config MP_ETHERNET_MSTAR_ICMP_ENHANCE
+bool "MSTAR Patch for pass Smartbit ICMP throughput test"
+default n
+
+menu "-------------------Debug Options-------------------"
+endmenu
+
+config MP_ETHERNET_MSTAR_ICMP_ENHANCE_DEBUG
+bool "(Debug) MSTAR Patch for pass Smartbit ICMP throughput test"
+depends on MP_ETHERNET_MSTAR_ICMP_ENHANCE
+default n
+
+endmenu
+
+menu "WIFI relative patch"
+
+config MP_WIFI_INC_DEFAULT_DMA_COHERENT_POOL_SIZE
+bool "Increase default dma buffer value"
+default y
+
+menu "-------------------Debug Options-------------------"
+endmenu
+
+config MP_WIFI_INC_DEFAULT_DMA_COHERENT_POOL_SIZE_DEBUG
+bool "(Debug) Increase default dma buffer value"
+depends on MP_WIFI_INC_DEFAULT_DMA_COHERENT_POOL_SIZE
+default n
+
+endmenu
+
+menu "CIFS PATCH"
+
+config MP_CIFS_UNUSE_NTLMSSP_DEFAULT
+bool "Do not use ntlmssp when connect windows service default"
+default y
+
+menu "-------------------Debug Options-------------------"
+endmenu
+
+config MP_CIFS_UNUSE_NTLMSSP_DEFAULT_DEBUG
+bool "(Debug) Do not use ntlmssp when connect windows service default"
+depends on MP_CIFS_UNUSE_NTLMSSP_DEFAULT
+default n
+
+endmenu
+
+menu "Antutu relative patch"
+
+config MP_SCHED_POLICY_PATCH
+bool "Hide schedule policy for Antutu"
+default y
+
+config MP_SCHED_REALTIME_TASKS_DELAY_AVOIDED
+bool "Avoid schedule delay of the realtime tasks for Antutu"
+default y
+
+config MP_SCHED_POLICY_CHANGED_AVOIDED
+bool "Avoid antutu 6.0 changing policy"
+default y
+
+menu "-------------------Debug Options-------------------"
+endmenu
+
+config MP_SCHED_POLICY_PATCH_DEBUG
+bool "(Debug) Hide schedule policy for Antutu"
+depends on MP_SCHED_POLICY_PATCH
+default n
+
+config MP_SCHED_REALTIME_TASKS_DELAY_AVOIDED_DEBUG
+bool "(Debug) Avoid schedule delay of the realtime tasks for Antutu"
+depends on MP_SCHED_REALTIME_TASKS_DELAY_AVOIDED
+default n
+
+config MP_SCHED_POLICY_CHANGED_AVOIDED_DEBUG
+bool "(Debug) Avoid antutu 6.0 changing policy"
+depends on MP_SCHED_POLICY_CHANGED_AVOIDED
+default n
+
+endmenu
+
+menu  "Benchmark/app optimize"
+
+config MP_BENCHMARK_ACCEL87
+bool "enable accel87"
+depends on MSTAR_CPU_CLUSTER_CALIBRATING
+default y
+
+config MP_BENCHMARK_CPU_DVFS_SCALING
+bool "enable cpu_dvfs_scaling"
+depends on MSTAR_CPU_CLUSTER_CALIBRATING
+default y
+
+config MP_BENCHMARK_LAUNCH_BOOST
+bool "enable luanch boost"
+depends on MSTAR_CPU_CLUSTER_CALIBRATING
+default y
+
+menu "-------------------Debug Options-------------------"
+endmenu
+
+config MP_BENCHMARK_ACCEL87_DEBUG
+bool "(Debug) enable accel87"
+depends on MP_BENCHMARK_ACCEL87
+default n
+
+config MP_BENCHMARK_CPU_DVFS_SCALING_DEBUG
+bool "(Debug) enable cpu_dvfs_scaling"
+depends on MP_BENCHMARK_CPU_DVFS_SCALING
+default n
+
+config MP_BENCHMARK_LAUNCH_BOOST_DEBUG
+bool "(Debug) enable luanch boost"
+depends on MP_BENCHMARK_LAUNCH_BOOST
+default n
+
+endmenu
+
+menu "MS_PHY64 SN PATCH"
+
+config MP_PURE_SN_32BIT
+bool "MS_PHY64 = 32bit"
+default n
+
+menu "-------------------Debug Options-------------------"
+endmenu
+
+config MP_PURE_SN_32BIT_DEBUG
+bool "(Debug) MS_PHY64 = 32bit"
+depends on MP_PURE_SN_32BIT
+default n
+
+endmenu
+
+menu "NEW UTOPIA 32BIT PATCH"
+
+config MP_NEW_UTOPIA_32BIT
+bool "NEW UTOPIA 32BIT PATCH"
+default n
+
+menu "-------------------Debug Options-------------------"
+endmenu
+
+config MP_NEW_UTOPIA_32BIT_DEBUG
+bool "(Debug) NEW UTOPIA 32BIT PATCH"
+depends on MP_NEW_UTOPIA_32BIT
+default n
+
+endmenu
+
+menu  "DVFS_MODIFICATION For Kernel"
+
+config MP_DVFS_FORCE_SET_TARGET_FREQ
+bool "forcibly set target freq while in need(ex: T_Sensor)"
+default y
+
+config MP_DVFS_FORCE_USE_ONE_FREQ
+bool "forcibly the target_freq to be same(1100MHz), only t-sensor works"
+default n
+
+config MP_DVFS_FORCE_PINGO_TEST
+bool "forcibly the target_freq to be same(1100MHz), even t-sensor will not work"
+default n
+
+config MP_DVFS_FLOW_DEBUG_MESSAGE
+bool "add log {} to specify if a dvfs flow is OK"
+default n
+
+config MP_DVFS_INTERACTIVE_PATCH
+bool "If you use interactive mode, you must enable this"
+default n
+
+config MP_DVFS_CPUHOTPLUG_USE_ONLINE_CPU_MAX_LOAD
+bool "let dvfs with cpuhotplug use the max_load of online cpus, instead of the max_load of cpu0 (only CPUHOTPLUG is y, then you can set this)"
+default n
+
+config MP_DVFS_FREQ_TABLE_GET_INDEX_PATCH
+bool "at freq_table_get_index(), we may have some freq not belonging to freq_table, print notification message and do not use index(-1) at cpufreq_stats_update()"
+default y
+
+config MP_DVFS_VID_ONLY
+bool "for SN use, SN will use fixed cpufreq, but SN needs to change cpu_power, and the T_sensor check will only do reboot"
+default n
+
+menu "-------------------Debug Options-------------------"
+endmenu
+
+config MP_DVFS_FORCE_SET_TARGET_FREQ_DEBUG
+bool "(Debug) forcibly set target freq while in need(ex: T_Sensor)"
+depends on MP_DVFS_FORCE_SET_TARGET_FREQ
+default n
+
+config MP_DVFS_FORCE_USE_ONE_FREQ_DEBUG
+bool "(Debug) forcibly the target_freq to be same(1100MHz), only t-sensor works"
+depends on MP_DVFS_FORCE_USE_ONE_FREQ
+default n
+
+config MP_DVFS_FORCE_PINGO_TEST_DEBUG
+bool "(Debug) forcibly the target_freq to be same(1100MHz), even t-sensor will not work"
+depends on MP_DVFS_FORCE_PINGO_TEST
+default n
+
+config MP_DVFS_FLOW_DEBUG_MESSAGE_DEBUG
+bool "(Debug) add log {} to specify if a dvfs flow is OK"
+depends on MP_DVFS_FLOW_DEBUG_MESSAGE
+default n
+
+config MP_DVFS_INTERACTIVE_PATCH_DEBUG
+bool "(Debug) If you use interactive mode, you must enable this"
+depends on MP_DVFS_INTERACTIVE_PATCH
+default n
+
+config MP_DVFS_CPUHOTPLUG_USE_ONLINE_CPU_MAX_LOAD_DEBUG
+bool "(Debug) let dvfs with cpuhotplug use the max_load of online cpus, instead of the max_load of cpu0 (only CPUHOTPLUG is y, then you can set this)"
+depends on MP_DVFS_CPUHOTPLUG_USE_ONLINE_CPU_MAX_LOAD
+default n
+
+config MP_DVFS_FREQ_TABLE_GET_INDEX_PATCH_DEBUG
+bool "(Debug) at freq_table_get_index(), we may have some freq not belonging to freq_table, print notification message and do not use index(-1) at cpufreq_stats_update()"
+depends on MP_DVFS_FREQ_TABLE_GET_INDEX_PATCH
+default n
+
+config MP_DVFS_VID_ONLY_DEBUG
+bool "(Debug) for SN use, SN will use fixed cpufreq, but SN needs to change cpu_power, and the T_sensor check will only do reboot"
+depends on MP_DVFS_VID_ONLY
+default n
+
+endmenu
+
+menu "CACHE PATCH"
+
+config MP_CACHE_DROP
+bool "Drop cache in kernel thread"
+default n
+
+menu "-------------------Debug Options-------------------"
+endmenu
+
+config MP_CACHE_DROP_DEBUG
+bool "(Debug) Drop cache in kernel thread"
+depends on MP_CACHE_DROP
+default n
+
+endmenu
+
+menu "Antutu relative patch"
+
+config MP_ANTUTU_MSTAR_HIDE_SCHED_POLICY
+bool "Hide schedule policy for Antutu"
+default y
+
+config MP_ANTUTU_MSTAR_FAKE_MEM_TOTAL
+bool "Fake memtotal for Antutu6"
+default y
+
+menu "-------------------Debug Options-------------------"
+endmenu
+
+config MP_ANTUTU_MSTAR_HIDE_SCHED_POLICY_DEBUG
+bool "(Debug) Hide schedule policy for Antutu"
+depends on MP_ANTUTU_MSTAR_HIDE_SCHED_POLICY
+default n
+
+config MP_ANTUTU_MSTAR_FAKE_MEM_TOTAL_DEBUG
+bool "(Debug) Fake memtotal for Antutu6"
+depends on MP_ANTUTU_MSTAR_FAKE_MEM_TOTAL
+default n
+
+endmenu
+
+menu "Kernel forward/backford compatibility"
+
+config MP_KERNEL_COMPAT_PATCH_FIX_INODE_CLUSTER_LIST
+bool "port relative code from lower kernel version"
+default y
+
+menu "-------------------Debug Options-------------------"
+endmenu
+
+config MP_KERNEL_COMPAT_PATCH_FIX_INODE_CLUSTER_LIST_DEBUG
+bool "(Debug) port relative code from lower kernel version"
+depends on MP_KERNEL_COMPAT_PATCH_FIX_INODE_CLUSTER_LIST
+default n
+
+endmenu
+
+menu "MULTI-CLUSTER PATCH"
+
+config MP_MULTI_CLUSTER_32BIT_CPUID
+bool "32bit kernel need to change the cpuid while using multi-cluster"
+default n
+
+menu "-------------------Debug Options-------------------"
+endmenu
+
+config MP_MULTI_CLUSTER_32BIT_CPUID_DEBUG
+bool "(Debug) 32bit kernel need to change the cpuid while using multi-cluster"
+depends on MP_MULTI_CLUSTER_32BIT_CPUID
+default n
+
+endmenu
+
+menu "HMP GTS scheduler"
+
+config MP_HMP_GTS_SCHEDULER_CUSTOMIZED_RULES
+bool "HMP GTS scheduler customized rules, depend on CONFIG_SCHED_HMP"
+default y
+
+config MP_HMP_GTS_SCHEDULER_AGTS
+bool "HMP adaptive GTS scheduler, depend on CONFIG_SCHED_HMP"
+default y
+
+menu "-------------------Debug Options-------------------"
+endmenu
+
+config MP_HMP_GTS_SCHEDULER_CUSTOMIZED_RULES_DEBUG
+bool "(Debug) HMP GTS scheduler customized rules, depend on CONFIG_SCHED_HMP"
+depends on MP_HMP_GTS_SCHEDULER_CUSTOMIZED_RULES
+default n
+
+config MP_HMP_GTS_SCHEDULER_AGTS_DEBUG
+bool "(Debug) HMP adaptive GTS scheduler, depend on CONFIG_SCHED_HMP"
+depends on MP_HMP_GTS_SCHEDULER_AGTS
+default n
+
+endmenu
+
+menu "Page Global Directory"
+
+config MP_PAGE_GLOBAL_DIRECTORY_SPEEDUP
+bool "Speedup pgd alloc and free"
+default y
+
+menu "-------------------Debug Options-------------------"
+endmenu
+
+config MP_PAGE_GLOBAL_DIRECTORY_SPEEDUP_DEBUG
+bool "(Debug) Speedup pgd alloc and free"
+depends on MP_PAGE_GLOBAL_DIRECTORY_SPEEDUP
+default n
+
+endmenu
+
+menu "PCI PATCH"
+
+config MP_PCI_PATCH_ADDR_TRANSLATE
+bool "Address traslate from CPU bus to PCI bus"
+default n
+
+menu "-------------------Debug Options-------------------"
+endmenu
+
+config MP_PCI_PATCH_ADDR_TRANSLATE_DEBUG
+bool "(Debug) Address traslate from CPU bus to PCI bus"
+depends on MP_PCI_PATCH_ADDR_TRANSLATE
+default n
+
+endmenu
+
+menu "PCI Driver Patch"
+
+config MP_PCI_MSTAR
+bool "MStar PCI driver porting"
+default n
+
+menu "-------------------Debug Options-------------------"
+endmenu
+
+config MP_PCI_MSTAR_DEBUG
+bool "(Debug) MStar PCI driver porting"
+depends on MP_PCI_MSTAR
+default n
+
+endmenu
+
+menu "PRINTK"
+
+config MP_PRINTK_NO_CONSOLE_VERBOSE
+bool "for print too much after coredump"
+default n
+
+menu "-------------------Debug Options-------------------"
+endmenu
+
+config MP_PRINTK_NO_CONSOLE_VERBOSE_DEBUG
+bool "(Debug) for print too much after coredump"
+depends on MP_PRINTK_NO_CONSOLE_VERBOSE
+default n
+
+endmenu
+
+menu "seq_lock"
+
+config MP_SEQLOCK_RCU_STALL
+bool "disbale interrupt"
+default y
+
+menu "-------------------Debug Options-------------------"
+endmenu
+
+config MP_SEQLOCK_RCU_STALL_DEBUG
+bool "(Debug) disbale interrupt"
+depends on MP_SEQLOCK_RCU_STALL
+default n
+
+endmenu
+
+menu "R2TEE STR"
+
+config MP_R2_STR_ENABLE
+bool "Support R2TEE STR"
+default n
+
+menu "-------------------Debug Options-------------------"
+endmenu
+
+config MP_R2_STR_ENABLE_DEBUG
+bool "(Debug) Support R2TEE STR"
+depends on MP_R2_STR_ENABLE
+default n
+
+endmenu
+
+menu "HRT Timer Patch"
+
+config MP_HRT_TIMER_ENABLE
+bool "enable hrt timer patch"
+default n
+
+menu "-------------------Debug Options-------------------"
+endmenu
+
+config MP_HRT_TIMER_ENABLE_DEBUG
+bool "(Debug) enable hrt timer patch"
+depends on MP_HRT_TIMER_ENABLE
+default n
+
+endmenu
+
+menu  "GEMAC Driver Patch"
+
+config MP_GEMAC_MII_PHY_STAT
+bool  "PHY Specific Status Register for MII"
+default y
+
+config MP_GEMAC_IOC_DEV_PRIVATE
+bool  "Ioctl Device for Private Usage"
+default y
+
+menu "-------------------Debug Options-------------------"
+endmenu
+
+config MP_GEMAC_MII_PHY_STAT_DEBUG
+bool "(Debug) PHY Specific Status Register for MII"
+depends on MP_GEMAC_MII_PHY_STAT
+default n
+
+config MP_GEMAC_IOC_DEV_PRIVATE_DEBUG
+bool "(Debug) Ioctl Device for Private Usage"
+depends on MP_GEMAC_IOC_DEV_PRIVATE
+default n
+
+endmenu
+
+menu "Intelligent power allcation"
+
+config MP_IPA_BOOST_CLIENT_FIRST_PRIORITY
+bool "App/IR boost client priority greater than IPA"
+default y
+
+config MP_IPA_WITH_MSTAR_THERMAL_PROTECT
+bool "mutual exclusive with mstar thermal protect"
+default y
+
+config MP_IPA_CORNER_SUSTAINABLE_POWER
+bool "corner chip has different sustainable power budget"
+default y
+
+menu "-------------------Debug Options-------------------"
+endmenu
+
+config MP_IPA_BOOST_CLIENT_FIRST_PRIORITY_DEBUG
+bool "(Debug) App/IR boost client priority greater than IPA"
+depends on MP_IPA_BOOST_CLIENT_FIRST_PRIORITY
+default n
+
+config MP_IPA_WITH_MSTAR_THERMAL_PROTECT_DEBUG
+bool "(Debug) mutual exclusive with mstar thermal protect"
+depends on MP_IPA_WITH_MSTAR_THERMAL_PROTECT
+default n
+
+config MP_IPA_CORNER_SUSTAINABLE_POWER_DEBUG
+bool "(Debug) corner chip has different sustainable power budget"
+depends on MP_IPA_CORNER_SUSTAINABLE_POWER
+default n
+
+endmenu
+
+menu  "MStar Memory Allocator"
+
+config MP_MMA_ENABLE
+bool "Enable MStar Memory Allocator"
+select ION
+select ION_SYSTEM_HEAP
+default n
+
+config MP_MMA_MPU_SEC
+bool "Enable MPU secure memory allocate for MMA"
+default n
+
+config MP_MMA_NUMA_AND_WNDRAM
+bool "Enable NUMA and Wide-Narrow Data Path DRAM"
+default n
+
+config MP_MMA_UMA_WITH_NARROW
+bool "The dma zone is configured as mpu area"
+default n
+select ZONE_DMA
+
+config MP_ASYM_UMA_ALLOCATION
+bool "Enable asymmetric UMA memory allocation"
+default y
+select ZONE_DMA
+select CPUSETS
+
+menu "-------------------Debug Options-------------------"
+endmenu
+
+config MP_MMA_ENABLE_DEBUG
+bool "(Debug) Enable MStar Memory Allocator"
+depends on MP_MMA_ENABLE
+default n
+
+config MP_MMA_MPU_SEC_DEBUG
+bool "(Debug) Enable MPU secure memory allocate for MMA"
+depends on MP_MMA_MPU_SEC
+default n
+
+config MP_MMA_NUMA_AND_WNDRAM_DEBUG
+bool "(Debug) Enable NUMA and Wide-Narrow Data Path DRAM"
+depends on MP_MMA_NUMA_AND_WNDRAM
+default n
+
+config MP_MMA_UMA_WITH_NARROW_DEBUG
+bool "(Debug) The dma zone is configured as mpu area"
+depends on MP_MMA_UMA_WITH_NARROW
+default n
+
+config MP_ASYM_UMA_ALLOCATION_DEBUG
+bool "(Debug) Enable asymmetric UMA memory allocation"
+depends on MP_ASYM_UMA_ALLOCATION
+default n
+
+endmenu
+
+menu "Iommu Patch"
+
+config MP_IOMMU_CMA_PATCH
+bool "patch for cma in iommu"
+default y
+
+config MP_IOMMU_CMA_PATCH_DEBUG_AND_TEST
+bool "patch for debug and test for cma in iommu"
+default y
+
+menu "-------------------Debug Options-------------------"
+endmenu
+
+config MP_IOMMU_CMA_PATCH_DEBUG
+bool "(Debug) patch for cma in iommu"
+depends on MP_IOMMU_CMA_PATCH
+default n
+
+config MP_IOMMU_CMA_PATCH_DEBUG_AND_TEST_DEBUG
+bool "(Debug) patch for debug and test for cma in iommu"
+depends on MP_IOMMU_CMA_PATCH_DEBUG_AND_TEST
+default n
+
+endmenu
+
+menu "Energy Aware Scheduler"
+
+config MP_EAS_BOOST_PERFORMANCE
+bool "EAS boost performance"
+default y
+
+config MP_EAS_ADAPTIVE
+bool "EAS set boost value adaptively"
+default y
+
+menu "-------------------Debug Options-------------------"
+endmenu
+
+config MP_EAS_BOOST_PERFORMANCE_DEBUG
+bool "(Debug) EAS boost performance"
+depends on MP_EAS_BOOST_PERFORMANCE
+default n
+
+config MP_EAS_ADAPTIVE_DEBUG
+bool "(Debug) EAS set boost value adaptively"
+depends on MP_EAS_ADAPTIVE
+default n
+
+endmenu
+
+menu "Performance improvement for audio decoding"
+
+config MP_AUDIO_DECODE_PERFORMANCE
+bool "Reduce performance influence of other processes on audio decoding"
+default y
+
+menu "-------------------Debug Options-------------------"
+endmenu
+
+config MP_AUDIO_DECODE_PERFORMANCE_DEBUG
+bool "(Debug) Reduce performance influence of other processes on audio decoding"
+depends on MP_AUDIO_DECODE_PERFORMANCE
+default n
+
+endmenu
+
+menu "ZRAM over genpool"
+
+config ZRAM_OVER_GENPOOL
+bool "zram over genpool, reserved memory in the range of low-bandwidth area"
+default n
+
+menu "-------------------Debug Options-------------------"
+endmenu
+
+config ZRAM_OVER_GENPOOL_DEBUG
+bool "(Debug) zram over genpool, reserved memory in the range of low-bandwidth area"
+depends on ZRAM_OVER_GENPOOL
+default n
+
+endmenu
+
+menu "USB video class"
+
+config MP_UVC_REFACTOR_USB_DISCONNECT
+bool "Refactor teardown of uvc on USB disconnect"
+default y
+
+menu "-------------------Debug Options-------------------"
+endmenu
+
+config MP_UVC_REFACTOR_USB_DISCONNECT_DEBUG
+bool "(Debug) Refactor teardown of uvc on USB disconnect"
+depends on MP_UVC_REFACTOR_USB_DISCONNECT
+default n
+
+endmenu
+
+menu "Amazon non root AP"
+
+config MP_AMAZON_NON_ROOT_SECURE
+bool "Secure bypass"
+default n
+
+config MP_AMAZON_NON_ROOT_CAP_DELETE
+bool "delete cap"
+default n
+
+menu "-------------------Debug Options-------------------"
+endmenu
+
+config MP_AMAZON_NON_ROOT_SECURE_DEBUG
+bool "(Debug) print cap error log"
+depends on MP_AMAZON_NON_ROOT_SECURE
+default n
+
+config MP_AMAZON_NON_ROOT_SECURE_DEBUG_BYPASS_ALL
+bool "(Debug) bypass all cap check"
+depends on MP_AMAZON_NON_ROOT_SECURE_DEBUG
+default n
+endmenu
+
+menu "Abnormal interrupt detector"
+
+config MP_INTR_DETECTOR
+	bool "Abnormal interrupt hanging detector"
+	depends on TRACEPOINTS
+	default y
+
+endmenu
+
+menu "Potential Bug Detector"
+
+config MP_POTENTIAL_BUG
+	bool "Potential Bug Detector detector"
+	select DEBUG_ATOMIC_SLEEP
+	default n
+
+endmenu
+
+menu "IRQ Stack"
+
+config MP_IRQ_STACK
+	bool "Use separate kernel stack when handling interrupts for ARM"
+	depends on ARM
+	default n
+	help
+	  Say Y here if you want to use separate kernel stack to handle both
+	  hard and soft interrupts. As reduceing memory footprint regarding
+	  kernel stack, it benefits low memory platforms.
+
+	  If in doubt, say N.
+
+config MP_IRQ_STACK_WITH_FCM
+	bool "IRQ stack with FCM"
+	depends on MP_IRQ_STACK
+	default n
+
+menu "-------------------Debug Options-------------------"
+endmenu
+
+config MP_IRQ_STACK_DEBUG
+	bool "(Debug) Use separate kernel stack when handling interrupts for ARM"
+	depends on MP_IRQ_STACK
+	default n
+
+config MP_IRQ_STACK_WITH_FCM_DEBUG
+	bool "(Debug) IRQ stack with FCM"
+	depends on MP_IRQ_STACK_WITH_FCM
+	default n
+endmenu
+
+menu "CHIP One HAL"
+
+config ONEHAL_ARCH_SUPPORT
+	bool "Enable one hal architecture"
+	default n
+	help
+	  Select if one hal architecture is support or not.
+	  if support, say 'Y'
+
+config ONEHAL_VERSION
+	string "One hal version"
+	default 1_0
+	depends on ONEHAL_ARCH_SUPPORT
+	help
+	  Select build version of one hal.
+endmenu
+
+menu "Android R"
+config MP_WAKEUP_SOURCE_SYSFS_STAT
+	bool "Enable one hal architecture"
+	default y
+	help
+	  To notify wakeup source register API change.
+	  This is a tmp solution for feature upgrade notification
+endmenu
+
+menu "MTK PSTORE"
+config MTK_PSTORE
+	bool "Reserve persistent RAM after panic"
+	default n
+	help
+	  For using ramoops/pstore, the persistent Ram has to be reserved.
+endmenu
+endmenu

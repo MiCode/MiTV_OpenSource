@@ -1,0 +1,29 @@
+/dts-v1/;
+/plugin/;
+/include/ "overlay_avb_SysAsRoot.dtsi"
+
+&switch_gpio {
+	switch-gpio = <66>;
+};
+
+&gpio_wifi_ctl {
+	wifi-ctl-gpio = <17>;
+	wifi-ctl-invert = <1>;
+	wifi-ctl-delayms = <100>;
+	wifi-ctl-powerdown = <0>;
+};
+
+&soc_m7332_sdio {
+	cd-option = <0x1>, <0x322D>, <0x64>, <0x04>;
+};
+
+&gpio_usb_vbus_ctl {
+	usb-otg-port = <1>;             /* OTG port number */
+	vbus-gpio-p1 = <9>;            /* Host port1 power control GPIO */
+	vbus-gpio-active-p1 = <1>;      /* GPIO active 1:high, 0:low*/
+};
+
+&gpio_otg_vbus_ctl {
+	vbus-switch-gpio = <9>;        /* OTG power control GPIO */
+	vbus-switch-active = <1>;       /* GPIO active 1:high, 0:low*/
+};

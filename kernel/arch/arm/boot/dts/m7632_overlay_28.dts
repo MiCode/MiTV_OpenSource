@@ -1,0 +1,13 @@
+/dts-v1/;
+/plugin/;
+
+&firmware {
+	android {
+		dtbo_overlay = "__overlay_success";
+		dtbo_addNode = "__AddNode_success";
+	};
+	android_test {
+		dtbo_addSubeNode = "__adddd_subeNode_property";
+	};
+
+};

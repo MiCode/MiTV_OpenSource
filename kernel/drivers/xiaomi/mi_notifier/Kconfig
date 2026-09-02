@@ -1,0 +1,5 @@
+config XIAOMI_NOTIFIER
+	bool "For notify some event between different driver"
+	default N
+	help
+	  Say Y here if you need.

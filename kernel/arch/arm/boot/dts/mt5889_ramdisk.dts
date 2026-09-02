@@ -1,0 +1,195 @@
+/*
+ * ARM Ltd.
+ *
+ * ARMv8 Foundation model DTS
+ */
+
+/dts-v1/;
+#include "mt5889.dtsi"
+
+/ {
+	chosen {
+         bootargs = "root=/dev/ram0 rw init=/sbin/init ip=dhcp console=ttyS0,38400,LX_MEM=0x03000000";
+        };
+
+	memory@20200000 {
+		device_type = "memory";
+		reg = <0x00000000 0x20200000 0x00000000 0x08000000>;
+	};
+
+	mtk_mdla: mdla {
+		  compatible = "mtk,mdla";
+		  reg =   <0x0 0x1f3e8000 0x0 0x1000>,
+		      <0x0 0x1f3e9000 0x0 0x1000>,
+		      <0x0 0x1f3ea000 0x0 0x1000>,
+		      <0x0 0x1fe00000 0x0 0x80000>;
+		  interrupts = <0x0 0xbc 0x4>;
+	};
+
+	mtk_edmc: edmc@1078c000 {
+		  compatible = "mtk,edmc";
+		  reg = <0x0 0x1f3ec000 0x0 0x1000>;
+		  interrupts = <0x0 0xbe 0x4>;
+	};
+
+	gpio: gpio {
+		compatible = "mstar,gpio";
+		gpio-controller;
+		#gpio-cells = <1>;
+		interrupt-controller;
+		skip-save-status = <6 44>;
+		#interrupt-cells = <2>; /* cell name GPIO_PAD, trigger-type*/
+	};
+
+	switch_gpio {
+		compatible = "mstar,switch-gpio";
+		switch-name = "h2w";
+		switch-gpio = <999>;
+		switch-inverse = <0>;
+	};
+
+	i2c0: i2c@0 {
+		compatible = "mstar,swi2c";
+		bus-index = <0>;
+		sda-gpio = <55>;
+		scl-gpio = <54>;
+		speed-khz = <100>;
+		def-delay = <100>;
+		retries = <5>;
+		status = "okay";
+		iic-mode = <1>;
+		hw-port = <3>;
+		pad-mux = <25>;
+	};
+
+	i2c1: i2c@1 {
+		compatible = "mstar,swi2c";
+		bus-index = <1>;
+		sda-gpio = <143>;
+		scl-gpio = <142>;
+		speed-khz = <100>;
+		def-delay = <100>;
+		retries = <5>;
+		status = "okay";
+		iic-mode = <0>;
+		hw-port = <0>;
+		pad-mux = <0>;
+	};
+
+	mtktv_regulator: mtktv-regulator {
+		compatible = "mtktv-regulator";
+		regulator-min-microvolt = <900000>;
+		regulator-max-microvolt = <1200000>;
+		regulator-default = <1000000>;
+
+		/* prado regulator */
+		regulator-type = "prado";
+		regulator-id = <0x9A>;
+		regulator-step = <3>;
+		regulator-shift = <68>;
+		regulator-port = <3>;
+		regulator-addr = <0x80>;
+		/* pwm regulator */
+		/*
+		regulator-type = "pwm";
+		regulator-channel = <0>;
+		regulator-scale = <1950>;
+		regulator-offset = <0>;
+		regulator-auto = <1>;
+		*/
+		/* gpio regulator */
+		/*
+		regulator-type = "gpio";
+		regulator-level = <2>;
+		regulator-parm {
+			control_0 {
+				power = <95>;
+				pins = <2>;
+				gpio_num = <51 52>;
+				gpio_mode = <0 1>;
+			};
+			control_1 {
+				power = <100>;
+				pins = <2>;
+				gpio_num = <51 52>;
+				gpio_mode = <1 1>;
+			};
+		};
+		*/
+	};
+
+	mtk_sensor0: mtk-sensor@0 {
+		compatible = "cpu-thermal";
+		#thermal-sensor-cells = <1>;
+	};
+
+	thermal-zones {
+		mtk_thermal: mtk-thermal {
+			polling-delay = <1000>;
+			polling-delay-passive = <1000>;
+
+			thermal-sensors = <&mtk_sensor0 0>;
+			trips {
+				overtemp_point: trip-point@1 {
+					temperature = <135000>; /* millicelsius */
+					hysteresis = <1000>; /* millicelsius */
+					type = "passive";
+				};
+				reset_point: trip-point@2 {
+					temperature = <150000>; /* millicelsius */
+					hysteresis = <1000>; /* millicelsius */
+					type = "hot";
+				};
+			};
+			cooling-maps {
+				map0 {
+					trip = <&overtemp_point>;
+					contribution = <1024>;
+					cooling-device = <&cpu0 0xffffffff 0xffffffff>;
+				};
+			};
+		};
+	};
+
+	cpu_opp_table: opp-table {
+		compatible = "operating-points-v2";
+		opp-shared;
+
+		boost-0 = <1300000000>;
+		boost-1 = <1300000000>;
+		boost-2 = <1370000000>;
+		boost-3 = <1300000000>;
+		boost-4 = <1300000000>;
+
+		opp-800000000 {
+			opp-hz = /bits/ 64 <800000000>;
+			opp-microvolt = <900000>;
+			opp-corner-offset = <0>;
+		};
+
+		opp-1000000000 {
+			opp-hz = /bits/ 64 <1000000000>;
+			opp-microvolt = <1000000>;
+			opp-corner-offset = <50000>;
+		};
+
+		opp-1200000000 {
+			opp-hz = /bits/ 64 <1200000000>;
+			opp-microvolt = <1100000>;
+			opp-corner-offset = <50000>;
+		};
+
+		opp-1300000000 {
+			opp-hz = /bits/ 64 <1300000000>;
+			opp-microvolt = <1150000>;
+			opp-corner-offset = <50000>;
+			};
+
+		opp-1370000000 {
+			opp-hz = /bits/ 64 <1370000000>;
+			opp-microvolt = <1200000>;
+			opp-corner-offset = <50000>;
+		};
+
+	};
+};

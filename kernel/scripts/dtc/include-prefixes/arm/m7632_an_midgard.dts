@@ -1,0 +1,302 @@
+/dts-v1/;
+#include "m7632.dtsi"
+
+/ {
+	chosen {
+		bootargs = "root=/dev/mmcblk0p4 rootfstype=ext4 rw rootwait init=/sbin/init ip=dhcp console=ttyS0,115200,LX_MEM=0x02000000";
+	};
+
+	memory@20200000 {
+		device_type = "memory";
+		reg = <0x0 0x20200000 0x0 0x1f400000>;
+	};
+
+	memory@38C00000 {
+		device_type = "memory";
+		reg = <0x0 0x4dc00000 0x0 0x8a00000>;
+	};
+
+	memory@A0000000 {
+		device_type = "memory";
+		reg = <0x0 0xb2a00000 0x0 0x2d600000>;
+	};
+
+	Mstar-sys {
+		firmware {
+			audio {
+				path = "/vendor/lib/utopia/audio_bin/";
+			};
+			vdec_fw {
+				path = "/vendor/lib/utopia/vdec_bin/";
+			};
+		};
+	};
+
+	firmware {
+
+		android {
+			compatible = "android,firmware";
+			hardware = "m7632";
+			revision = "1234";
+			Serial = "0000000000000000";
+			Processor = "AArch32 Processor rev 3 (aarch32)";
+			mode = "123456789";
+			baseband = "123456789";
+
+			fstab {
+				compatible = "android,fstab";
+
+				vendor {
+					compatible = "android,vendor";
+					dev = "/dev/block/platform/mstar_mci.0/by-name/vendor";
+					type = "ext4";
+					mnt_flags = "ro";
+					fsmgr_flags = "wait";
+				};
+			};
+		};
+	};
+
+	gpio: gpio {
+		compatible = "mstar,gpio";
+		gpio-controller;
+		#gpio-cells = <1>;
+		interrupt-controller;
+		skip-save-status = <9 31 21>;
+		#interrupt-cells = <2>; /* cell name GPIO_PAD, trigger-type*/
+	};
+
+	switch_gpio {
+		compatible = "mstar,switch-gpio";
+		switch-name = "h2w";
+		switch-gpio = <64>;
+		switch-inverse = <0>;
+	};
+
+	gpio_wifi_ctl {
+		compatible = "mstar,gpio-wifi-ctl";
+		wifi-ctl-gpio = <26>;
+	};
+
+	backlight {
+		compatible = "backlight";
+		brightness-levels = <0 255>;
+		default-brightness-level = <255>;
+		bl_ctrl = <9>;
+		bl_ctrl_inverse = <0>;
+		vcc_gpio = <31>;
+		vcc_gpio_invert = <0>;
+		led_gpio = <21>;
+		led_gpio_invert = <0>;
+		/* led-pwm-control-support; */
+		/* led-pwm-control-channel = <0>; */
+		/* led-pwm-control-resume-period = <0xb71a>; */
+		/* led-pwm-control-resume-duty = <0xb71a>; */
+		/* led-pwm-control-resume-div = <0xff>; */
+		/* led-pwm-control-resume-polarity = <0>; */
+		/* led-pwm-control-suspend-period = <0xb71a>; */
+		/* led-pwm-control-suspend-duty = <0xb71a>; */
+		/* led-pwm-control-suspend-div = <0xff>; */
+		/* led-pwm-control-suspend-polarity = <0>; */
+	};
+
+	serflash {
+		compatible = "mst,serflash";
+		speed-Mhz = <0x36>;
+		read-mode = <0x5>;
+	};
+
+	i2c0: i2c@0 {
+		compatible = "mstar,swi2c";
+		bus-index = <0>;
+		sda-gpio = <55>;
+		scl-gpio = <54>;
+		speed-khz = <100>;
+		def-delay = <100>;
+		retries = <5>;
+		status = "okay";
+		iic-mode = <0>;
+		hw-port = <0>;
+		pad-mux = <0>;
+	};
+
+	i2c1: i2c@1 {
+		compatible = "mstar,swi2c";
+		bus-index = <0>;
+		sda-gpio = <55>;
+		scl-gpio = <54>;
+		speed-khz = <100>;
+		def-delay = <100>;
+		retries = <5>;
+		status = "okay";
+		iic-mode = <1>;
+		hw-port = <3>;
+		pad-mux = <25>;
+	};
+
+	i2c2: i2c@2 {
+		compatible = "mstar,swi2c";
+		bus-index = <1>;
+		sda-gpio = <143>;
+		scl-gpio = <142>;
+		speed-khz = <100>;
+		def-delay = <100>;
+		retries = <5>;
+		status = "okay";
+		iic-mode = <0>;
+		hw-port = <0>;
+		pad-mux = <0>;
+	};
+
+	buf_tag {
+
+		vdec_fb {
+			heaptype = <0x0>;
+			max_size = <0x0 0x14400000>;
+			miu = <0x0>;
+		};
+
+		vdec_es {
+			heaptype = <0x0>;
+			max_size = <0x0 0x03000000>;
+			miu = <0x0>;
+		};
+
+		xc_main {
+			heaptype = <0x0>;
+			max_size = <0x0 0x5F00000>;
+			miu = <0x0>;
+		};
+
+		xc_sub {
+			heaptype = <0>;
+			max_size = <0x0 0x1800000>;
+			miu = <0>;
+		};
+
+		xc_hse {
+			heaptype = <0>;
+			max_size = <0x0 0x1000000>;
+			miu = <0>;
+		};
+
+		mali_gop_dma {
+			heaptype = <0x0>;
+			max_size = <0x0 0x6000000>;
+			normal_zone = <0x0>;
+		};
+
+		mali_gop {
+			heaptype = <0x0>;
+			max_size = <0x0 0x25800000>;
+			normal_zone = <0x1>;
+		};
+
+		xc_frc_pq {
+			heaptype = <0x0>;
+			max_size = <0x0 0xf00000>;
+			miu = <0x0>;
+		};
+
+		xc_frc_l {
+			heaptype = <0>;
+			max_size = <0x0 0x6600000>;
+			miu = <0>;
+		};
+
+		img_frame {
+			heaptype = <0x0>;
+			max_size = <0x0 0x2000000>;
+			miu = <0x0>;
+		};
+
+		mheg_write {
+			heaptype = <0>;
+			max_size = <0x0 0x2000000>;
+			miu = <0>;
+		};
+		mheg_read {
+			heaptype = <0>;
+			max_size = <0x0 0x500000>;
+			miu = <0>;
+		};
+		mheg_inter {
+			heaptype = <0>;
+			max_size = <0x0 0xD00000>;
+			miu = <0>;
+		};
+		jpd_write {
+			heaptype = <0>;
+			max_size = <0x0 0x2000000>;
+			miu = <0>;
+		};
+		jpd_read {
+			heaptype = <0>;
+			max_size = <0x0 0x500000>;
+			miu = <0>;
+		};
+		jpd_inter {
+			heaptype = <0>;
+			max_size = <0x0 0xD00000>;
+			miu = <0>;
+		};
+		disp_photo {
+			heaptype = <0>;
+			max_size = <0x0 0x4000000>;
+			miu = <0>;
+		};
+
+		directfb_frame0 {
+			heaptype = <0x0>;
+			max_size = <0x0 0x8000000>;
+			miu = <0x0>;
+		};
+
+		directfb_frame1 {
+			heaptype = <0x0>;
+			max_size = <0x0 0x1200000>;
+			miu = <0x0>;
+		};
+
+		tsp_pvr {
+			heaptype = <0x0>;
+			max_size = <0x0 0xd80000>;
+			miu = <0x0>;
+		};
+
+        tsr_ginga {
+             heaptype = <0>;
+             max_size = <0x0 0x0800000>;
+             miu = <0>;
+         };
+
+		tsp_pvr1 {
+			heaptype = <0>;
+			max_size = <0x0 0x06C0000>;
+			miu = <0>;
+		};
+
+		tsp_filein {
+			heaptype = <0x0>;
+			max_size = <0x0 0x240000>;
+			miu = <0x0>;
+		};
+
+		tsp_fiq {
+			heaptype = <0x0>;
+			max_size = <0x0 0x402000>;
+			miu = <0x0>;
+		};
+
+		tsp_alppvr {
+			heaptype = <0x0>;
+			max_size = <0x0 0xc00000>;
+			miu = <0x0>;
+		};
+		fbdev {
+			heaptype = <0>;
+			max_size = <0x0 0x4000000>;
+			miu = <0>;
+		};
+	};
+};

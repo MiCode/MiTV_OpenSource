@@ -1,0 +1,15 @@
+/dts-v1/;
+/plugin/;
+/include/ "overlay_avb_SysAsRoot.dtsi"
+&backlight {
+	led-pwm-control-support;
+	led-pwm-control-channel = <0>;
+	led-pwm-control-resume-period = <0xb71a>;
+	led-pwm-control-resume-duty = <0xb71a>;
+	led-pwm-control-resume-div = <0xff>;
+	led-pwm-control-resume-polarity = <0>;
+	led-pwm-control-suspend-period = <0xb71a>;
+	led-pwm-control-suspend-duty = <0xb71a>;
+	led-pwm-control-suspend-div = <0xff>;
+	led-pwm-control-suspend-polarity = <0>;
+};

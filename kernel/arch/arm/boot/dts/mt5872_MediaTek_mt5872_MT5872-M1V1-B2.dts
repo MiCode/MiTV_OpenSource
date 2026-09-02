@@ -1,0 +1,424 @@
+/*
+ * ARM Ltd.
+ *
+ * ARMv8 Foundation model DTS
+ */
+
+/dts-v1/;
+#include "mt5872.dtsi"
+
+
+/ {
+	chosen {
+		bootargs = "root=/dev/mmcblk0p4 rootfstype=ext4 rw rootwait init=/sbin/init ip=dhcp console=ttyS0,115200,LX_MEM=0x02000000";
+	};
+
+	memory@20200000 {
+		device_type = "memory";
+		reg = <0x0 0x20200000 0x0 0x1f400000>;
+	};
+
+	memory@38C00000 {
+		device_type = "memory";
+		reg = <0x0 0x4dc00000 0x0 0x8a00000>;
+	};
+
+	memory@A0000000 {
+		device_type = "memory";
+		reg = <0x0 0xb2a00000 0x0 0x2d600000>;
+	};
+
+	mtk_mdla: mdla {
+		  compatible = "mtk,mdla";
+		  reg =   <0x0 0x1f3e8000 0x0 0x1000>,
+		      <0x0 0x1f3e9000 0x0 0x1000>,
+		      <0x0 0x1f3ea000 0x0 0x1000>,
+		      <0x0 0x1fe00000 0x0 0x80000>;
+		  interrupts = <0x0 0xbc 0x4>;
+	};
+
+	mtk_edmc: edmc@1078c000 {
+		  compatible = "mtk,edmc";
+		  reg = <0x0 0x1f3ec000 0x0 0x1000>;
+		  interrupts = <0x0 0xbe 0x4>;
+	};
+
+
+	firmware {
+                optee {
+                        compatible = "linaro,optee-tz";
+                        method = "smc";
+                };
+		android {
+			compatible = "android,firmware";
+			hardware ="m7642";
+			revision ="0001";
+			Serial   ="0000000000000000";
+			Processor ="AArch32 Processor rev 3 (aarch32)";
+			mode ="20170621";
+			baseband ="20170621";
+			bootloader ="20170621";
+		};
+	};
+
+	/* example of consume a gpio pin with mapped irq
+	foo{
+		interrupt-parent = <&gpio>;
+		interrupts = <0 LEVEL_HIGH>;
+	}
+	*/
+
+	gpio: gpio {
+		compatible = "mstar,gpio";
+		gpio-controller;
+		#gpio-cells = <1>;
+		interrupt-controller;
+		skip-save-status = <11 9 6>;
+		#interrupt-cells = <2>; /* cell name GPIO_PAD, trigger-type*/
+	};
+
+	switch_gpio: switch_gpio {
+		compatible = "mstar,switch-gpio";
+		switch-name = "h2w";
+		switch-gpio = <37>;
+		switch-inverse = <0>;
+	};
+
+	gpio_wifi_ctl: gpio_wifi_ctl {
+		compatible = "mstar,gpio-wifi-ctl";
+		wifi-ctl-gpio = <28>;
+	};
+
+	backlight: backlight {
+		compatible = "backlight";
+		brightness-levels = <0 255>;
+		default-brightness-level = <255>;
+		bl_ctrl = <11>;
+		bl_ctrl_inverse = <0>;
+		vcc_gpio = <9>;
+		vcc_gpio_invert = <0>;
+		led_gpio = <6>;
+		led_gpio_invert = <0>;
+		/* led-pwm-control-support; */
+		/* led-pwm-control-channel = <0>; */
+		/* led-pwm-control-resume-period = <0xb71a>; */
+		/* led-pwm-control-resume-duty = <0xb71a>; */
+		/* led-pwm-control-resume-div = <0xff>; */
+		/* led-pwm-control-resume-polarity = <0>; */
+		/* led-pwm-control-suspend-period = <0xb71a>; */
+		/* led-pwm-control-suspend-duty = <0xb71a>; */
+		/* led-pwm-control-suspend-div = <0xff>; */
+		/* led-pwm-control-suspend-polarity = <0>; */
+	};
+
+	i2c0: i2c@0 {
+		compatible = "mstar,swi2c";
+		iic-mode = <1>;	 /* i2c-mode: 0:swi2c; 1:hwi2c */
+		bus-index = <0>;	/* swi2c setting: bus index */
+		sda-gpio = <55>;	/* swi2c setting: sda pad */
+		scl-gpio = <54>;	/* swi2c setting: scl pad */
+		def-delay = <100>;  /* swi2c setting: clk */
+		hw-port = <3>;	  /* hwi2c setting: port */
+		pad-mux = <25>;	 /* hwi2c setting: pad mux */
+		speed-khz = <100>;  /* hwi2c setting: clk */
+		retries = <5>;	  /* Unused */
+		status = "okay";	/* Unused */
+	};
+
+
+	i2c1: i2c@1 {
+		compatible = "mstar,swi2c";
+		iic-mode = <0>;
+		bus-index = <1>;
+		sda-gpio = <67>;
+		scl-gpio = <66>;
+		def-delay = <100>;
+		hw-port = <0>;
+		pad-mux = <0>;
+		speed-khz = <100>;
+		retries = <5>;
+		status = "okay";
+	};
+
+	mtk_sensor0: mtk-sensor@0 {
+		compatible = "mtk-thermal";
+		#thermal-sensor-cells = <1>;
+	};
+
+	thermal-zones {
+		mtk_thermal: mtk-thermal {
+			polling-delay = <1000>;
+			polling-delay-passive = <100>;
+
+			thermal-sensors = <&mtk_sensor0 0>;
+			trips {
+				threshold: trip-point@0 {
+					temperature = <120000>;
+					hysteresis = <1000>;
+					type = "passive";
+				};
+				target: trip-point@1 {
+					temperature = <130000>;
+					hysteresis = <1000>;
+					type = "passive";
+				};
+			};
+			cooling-maps {
+				 map0 {
+					trip = <&target>;
+					contribution = <1024>;
+					cooling-device = <&cpu0 0xffffffff 0xffffffff>;
+				};
+			};
+		};
+	};
+
+	mmc_host_sdio {
+		compatible = "mstar, sdio";
+		sdio-padmux = <1>;
+		cd-option = <1>,<0x322B>,<0x04>,<2>;
+		pc-option = <0>,<0x0000>,<0x00>,<0>;
+		wp-option = <0>,<0x0000>,<0x00>,<0>;
+		sdio-volt-type = <0>;
+		sdio-fast-connect = <0>;
+	};
+
+	buf_tag {
+	/* heaptype: HEAP_TYPE_IOMMU = 0, HEAP_TYPE_CMA= 1,  HEAP_TYPE_NON_MMA = 2*/
+	/* miutype:  UMA_OR_MIU0 = 0, MIU_1 = 1 */
+		mdla_buf {
+			heaptype = <0>;
+			max_size = <0x0 0xec00000>;
+			miu = <0>;
+		};
+		vdec_fb {
+			heaptype = <0>;
+			max_size = <0x0 0x14300000>;
+			miu = <0>;
+		};
+		vdec_es {
+			heaptype = <0>;
+			max_size = <0x0 0x01400000>;
+			miu = <0>;
+		};
+		xc_main {
+			heaptype = <0>;
+			max_size = <0x0 0x1400000>;
+			miu = <0>;
+		};
+		xc_sub {
+			heaptype = <0>;
+			max_size = <0x0 0x1800000>;
+			miu = <0>;
+		};
+		xc_hse {
+			heaptype = <0>;
+			max_size = <0x0 0x1000000>;
+			miu = <0>;
+		};
+		mali_gop_dma {
+			heaptype = <0>;
+			max_size = <0x0 0x6000000>;
+			normal_zone = <0>;
+		};
+		mali_gop {
+			heaptype = <0>;
+			max_size = <0x0 0x25800000>;
+			normal_zone = <1>;
+		};
+		xc_frc_pq {
+			heaptype = <0>;
+			max_size = <0x0 0xf00000>;
+			miu = <0>;
+		};
+		xc_frc_l {
+			heaptype = <0>;
+			max_size = <0x0 0x8200000>;
+			miu = <0>;
+		};
+		img_frame {
+			heaptype = <0>;
+			max_size = <0x0 0x2000000>;
+			miu = <0>;
+		};
+		mheg_write {
+			heaptype = <0>;
+			max_size = <0x0 0x2000000>;
+			miu = <0>;
+		};
+		mheg_read {
+			heaptype = <0>;
+			max_size = <0x0 0x500000>;
+			miu = <0>;
+		};
+		mheg_inter {
+			heaptype = <0>;
+			max_size = <0x0 0xD00000>;
+			miu = <0>;
+		};
+		jpd_write {
+			heaptype = <0>;
+			max_size = <0x0 0x2000000>;
+			miu = <0>;
+		};
+		jpd_read {
+			heaptype = <0>;
+			max_size = <0x0 0x500000>;
+			miu = <0>;
+		};
+		jpd_inter {
+			heaptype = <0>;
+			max_size = <0x0 0xD00000>;
+			miu = <0>;
+		};
+		disp_photo {
+			heaptype = <0>;
+			max_size = <0x0 0x4000000>;
+			miu = <0>;
+		};
+		directfb_frame0 {
+			heaptype = <0>;
+			max_size = <0x0 0x8000000>;
+			miu = <0>;
+		};
+		directfb_frame1 {
+			heaptype = <0>;
+			max_size = <0x0 0x1200000>;
+			miu = <0>;
+		};
+		tsp_pvr {
+			heaptype = <0>;
+			max_size = <0x0 0x0D80000>;
+			miu = <0>;
+		};
+        tsr_ginga {
+             heaptype = <0>;
+             max_size = <0x0 0x0800000>;
+             miu = <0>;
+         };
+		tsp_filein {
+			heaptype = <0>;
+			max_size = <0x0 0x0240000>;
+			miu = <0>;
+		};
+		tsp_fiq {
+			heaptype = <0>;
+			max_size = <0x0 0x402000>;
+			miu = <0>;
+		};
+		tsp_alppvr {
+			heaptype = <0>;
+			max_size = <0x0 0x0C00000>;
+			miu = <0>;
+		};
+		cap_once {
+			heaptype = <0>;
+			max_size = <0x0 0x0800000>;
+			miu = <0>;
+		};
+		cap_once_ge {
+			heaptype = <0>;
+			max_size = <0x0 0x0800000>;
+			miu = <0>;
+		};
+		cap_more {
+			heaptype = <0>;
+			max_size = <0x0 0x0C00000>;
+			miu = <0>;
+		};
+		fbdev {
+			heaptype = <0>;
+			max_size = <0x0 0x4000000>;
+			miu = <0>;
+		};
+		venc {
+			heaptype = <0>;
+			max_size = <0x0 0x01800000>;
+			miu = <0>;
+                };
+	};
+
+	soc-dvfs {
+		enable =  <1>;
+		package = <1>;
+		cluster = <1>;
+		cluster_0 {
+			cpu-info {
+				partid =    <0xd03>;
+				mask   =    <0x0>;
+				freqaddr =  <0x1F200A04>;
+				anabank =   <0x110c00>;
+				mcubank =   <0x101d00>;
+			};
+			table-info_0 {
+				sys-info {
+					default-clock = <1000>;
+					min-clock =     <1000>;
+					max-clock =     <1370>;
+					boost-clock =   <1300>;
+					antutu-clock =  <1370>;
+					protect-clock = <800>;
+					default-cpu =   <100>;
+					default-core =  <100>;
+					max-cpu =       <120>;
+					min-cpu =       <90>;
+				};
+				temp-info {
+					freeze_lower =  <0xff>;
+					freeze_upper =  <0xff>;
+					normal_lower =  <120>;
+					normal_upper =  <135>;
+					reset =         <150>;
+					power-ss     =  <90>;
+					power-ff     =  <90>;
+				};
+				core-info {
+					min-clock =     <600>;
+					max-clock =     <600>;
+					power-ss =      <100>;
+					power-ff =      <95>;
+				};
+				clock-info {
+					level = <4>;
+					pairs {
+						setting_0 {
+							min-clock = <1000>;
+							max-clock = <1200>;
+							power-ss =  <100>;
+							power-ff =  <95>;
+						};
+						setting_1 {
+							min-clock = <1200>;
+							max-clock = <1300>;
+							power-ss =  <110>;
+							power-ff =  <105>;
+						};
+						setting_2 {
+							min-clock = <1300>;
+							max-clock = <1370>;
+							power-ss =  <115>;
+							power-ff =  <110>;
+						};
+						setting_3 {
+							min-clock = <1370>;
+							max-clock = <1371>;
+							power-ss =  <120>;
+							power-ff =  <115>;
+						};
+					};
+				};
+				power-info {
+					type = "i2c";
+					parm {
+						set =       "hw";
+						port =      <3>;
+						slave-id =  <0x80>;
+						id =        <0x9a>;
+						shift =     <1>;
+						step =      <3>;
+					};
+				};
+			};
+		};
+    };
+};

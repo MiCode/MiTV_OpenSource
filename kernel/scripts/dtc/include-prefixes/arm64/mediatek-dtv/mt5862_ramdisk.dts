@@ -1,0 +1,231 @@
+/*
+ * ARM Ltd.
+ *
+ * ARMv8 Foundation model DTS
+ */
+
+/dts-v1/;
+
+#include "mt5862.dtsi"
+
+/ {
+	/* rdinit=/sbin/init */
+	chosen {
+		bootargs = "root=/dev/ram0 rw init=/sbin/init ip=dhcp console=ttyS0,38400,LX_MEM=0x03000000";
+		};
+
+	memory@20200000 {
+		device_type = "memory";
+		reg = <0x00000000 0x20200000 0x00000000 0x08000000>;
+	};
+
+	Mstar-utopia2k-str {
+		compatible = "Mstar-utopia2k-str";
+
+		mhl {
+			resume {
+				stage0 {
+					pre-condition = "hdmi_rx";
+				};
+			};
+		};
+
+		hdmi_rx {
+			resume {
+				stage0 {
+					post-condition = "hdmi_rx";
+				};
+			};
+		};
+
+		avd {
+			resume {
+				stage0 {
+					pre-condition = "vif";
+				};
+			};
+		};
+
+		vif {
+			resume {
+				stage0 {
+					post-condition = "vif";
+				};
+			};
+		};
+	};
+
+		Mstar-sys {
+				firmware {
+						audio {
+								path = "/mslib/utopia/";
+						};
+				};
+		};
+
+	switch_gpio {
+		compatible = "mstar,switch-gpio";
+		switch-name = "h2w";
+		switch-gpio = <999>;
+		switch-inverse = <0>;
+	};
+
+	gpio: gpio {
+		compatible = "mstar,gpio";
+		gpio-controller;
+		#gpio-cells = <1>;
+		interrupt-controller;
+		skip-save-status = <5 27>;
+		#interrupt-cells = <2>; /* cell name GPIO_PAD, trigger-type*/
+	};
+
+	i2c0: i2c@0 {
+		compatible = "mstar,swi2c";
+		iic-mode = <1>;	 /* i2c-mode: 0:swi2c; 1:hwi2c */
+		bus-index = <0>;	/* swi2c setting: bus index */
+		sda-gpio = <55>;	/* swi2c setting: sda pad */
+		scl-gpio = <54>;	/* swi2c setting: scl pad */
+		def-delay = <100>;  /* swi2c setting: clk */
+		hw-port = <3>;	  /* hwi2c setting: port */
+		pad-mux = <25>;	 /* hwi2c setting: pad mux */
+		speed-khz = <100>;  /* hwi2c setting: clk */
+		retries = <5>;	  /* Unused */
+		status = "okay";	/* Unused */
+	};
+
+	i2c1: i2c@1 {
+		compatible = "mstar,swi2c";
+		iic-mode = <0>;	 /* i2c-mode: 0:swi2c; 1:hwi2c */
+		bus-index = <1>;	/* swi2c setting: bus index */
+		sda-gpio = <143>;   /* swi2c setting: sda pad */
+		scl-gpio = <142>;   /* swi2c setting: scl pad */
+		def-delay = <100>;  /* swi2c setting: clk */
+		hw-port = <0>;	  /* hwi2c setting: port */
+		pad-mux = <0>;	  /* hwi2c setting: pad mux */
+		speed-khz = <100>;  /* hwi2c setting: clk */
+		retries = <5>;	  /* Unused */
+		status = "okay";	/* Unused */
+	};
+
+	mtk_sensor0: mtk-sensor@0 {
+		compatible = "mtk-thermal";
+		#thermal-sensor-cells = <1>;
+	};
+
+	thermal-zones {
+		mtk_thermal: mtk-thermal {
+			polling-delay = <1000>;
+			polling-delay-passive = <100>;
+
+			thermal-sensors = <&mtk_sensor0 0>;
+			trips {
+				threshold: trip-point@0 {
+					temperature = <120000>;
+					hysteresis = <1000>;
+					type = "passive";
+				};
+				target: trip-point@1 {
+					temperature = <130000>;
+					hysteresis = <1000>;
+					type = "passive";
+				};
+			};
+			cooling-maps {
+				 map0 {
+					trip = <&target>;
+					contribution = <1024>;
+					cooling-device = <&cpu0 0xffffffff 0xffffffff>;
+				};
+			};
+		};
+		fbdev {
+			heaptype = <0>;
+			max_size = <0x0 0x4000000>;
+			miu = <0>;
+		};
+	};
+
+	soc-dvfs {
+		enable =  <0>;
+		package = <1>;
+		cluster = <1>;
+		cluster_0 {
+			cpu-info {
+			partid =	<0xd03>;
+			mask   =	<0x0>;
+			freqaddr =  <0x1F200A04>;
+			anabank =   <0x110c00>;
+			mcubank =   <0x101d00>;
+			};
+			table-info_0 {
+				sys-info {
+					default-clock = <1150>;
+					min-clock =	 <1150>;
+					max-clock =	 <1550>;
+					boost-clock =   <1450>;
+					antutu-clock =  <1450>;
+					protect-clock = <850>;
+					default-cpu =   <100>;
+					default-core =  <100>;
+					max-cpu =	   <120>;
+					min-cpu =	   <90>;
+						};
+				temp-info {
+					freeze_lower =  <0xffff>;
+					freeze_upper =  <0xffff>;
+					normal_lower =  <120>;
+					normal_upper =  <135>;
+					reset =		 <160>;
+					power-ss	=   <90>;
+					power-ff	=   <90>;
+				};
+				core-info {
+					min-clock =	 <600>;
+					max-clock =	 <600>;
+					power-ss =	  <100>;
+					power-ff =	  <95>;
+				};
+				clock-info {
+					level = <4>;
+					pairs {
+						setting_0 {
+							min-clock = <1150>;
+							max-clock = <1350>;
+							power-ss =  <100>;
+							power-ff =  <95>;
+						};
+						setting_1 {
+							min-clock = <1350>;
+							max-clock = <1450>;
+							power-ss =  <110>;
+							power-ff =  <105>;
+						};
+						setting_2 {
+							min-clock = <1450>;
+							max-clock = <1550>;
+							power-ss =  <115>;
+							power-ff =  <110>;
+						};
+						setting_3 {
+							min-clock = <1550>;
+							max-clock = <1551>;
+							power-ss =  <120>;
+							power-ff =  <115>;
+						};
+					};
+				};
+				power-info {
+					type = "i2c";
+					parm {
+						set =	   "hw";
+						port =	  <3>;
+						slave-id =  <0x80>;
+						id =		<0x9a>;
+						shift =	 <1>;
+						step =	  <3>;
+					};
+				};
+			};
+		};
+	};
+};

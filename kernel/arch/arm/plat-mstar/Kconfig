@@ -1,0 +1,38 @@
+menu "Mstar platform type"
+	depends on ARCH_MSTAR
+
+config ARCH_MSTAR_CA9
+	bool "Mstar Cortex-A9 tile"
+	select CPU_V7
+	select ARM_GIC
+	select MIGHT_HAVE_CACHE_L2X0
+	select HAVE_PATA_PLATFORM
+	select HAVE_ARM_TWD if LOCAL_TIMERS
+	select HAVE_ARM_SCU if SMP
+
+config ARCH_MSTAR_CA7
+	bool "Mstar Cortex-A7 tile"
+	select CPU_V7
+	select ARM_GIC
+	select HAVE_PATA_PLATFORM
+	select HAVE_ARM_TWD if LOCAL_TIMERS
+	select HAVE_ARM_SCU if SMP
+	select MP_CA7_QUAD_CORE_PATCH
+
+config ARCH_MSTAR_CA12
+	bool "Mstar Cortex-A12 tile"
+	select CPU_V7
+	select ARM_GIC
+	select HAVE_PATA_PLATFORM
+	select HAVE_ARM_TWD if LOCAL_TIMERS
+	select HAVE_ARM_SCU if SMP
+endmenu
+
+if PLAT_MSTAR
+
+config PLAT_MSTAR_SCHED_CLOCK
+	def_bool y if !ARCH_INTEGRATOR_AP
+	select NEED_MACH_MEMORY_H
+	select NEED_MACH_IO_H
+	select HAVE_SCHED_CLOCK
+endif

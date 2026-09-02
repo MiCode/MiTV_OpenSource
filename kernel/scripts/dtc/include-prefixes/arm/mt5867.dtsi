@@ -1,0 +1,1360 @@
+/*
+ * Copyright (c) 2019 MediaTek Inc.
+ */
+
+/include/ "cpuqos_v1.dtsi"
+
+/ {
+	model = "MT5867";
+	compatible = "arm,foundation-arm", "arm,mt5867";
+	interrupt-parent = <0x1>;
+	#address-cells = <0x2>;
+	#size-cells = <0x2>;
+	cpus {
+		#address-cells = <0x1>;
+		#size-cells = <0x0>;
+
+		cpu-map {
+			cluster0: cluster0 {
+				core0 {
+					cpu = <&cpu0>;
+				};
+				core1 {
+					cpu = <&cpu1>;
+				};
+				core2 {
+					cpu = <&cpu2>;
+				};
+				core3 {
+					cpu = <&cpu3>;
+				};
+			};
+		};
+		cpu0: cpu@0 {
+			operating-points-v2 = <&cpu_opp_table>;
+			#cooling-cells = <0x2>;
+			device_type = "cpu";
+			compatible = "arm,armv8";
+			reg = <0x0 0x0>;
+			enable-method = "psci";
+			cpu-release-addr = <0x100510>;
+		};
+
+		cpu1: cpu@1 {
+			operating-points-v2 = <&cpu_opp_table>;
+			#cooling-cells = <0x2>;
+			device_type = "cpu";
+			compatible = "arm,armv8";
+			reg = <0x0 0x100>;
+			enable-method = "psci";
+			cpu-release-addr = <0x100510>;
+		};
+		cpu2: cpu@2 {
+			operating-points-v2 = <&cpu_opp_table>;
+			#cooling-cells = <0x2>;
+			device_type = "cpu";
+			compatible = "arm,armv8";
+			reg = <0x0 0x200>;
+			enable-method = "psci";
+			cpu-release-addr = <0x100510>;
+		};
+
+		cpu3: cpu@3 {
+			operating-points-v2 = <&cpu_opp_table>;
+			#cooling-cells = <0x2>;
+			device_type = "cpu";
+			compatible = "arm,armv8";
+			reg = <0x0 0x300>;
+			enable-method = "psci";
+			cpu-release-addr = <0x100510>;
+		};
+
+	};
+
+        psci {
+                compatible = "arm,psci";
+                method = "smc";
+                cpu_suspend = <0x84000001>;
+                cpu_off = <0x84000002>;
+                cpu_on = <0x84000003>;
+        };
+
+	interrupt-controller@16001000 {
+		compatible = "arm,cortex-a15-gic", "arm,cortex-a9-gic";
+		#interrupt-cells = <0x3>;
+		#address-cells = <0x0>;
+		interrupt-controller;
+		reg = <0x0 0x16001000 0x0 0x1000 0x0 0x16002000 0x0 0x4000>;
+		interrupts = <0x1 0x9 0xf04>;
+		linux,phandle = <0x1>;
+		phandle = <0x1>;
+	};
+
+	timer {
+		compatible = "arm,mstar-timer-workaround","arm,armv8-timer";
+		interrupts = <0x1 0xd 0xff01>,
+					 <0x1 0xe 0xff01>,
+					 <0x1 0xb 0xff01>,
+					 <0x1 0xa 0xff01>;
+		clock-frequency = <0xb71b00>;
+	};
+
+	pmu {
+		compatible = "arm,cortex-a15-pmu";
+		interrupts = <0x0 0x86 0x4>,
+					 <0x0 0x88 0x4>,
+					 <0x0 0x8a 0x4>,
+					 <0x0 0x8c 0x4>;
+	};
+
+	/* The interrupts */
+	dcsub_int {
+		compatible = "dcsub_int";
+		interrupts = <0x0 0x0 0x4>;
+	};
+
+	pm_sleep_int {
+		compatible = "pm_sleep_int";
+		interrupts = <0x0 0x1 0x4>;
+	};
+
+	irq_aeon2hi {
+		compatible = "irq_aeon2hi";
+		interrupts = <0x0 0x2 0x4>;
+	};
+
+	mvd_int {
+		compatible = "mvd_int";
+		interrupts = <0x0 0x3 0x4>;
+	};
+
+	ps_int {
+		compatible = "ps_int";
+		interrupts = <0x0 0x4 0x4>;
+	};
+
+	nfie_int {
+		compatible = "nfie_int";
+		interrupts = <0x0 0x5 0x4>;
+	};
+
+	sdio_int {
+		compatible = "sdio_int";
+		interrupts = <0x0 0x6 0x4>;
+	};
+
+/*
+	1'b0 {
+		compatible = "1'b0";
+		interrupts = <0x0 0x7 0x4>;
+	};
+*/
+
+	smart_int {
+		compatible = "smart_int";
+		interrupts = <0x0 0x8 0x4>;
+	};
+
+	emac_int {
+		compatible = "emac_int";
+		interrupts = <0x0 0x9 0x4>;
+	};
+
+	disp_int {
+		compatible = "disp_int";
+		interrupts = <0x0 0xa 0x4>;
+	};
+
+	mvd2mips_int {
+		compatible = "mvd2mips_int";
+		interrupts = <0x0 0xb 0x4>;
+	};
+
+	hvd_int {
+		compatible = "hvd_int";
+		interrupts = <0x0 0xc 0x4>;
+	};
+
+	evd_int {
+		compatible = "evd_int";
+		interrupts = <0x0 0xd 0x4>;
+	};
+
+	comb_int {
+		compatible = "comb_int";
+		interrupts = <0x0 0xe 0x4>;
+	};
+
+	adcdvi2riu_int {
+		compatible = "adcdvi2riu_int";
+		interrupts = <0x0 0xf 0x4>;
+	};
+
+	tsp2hk_int {
+		compatible = "tsp2hk_int";
+		interrupts = <0x0 0x10 0x4>;
+	};
+
+	ve_int {
+		compatible = "ve_int";
+		interrupts = <0x0 0x11 0x4>;
+	};
+
+	g3d2mcu_irq_dft {
+		compatible = "g3d2mcu_irq_dft";
+		interrupts = <0x0 0x12 0x4>;
+	};
+
+	dc_int {
+		compatible = "dc_int";
+		interrupts = <0x0 0x13 0x4>;
+	};
+
+	gop_int {
+		compatible = "gop_int";
+		interrupts = <0x0 0x14 0x4>;
+	};
+
+	pcm2mcu_int {
+		compatible = "pcm2mcu_int";
+		interrupts = <0x0 0x15 0x4>;
+	};
+
+	AUDMA_V2_INTR {
+		compatible = "AUDMA_V2_INTR";
+		interrupts = <0x0 0x16 0x4>;
+	};
+
+/*	mfe_int {
+		compatible = "mfe_int";
+		interrupts = <0x0 0x17 0x4>;
+	};
+*/
+	error_resp_int {
+		compatible = "error_resp_int";
+		interrupts = <0x0 0x18 0x4>;
+	};
+
+	tso_int {
+		compatible = "tso_int";
+		interrupts = <0x0 0x19 0x4>;
+	};
+
+	d2b_int {
+		compatible = "d2b_int";
+		interrupts = <0x0 0x1a 0x4>;
+	};
+
+	scm_int {
+		compatible = "scm_int";
+		interrupts = <0x0 0x1b 0x4>;
+	};
+
+	vbi_int {
+		compatible = "vbi_int";
+		interrupts = <0x0 0x1c 0x4>;
+	};
+
+	usb_int {
+		compatible = "usb_int";
+		interrupts = <0x0 0x1d 0x4>;
+	};
+
+	uhc_int {
+		compatible = "uhc_int";
+		interrupts = <0x0 0x1e 0x4>;
+	};
+
+	usb_int1 {
+		compatible = "usb_int1";
+		interrupts = <0x0 0x1f 0x4>;
+	};
+
+	uhc_int1 {
+		compatible = "uhc_int1";
+		interrupts = <0x0 0x20 0x4>;
+	};
+
+	usb_int2 {
+		compatible = "usb_int2";
+		interrupts = <0x0 0x21 0x4>;
+	};
+
+	uhc_int2 {
+		compatible = "uhc_int2";
+		interrupts = <0x0 0x22 0x4>;
+	};
+
+/*
+	1'b0 {
+		compatible = "1'b0";
+		interrupts = <0x0 0x23 0x4>;
+	};
+
+	1'b0 {
+		compatible = "1'b0";
+		interrupts = <0x0 0x24 0x4>;
+	};
+*/
+
+	miu_int {
+		compatible = "miu_int";
+		interrupts = <0x0 0x25 0x4>;
+	};
+
+	int_uart0 {
+		compatible = "int_uart0";
+		interrupts = <0x0 0x26 0x4>;
+	};
+
+	int_uart1 {
+		compatible = "int_uart1";
+		interrupts = <0x0 0x27 0x4>;
+	};
+
+/*
+	1'b0 {
+		compatible = "1'b0";
+		interrupts = <0x0 0x28 0x4>;
+	};
+
+	1'b0 {
+		compatible = "1'b0";
+		interrupts = <0x0 0x29 0x4>;
+	};
+
+	1'b0 {
+		compatible = "1'b0";
+		interrupts = <0x0 0x2a 0x4>;
+	};
+
+	1'b0 {
+		compatible = "1'b0";
+		interrupts = <0x0 0x2b 0x4>;
+	};
+*/
+
+	ge_int {
+		compatible = "ge_int";
+		interrupts = <0x0 0x2c 0x4>;
+	};
+
+	miu_security_int {
+		compatible = "miu_security_int";
+		interrupts = <0x0 0x2d 0x4>;
+	};
+
+	miu_esd_int {
+		compatible = "miu_esd_int";
+		interrupts = <0x0 0x2e 0x4>;
+	};
+
+	mspi0_int {
+		compatible = "mspi0_int";
+		interrupts = <0x0 0x2f 0x4>;
+	};
+
+	int_bdma_0 {
+		compatible = "int_bdma_0";
+		interrupts = <0x0 0x30 0x4>;
+	};
+
+	int_bdma_1 {
+		compatible = "int_bdma_1";
+		interrupts = <0x0 0x31 0x4>;
+	};
+
+	uart2mcu_intr {
+		compatible = "uart2mcu_intr";
+		interrupts = <0x0 0x32 0x4>;
+	};
+
+	urdma2mcu_intr {
+		compatible = "urdma2mcu_intr";
+		interrupts = <0x0 0x33 0x4>;
+	};
+
+	dvi_hdmi_hdcp_int {
+		compatible = "dvi_hdmi_hdcp_int";
+		interrupts = <0x0 0x34 0x4>;
+	};
+
+	mhl_cbus_pm_int {
+		compatible = "mhl_cbus_pm_int";
+		interrupts = <0x0 0x35 0x4>;
+	};
+
+	cec_int_pm {
+		compatible = "cec_int_pm";
+		interrupts = <0x0 0x36 0x4>;
+	};
+
+	hdcp_iic_int {
+		compatible = "hdcp_iic_int";
+		interrupts = <0x0 0x37 0x4>;
+	};
+
+	hdcp_x74_int {
+		compatible = "hdcp_x74_int";
+		interrupts = <0x0 0x38 0x4>;
+	};
+
+	wadr_err_int {
+		compatible = "wadr_err_int";
+		interrupts = <0x0 0x39 0x4>;
+	};
+
+	miic_0_A_int {
+		compatible = "miic_0_A_int";
+		interrupts = <0x0 0x3a 0x4>;
+	};
+
+	miic_1_A_int {
+		compatible = "miic_1_A_int";
+		interrupts = <0x0 0x3b 0x4>;
+	};
+
+	acpu_int {
+		compatible = "acpu_int";
+		interrupts = <0x0 0x3c 0x4>;
+	};
+
+	miic_3_A_int {
+		compatible = "miic_3_A_int";
+		interrupts = <0x0 0x3d 0x4>;
+	};
+
+	jpd_gpd_merge_int {
+		compatible = "jpd_gpd_merge_int";
+		interrupts = <0x0 0x3e 0x4>;
+	};
+
+	ext_gpio_merge_int {
+		compatible = "ext_gpio_merge_int";
+		interrupts = <0x0 0x3f 0x4>;
+	};
+
+	int_timer0 {
+		compatible = "int_timer0";
+		interrupts = <0x0 0x40 0x4>;
+	};
+
+	int_timer1 {
+		compatible = "int_timer1";
+		interrupts = <0x0 0x41 0x4>;
+	};
+
+	int_wdt {
+		compatible = "int_wdt";
+		interrupts = <0x0 0x42 0x4>;
+	};
+
+	dig_dft_bus_out_3 {
+		compatible = "dig_dft_bus_out_3";
+		interrupts = <0x0 0x43 0x4>;
+	};
+
+	MB_auR2toMCU_INT_0 {
+		compatible = "MB_auR2toMCU_INT_0";
+		interrupts = <0x0 0x44 0x4>;
+	};
+
+	MB_auR2toMCU_INT_1 {
+		compatible = "MB_auR2toMCU_INT_1";
+		interrupts = <0x0 0x45 0x4>;
+	};
+
+	MB_DSP2toMCU_INT_0 {
+		compatible = "MB_DSP2toMCU_INT_0";
+		interrupts = <0x0 0x46 0x4>;
+	};
+
+	MB_DSP2toMCU_INT_1 {
+		compatible = "MB_DSP2toMCU_INT_1";
+		interrupts = <0x0 0x47 0x4>;
+	};
+
+/*
+	1'b0 {
+		compatible = "1'b0";
+		interrupts = <0x0 0x48 0x4>;
+	};
+
+	1'b0 {
+		compatible = "1'b0";
+		interrupts = <0x0 0x49 0x4>;
+	};
+*/
+
+	dig_dft_bus_out_10 {
+		compatible = "dig_dft_bus_out_10";
+		interrupts = <0x0 0x4a 0x4>;
+	};
+
+	HDMI_NON_PCM_MODE_INT_OUT {
+		compatible = "HDMI_NON_PCM_MODE_INT_OUT";
+		interrupts = <0x0 0x4b 0x4>;
+	};
+
+	SPDIF_IN_NON_PCM_INT_OUT {
+		compatible = "SPDIF_IN_NON_PCM_INT_OUT";
+		interrupts = <0x0 0x4c 0x4>;
+	};
+
+	lan_esd_int {
+		compatible = "lan_esd_int";
+		interrupts = <0x0 0x4d 0x4>;
+	};
+
+	SE_DSP2UP_intr {
+		compatible = "SE_DSP2UP_intr";
+		interrupts = <0x0 0x4e 0x4>;
+	};
+
+	tsp2aeon_int {
+		compatible = "tsp2aeon_int";
+		interrupts = <0x0 0x4f 0x4>;
+	};
+
+	vivaldi_str_intr {
+		compatible = "vivaldi_str_intr";
+		interrupts = <0x0 0x50 0x4>;
+	};
+
+	vivaldi_pts_intr {
+		compatible = "vivaldi_pts_intr";
+		interrupts = <0x0 0x51 0x4>;
+	};
+
+	DSP_MIU_PROT_intr {
+		compatible = "DSP_MIU_PROT_intr";
+		interrupts = <0x0 0x52 0x4>;
+	};
+
+	xiu_timeout_int {
+		compatible = "xiu_timeout_int";
+		interrupts = <0x0 0x53 0x4>;
+	};
+
+	dmdmcu2hk_int {
+		compatible = "dmdmcu2hk_int";
+		interrupts = <0x0 0x54 0x4>;
+	};
+
+	ve_vbi_f0_int {
+		compatible = "ve_vbi_f0_int";
+		interrupts = <0x0 0x55 0x4>;
+	};
+
+	ve_vbi_f1_int {
+		compatible = "ve_vbi_f1_int";
+		interrupts = <0x0 0x56 0x4>;
+	};
+
+	vdmcu2hk_int {
+		compatible = "vdmcu2hk_int";
+		interrupts = <0x0 0x57 0x4>;
+	};
+
+	ve_done_TT_irq {
+		compatible = "ve_done_TT_irq";
+		interrupts = <0x0 0x58 0x4>;
+	};
+
+	INT_CCFL {
+		compatible = "INT_CCFL";
+		interrupts = <0x0 0x59 0x4>;
+	};
+
+	int_in {
+		compatible = "int_in";
+		interrupts = <0x0 0x5a 0x4>;
+	};
+
+	ir_int {
+		compatible = "ir_int";
+		interrupts = <0x0 0x5b 0x4>;
+	};
+
+	AFEC_VSYNC {
+		compatible = "AFEC_VSYNC";
+		interrupts = <0x0 0x5c 0x4>;
+	};
+
+/*
+	1'b0 {
+		compatible = "1'b0";
+		interrupts = <0x0 0x5d 0x4>;
+	};
+
+	1'b0 {
+		compatible = "1'b0";
+		interrupts = <0x0 0x5e 0x4>;
+	};
+*/
+
+	DSP2MIPS_INT {
+		compatible = "DSP2MIPS_INT";
+		interrupts = <0x0 0x5f 0x4>;
+	};
+
+	ir_int_rc {
+		compatible = "ir_int_rc";
+		interrupts = <0x0 0x60 0x4>;
+	};
+
+	AU_DMA_BUFFER_INT_EDGE {
+		compatible = "AU_DMA_BUFFER_INT_EDGE";
+		interrupts = <0x0 0x61 0x4>;
+	};
+
+	ir_in {
+		compatible = "ir_in";
+		interrupts = <0x0 0x62 0x4>;
+	};
+
+	int_timer2 {
+		compatible = "int_timer2";
+		interrupts = <0x0 0x63 0x4>;
+	};
+
+	reg_hst0to3_int {
+		compatible = "reg_hst0to3_int";
+		interrupts = <0x0 0x64 0x4>;
+	};
+
+	reg_hst0to2_int {
+		compatible = "reg_hst0to2_int";
+		interrupts = <0x0 0x65 0x4>;
+	};
+
+	reg_hst0to1_int {
+		compatible = "reg_hst0to1_int";
+		interrupts = <0x0 0x66 0x4>;
+	};
+
+	dig_dft_bus_out_39 {
+		compatible = "dig_dft_bus_out_39";
+		interrupts = <0x0 0x67 0x4>;
+	};
+
+	reg_hst1to3_int {
+		compatible = "reg_hst1to3_int";
+		interrupts = <0x0 0x68 0x4>;
+	};
+
+	reg_hst1to2_int {
+		compatible = "reg_hst1to2_int";
+		interrupts = <0x0 0x69 0x4>;
+	};
+
+	reg_hst1to0_int {
+		compatible = "reg_hst1to0_int";
+		interrupts = <0x0 0x6a 0x4>;
+	};
+
+	dig_dft_bus_out_43 {
+		compatible = "dig_dft_bus_out_43";
+		interrupts = <0x0 0x6b 0x4>;
+	};
+
+	reg_hst2to3_int {
+		compatible = "reg_hst2to3_int";
+		interrupts = <0x0 0x6c 0x4>;
+	};
+
+	reg_hst2to1_int {
+		compatible = "reg_hst2to1_int";
+		interrupts = <0x0 0x6d 0x4>;
+	};
+
+	reg_hst2to0_int {
+		compatible = "reg_hst2to0_int";
+		interrupts = <0x0 0x6e 0x4>;
+	};
+
+	emac_man_int {
+		compatible = "emac_man_int";
+		interrupts = <0x0 0x6f 0x4>;
+	};
+
+	reg_hst3to2_int {
+		compatible = "reg_hst3to2_int";
+		interrupts = <0x0 0x70 0x4>;
+	};
+
+	reg_hst3to1_int {
+		compatible = "reg_hst3to1_int";
+		interrupts = <0x0 0x71 0x4>;
+	};
+
+	reg_hst3to0_int {
+		compatible = "reg_hst3to0_int";
+		interrupts = <0x0 0x72 0x4>;
+	};
+
+/*
+	1'b0 {
+		compatible = "1'b0";
+		interrupts = <0x0 0x73 0x4>;
+	};
+
+	1'b0 {
+		compatible = "1'b0";
+		interrupts = <0x0 0x74 0x4>;
+	};
+*/
+/*
+	ldm_dma_done_int1 {
+		compatible = "ldm_dma_done_int1";
+		interrupts = <0x0 0x75 0x4>;
+	};
+
+	ldm_dma_done_int0 {
+		compatible = "ldm_dma_done_int0";
+		interrupts = <0x0 0x76 0x4>;
+	};
+*/
+	AU_SPDIF_TX_CS_INT_0 {
+		compatible = "AU_SPDIF_TX_CS_INT_0";
+		interrupts = <0x0 0x77 0x4>;
+	};
+
+	AU_SPDIF_TX_CS_INT_1 {
+		compatible = "AU_SPDIF_TX_CS_INT_1";
+		interrupts = <0x0 0x78 0x4>;
+	};
+/*
+	1'b0 {
+		compatible = "1'b0";
+		interrupts = <0x0 0x79 0x4>;
+	};
+
+	1'b0 {
+		compatible = "1'b0";
+		interrupts = <0x0 0x7a 0x4>;
+	};
+*/
+	pwm_rp_l_int {
+		compatible = "pwm_rp_l_int";
+		interrupts = <0x0 0x7b 0x4>;
+	};
+
+	pwm_fp_l_int {
+		compatible = "pwm_fp_l_int";
+		interrupts = <0x0 0x7c 0x4>;
+	};
+
+	pwm_rp_r_int {
+		compatible = "pwm_rp_r_int";
+		interrupts = <0x0 0x7d 0x4>;
+	};
+
+	pwm_fp_r_int {
+		compatible = "pwm_fp_r_int";
+		interrupts = <0x0 0x7e 0x4>;
+	};
+
+/*
+	1'b0 {
+		compatible = "1'b0";
+		interrupts = <0x0 0x7f 0x4>;
+	};
+*/
+
+	irq_vd_evd_r22hi {
+		compatible = "irq_vd_evd_r22hi";
+		interrupts = <0x0 0xa6 0x4>;
+	};
+
+	PAS_PTS_INTRL_COMBINE {
+		compatible = "PAS_PTS_INTRL_COMBINE";
+		interrupts = <0x0 0xa7 0x4>;
+	};
+
+	imi_top_irq {
+		compatible = "imi_top_irq";
+		interrupts = <0x0 0xa8 0x4>;
+	};
+
+	otg_int {
+		compatible = "otg_int";
+		interrupts = <0x0 0xa9 0x4>;
+	};
+
+	nfie_tee_int {
+		compatible = "nfie_tee_int";
+		interrupts = <0x0 0xaa 0x4>;
+	};
+
+	dip_int {
+		compatible = "dip_int";
+		interrupts = <0x0 0xab 0x4>;
+	};
+
+	vivaldi_auto_bist_int {
+		compatible = "vivaldi_auto_bist_int";
+		interrupts = <0x0 0xac 0x4>;
+	};
+
+	mheg5_auto_bist_int {
+		compatible = "mheg5_auto_bist_int";
+		interrupts = <0x0 0xad 0x4>;
+	};
+
+	tsp_auto_bist_int {
+		compatible = "tsp_auto_bist_int";
+		interrupts = <0x0 0xae 0x4>;
+	};
+
+	codec_auto_bist_int {
+		compatible = "codec_auto_bist_int";
+		interrupts = <0x0 0xaf 0x4>;
+	};
+
+	hi_codec_auto_bist_int {
+		compatible = "hi_codec_auto_bist_int";
+		interrupts = <0x0 0xb0 0x4>;
+	};
+
+	sc_auto_bist_int {
+		compatible = "sc_auto_bist_int";
+		interrupts = <0x0 0xb1 0x4>;
+	};
+
+	pm_irq_out {
+		compatible = "pm_irq_out";
+		interrupts = <0x0 0xb2 0x4>;
+	};
+
+	tsen_0_ov_irq {
+		compatible = "tsen_0_ov_irq";
+		interrupts = <0x0 0xb3 0x4>;
+	};
+
+	tsen_1_ov_irq {
+		compatible = "tsen_1_ov_irq";
+		interrupts = <0x0 0xb4 0x4>;
+	};
+
+	tsp_fi_queue {
+		compatible = "tsp_fi_queue";
+		interrupts = <0x0 0xb5 0x4>;
+	};
+
+	sar_kp_int {
+		compatible = "sar_kp_int";
+		interrupts = <0x0 0xb6 0x4>;
+	};
+
+	mipi_dsi_int {
+		compatible = "mipi_dsi_int";
+		interrupts = <0x0 0xb7 0x4>;
+	};
+
+	lzma_int {
+		compatible = "lzma_int";
+		interrupts = <0x0 0xb8 0x4>;
+	};
+
+	paga_int_level {
+		compatible = "paga_int_level";
+		interrupts = <0x0 0xb9 0x4>;
+	};
+
+	mod_detect_intr {
+		compatible = "mod_detect_intr";
+		interrupts = <0x0 0xba 0x4>;
+	};
+
+	lpll_int {
+		compatible = "lpll_int";
+		interrupts = <0x0 0xbb 0x4>;
+	};
+
+	adcpll_int {
+		compatible = "adcpll_int";
+		interrupts = <0x0 0xbc 0x4>;
+	};
+
+	miic_2_A_int {
+		compatible = "miic_2_A_int";
+		interrupts = <0x0 0xbd 0x4>;
+	};
+
+/*
+	1'b0 {
+		compatible = "1'b0";
+		interrupts = <0x0 0xbe 0x4>;
+	};
+*/
+
+	mspi2_int {
+		compatible = "mspi2_int";
+		interrupts = <0x0 0xbf 0x4>;
+	};
+
+	aesdma_s_int {
+		compatible = "aesdma_s_int";
+		interrupts = <0x0 0xc0 0x4>;
+	};
+
+	pka_all_int{
+		compatible = "pka_all_int";
+		interrupts = <0x0 0xc1 0x4>;
+	};
+
+/*
+	1'b0 {
+		compatible = "1'b0";
+		interrupts = <0x0 0xc2 0x4>;
+	};
+
+	1'b0 {
+		compatible = "1'b0";
+		interrupts = <0x0 0xc3 0x4>;
+	};
+
+	1'b0 {
+		compatible = "1'b0";
+		interrupts = <0x0 0xc4 0x4>;
+	};
+
+	1'b0 {
+		compatible = "1'b0";
+		interrupts = <0x0 0xc5 0x4>;
+	};
+
+	1'b0 {
+		compatible = "1'b0";
+		interrupts = <0x0 0xc6 0x4>;
+	};
+
+	1'b0 {
+		compatible = "1'b0";
+		interrupts = <0x0 0xc7 0x4>;
+	};
+
+	1'b0 {
+		compatible = "1'b0";
+		interrupts = <0x0 0xc8 0x4>;
+	};
+
+	1'b0 {
+		compatible = "1'b0";
+		interrupts = <0x0 0xc9 0x4>;
+	};
+
+	1'b0 {
+		compatible = "1'b0";
+		interrupts = <0x0 0xca 0x4>;
+	};
+
+	1'b0 {
+		compatible = "1'b0";
+		interrupts = <0x0 0xcb 0x4>;
+	};
+
+	1'b0 {
+		compatible = "1'b0";
+		interrupts = <0x0 0xcc 0x4>;
+	};
+
+	1'b0 {
+		compatible = "1'b0";
+		interrupts = <0x0 0xcd 0x4>;
+	};
+
+	1'b0 {
+		compatible = "1'b0";
+		interrupts = <0x0 0xce 0x4>;
+	};
+
+	1'b0 {
+		compatible = "1'b0";
+		interrupts = <0x0 0xcf 0x4>;
+	};
+
+	1'b0 {
+		compatible = "1'b0";
+		interrupts = <0x0 0xd0 0x4>;
+	};
+
+	1'b0 {
+		compatible = "1'b0";
+		interrupts = <0x0 0xd1 0x4>;
+	};
+
+	1'b0 {
+		compatible = "1'b0";
+		interrupts = <0x0 0xd2 0x4>;
+	};
+
+	1'b0 {
+		compatible = "1'b0";
+		interrupts = <0x0 0xd3 0x4>;
+	};
+
+	1'b0 {
+		compatible = "1'b0";
+		interrupts = <0x0 0xd4 0x4>;
+	};
+
+	1'b0 {
+		compatible = "1'b0";
+		interrupts = <0x0 0xd5 0x4>;
+	};
+
+	1'b0 {
+		compatible = "1'b0";
+		interrupts = <0x0 0xd6 0x4>;
+	};
+
+	1'b0 {
+		compatible = "1'b0";
+		interrupts = <0x0 0xd7 0x4>;
+	};
+
+	1'b0 {
+		compatible = "1'b0";
+		interrupts = <0x0 0xd8 0x4>;
+	};
+
+	1'b0 {
+		compatible = "1'b0";
+		interrupts = <0x0 0xd9 0x4>;
+	};
+
+	1'b0 {
+		compatible = "1'b0";
+		interrupts = <0x0 0xda 0x4>;
+	};
+
+	1'b0 {
+		compatible = "1'b0";
+		interrupts = <0x0 0xdb 0x4>;
+	};
+
+	1'b0 {
+		compatible = "1'b0";
+		interrupts = <0x0 0xdc 0x4>;
+	};
+
+	1'b0 {
+		compatible = "1'b0";
+		interrupts = <0x0 0xdd 0x4>;
+	};
+
+	1'b0 {
+		compatible = "1'b0";
+		interrupts = <0x0 0xde 0x4>;
+	};
+
+	1'b0 {
+		compatible = "1'b0";
+		interrupts = <0x0 0xdf 0x4>;
+	};
+
+	1'b0 {
+		compatible = "1'b0";
+		interrupts = <0x0 0xe0 0x4>;
+	};
+
+	1'b0 {
+		compatible = "1'b0";
+		interrupts = <0x0 0xe1 0x4>;
+	};
+
+	1'b0 {
+		compatible = "1'b0";
+		interrupts = <0x0 0xe2 0x4>;
+	};
+*/
+
+	emac {
+		compatible = "mstar-emac";
+	};
+
+    miu {
+        compatible = "mstar-miu";
+    };
+
+        ir {
+	        compatible = "mstar-ir";
+	};
+
+	mbx {
+	        compatible = "mstar-mbx";
+	};
+
+	xc {
+		compatible = "mstar-xc";
+	};
+
+	scaler {
+		compatible = "mstar-scaler";
+	};
+
+	gflip {
+		compatible = "mstar-gflip";
+	};
+
+	alsa {
+		compatible = "Mstar-alsa";
+	};
+
+	dmic {
+		compatible = "Mstar-dmic";
+	};
+
+	mstar-rtc@0 {
+		compatible = "mstar-rtc";
+		index = <0>;
+		xtal = <12000000>;
+		freq = <1>;
+	};
+
+	mstar-frc-r2 {
+		compatible = "FRC-R2";
+	};
+
+	Mstar-ehci-1 {
+		compatible = "Mstar-ehci-1";
+	};
+
+	Mstar-ehci-2 {
+		compatible = "Mstar-ehci-2";
+	};
+
+	Mstar-ehci-3 {
+		compatible = "Mstar-ehci-3";
+	};
+
+	Mstar-ehci-4 {
+		compatible = "Mstar-ehci-4";
+	};
+
+	Mstar-udc {
+		compatible = "Mstar-udc";
+		interrupts = <0x0 0x16 0x4>;
+	};
+
+	Mstar-otg {
+		compatible = "Mstar-otg";
+		interrupts = <0x0 0x06 0x4>, <0x0 0x07 0x4>;
+	};
+
+        buf_tag {
+        /* heaptype: HEAP_TYPE_IOMMU = 0, HEAP_TYPE_CMA= 1,  HEAP_TYPE_NON_MMA = 2*/
+        /* miutype:  UMA_OR_MIU0 = 0, MIU_1 = 1 */
+                inject_filein {
+                        heaptype = <0>;
+                        max_size = <0x0 0x0200000>;
+                        miu = <0>;
+                        mmap_name = "MI_INJECT_BUF";
+                };
+                inject_secure {
+                        heaptype = <0>;
+                        max_size = <0x0 0x0200000>;
+                        miu = <0>;
+                        mmap_name = "E_MMAP_ID_OPTEE_MEM_EXT";
+                };
+        };
+
+	Mstar-lp-standby {
+		compatible = "Mstar-lp-standby";
+	};
+
+        Mstar-utopia2k-str {
+                compatible = "Mstar-utopia2k-str";
+                mhl {
+                        resume {
+                                stage0 {
+                                        pre-condition = "hdmi_rx";
+                                };
+                        };
+                };
+                hdmi_rx {
+                        resume {
+                                stage0 {
+                                        post-condition = "hdmi_rx";
+                                };
+                        };
+                };
+                avd {
+                        resume {
+                                stage0 {
+                                        pre-condition = "vif";
+                                        post-condition = "avd";
+                                };
+                        };
+                };
+                vif {
+                        resume {
+                                stage0 {
+                                        post-condition = "vif";
+                                };
+                        };
+                };
+                vdec {
+                        resume {
+                                stage0 {
+                                        post-condition = "vdec";
+                                };
+                        };
+                };
+
+                pq {
+                        suspend {
+                                stage0 {
+                                        post-condition = "pq";
+                                };
+                        };
+                        resume {
+                                stage0 {
+                                        post-condition = "pq";
+                                        pre-condition = "xc";
+                                };
+                        };
+                };
+
+                miu {
+                        resume {
+                                stage0 {
+                                        post-condition = "miu";
+                                };
+                        };
+                };
+
+                mvop {
+                        resume {
+                                stage0 {
+                                        post-condition = "mvop";
+                                };
+                        };
+                };
+
+                pnl {
+                        suspend {
+                                stage0 {
+                                        pre-condition = "xc";
+                                };
+                        };
+                        resume {
+                                stage0 {
+                                        post-condition = "pnl";
+                                };
+                        };
+                };
+
+                ace {
+                        suspend {
+                                stage0 {
+                                        post-condition = "ace";
+                                };
+                        };
+                        resume {
+                                stage0 {
+                                        post-condition = "ace";
+                                        pre-condition = "xc";
+                                };
+                        };
+                };
+
+                ve {
+                        resume {
+                                stage0 {
+                                        pre-condition = "miu","xc";
+                                };
+                        };
+                };
+
+                xc {
+                        suspend {
+                                stage0 {
+                                        pre-condition = "pq","ace";
+                                        post-condition = "xc";
+                                };
+                        };
+                        resume {
+                                stage0 {
+                                        pre-condition = "vdec","avd","miu","mvop","pnl";
+                                        post-condition = "xc";
+                                };
+                        };
+                };
+	            dmx {
+		          suspend {
+		        	stage0 {
+		        	  pre-condition = "dscmb";
+		              post-condition = "dmx";
+		        	};
+		          };
+		          resume {
+		            stage0 {
+		        	pre-condition = "dscmb";
+		            post-condition = "dmx";
+		            };
+		          };
+	            };
+
+		        dscmb {
+		          suspend {
+		        	stage0 {
+		        	  post-condition = "dscmb";
+		        	};
+		          };
+		          resume {
+		        	stage0 {
+		        	  post-condition = "dscmb";
+		        	};
+		          };
+		        };
+        };
+
+        Mstar-sys {
+                firmware {
+                        audio {
+                                path = "/vendor/lib/utopia/audio_bin/";
+                        };
+                        vdec {
+                                path = "/vendor/lib/utopia/vdec_bin/";
+                        };
+                };
+        };
+
+        Mstar-STR {
+                mstar_mci {
+                        suspend-stage1 = "late";
+                        resume-stage1 = "early";
+                        policy = "async";
+                };
+
+                mmcblk {
+                        suspend-stage1 = "noirq";
+                        resume-stage1 = "noirq";
+                };
+
+                mmcbus {
+                        suspend-stage1 = "late";
+                        resume-stage1 = "early";
+                };
+
+                Mstar-mbx {
+                        suspend-stage1 = "noirq";
+                        resume-stage1 = "noirq";
+                };
+
+		mstar-xc {
+			suspend-stage1 = "noirq";
+			resume-stage1 = "noirq";
+		};
+
+                Mstar-utopia2k-str {
+                        suspend-stage1 = "late";
+                        resume-stage1 = "early";
+                        policy = "async";
+                        resume-stage1-waitfor = "mstar_mci.0";
+                };
+        };
+};

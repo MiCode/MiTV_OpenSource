@@ -1,0 +1,11 @@
+/dts-v1/;
+/plugin/;
+/include/ "overlay_avb_SysAsRoot.dtsi"
+
+&switch_gpio {
+	switch-gpio = <66>;
+};
+
+&gpio_wifi_ctl {
+	wifi-ctl-gpio = <17>;
+};
